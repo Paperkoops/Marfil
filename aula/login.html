@@ -31,16 +31,19 @@
     <div class="login_wrapper">
       <div class="animate form login_form">
         <section class="login_content">
-          <form>
-            <h1>Inicio de sesión</h1>
+          <form data-toggle="validator" role="form">
+            <h1>
+              <i class="fa fa-user"></i> Inicio de sesión</h1>
             <div>
-              <input type="text" class="form-control" placeholder="Correo Electrónico " required="" />
+              <input class="form-control" placeholder="Correo Electrónico" type="email" id="email" name="email" required="required" data-error="Bruh, that email address is invalid"
+              />
             </div>
             <div>
-              <input type="password" class="form-control" placeholder="Clave" required="" />
+              <input placeholder="Clave" id="password" type="password" name="password" data-minlength="11" class="form-control" required="required"
+              />
             </div>
             <div>
-              <a class="btn btn-default submit" href="index.html">Entrar</a>
+              <button href="index.html" type="submit" class="btn btn-default btn-md">Entrar</button>
               <a class="reset_pass" href="#signup">Recuperar clave</a>
             </div>
 
@@ -53,7 +56,7 @@
 
               <div>
                 <h1>
-                  <i class="fa fa-user"></i> Colegio Nuevo Milenio</h1>
+                  Colegio Nuevo Milenio</h1>
                 <p>© 2017 Todos los derechos reservados.</p>
               </div>
             </div>
@@ -64,12 +67,13 @@
       <div id="register" class="animate form registration_form">
         <section class="login_content">
           <form>
-            <h1>Recuperar clave</h1>
+            <h1>
+              <i class="fa fa-wrench"></i> Recuperar clave</h1>
             <div>
-              <input type="email" class="form-control" placeholder="Correo electrónico" required="" />
+              <input type="email" class="form-control" placeholder="Correo electrónico" required="required" />
             </div>
             <div>
-              <a class="btn btn-default submit" href="#">Siguiente</a>
+              <button href="index.html" type="submit" class="btn btn-default btn-md">Siguiente</button>
             </div>
 
             <div class="clearfix"></div>
@@ -84,7 +88,7 @@
 
               <div>
                 <h1>
-                  <i class="fa fa-user"></i> Colegio Nuevo Milenio</h1>
+                  Colegio Nuevo Milenio</h1>
                 <p>© 2017 Todos los derechos reservados.</p>
               </div>
             </div>
