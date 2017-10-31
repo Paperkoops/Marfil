@@ -316,14 +316,16 @@
                   <div class="x_content">
                     <br />
                     <form class="form-horizontal form-label-left input_mask">
-
+                        
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <input type="text" class="form-control has-feedback-left" id="NombreAlumn" placeholder="Nombre del Alumno">
+                        <label>Nombre del Alumno *</label>
+                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Alumno">
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumn" placeholder="Apellido del Alumno">
+                        <label>Apellido del Alumno *</label>
+                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Apellido del Alumno">
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
@@ -336,7 +338,7 @@
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                              </span>
-                              <input type='text' class="form-control" readonly="readonly"/>
+                              <input type='text' class="form-control" id="FechaNacimientoAlumno" readonly="readonly"/>
                                 
                             </div>
                         </div>
@@ -346,7 +348,7 @@
                     <div class="form-group">
                         <label class="col-md-6 col-sm-6 col-xs-12">Genero *</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="form-control has-feedback-left" id="GeneroAlumn">
+                          <select class="form-control has-feedback-left" id="GeneroAlumno">
                             <option>Masculino</option>
                             <option>Femenino</option>
                             
@@ -356,56 +358,297 @@
                       </div>
                     
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <input type="text" class="form-control has-feedback-left" id="NombreAlumn" placeholder="Nombre del Alumno">
-                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                          <label>Nacionalidad del Alumno *</label>
+                          <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Nacionalidad del Alumno">
+                          <span class="fa fa-flag form-control-feedback left" aria-hidden="true"></span>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-md-6 col-sm-6 col-xs-12">Estado Civil *</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                              <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                <option>Soltero</option>
+                                <option>Casado</option>
+                                
+                              </select>
+                              <span class="fa fa-smile-o form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+
+                          
+                          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                              <label>Codigo de Partida de Nacimiento del Alumno*</label>
+                              <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Codigo de Partida de Nacimiento del Alumno">
+                              <span class="fa fa-file-text form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-6 col-sm-6 col-xs-12">Medio de Transporte*</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                    <option>Transporte Publico</option>
+                                    <option>Automovil</option>
+                                    
+                                  </select>
+                                  <span class="fa fa-car form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                              <label>Email del Alumno*</label>
+                              <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Email del Alumno">
+                              <span class="fa fa-envelope-o form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-6 col-sm-6 col-xs-12">Municipio*</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                    <option>San Salvador</option>
+                                    <option>Soyapango</option>
+                                    
+                                  </select>
+                                  <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                  <label>Dirección del Alumno*</label>
+                                  <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Direccion del Alumno">
+                                  <span class="fa fa-mail-forward form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                            <div class="item form-group">
+                                <label class="col-md-6 col-sm-6 col-xs-12">Distancia desde el lugar de Residencia hasta la Institución (Km) <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <input type="number" id="DistanciaAlumno" name="number" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
+                                  <span class="fa fa-location-arrow form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                              </div>
+                              
+                              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                  <label>Numero de Familiares del Alumno*</label>
+                                  <input type="number" id="DistanciaAlumno" name="number" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
+                                  <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                                
+                              <div class="form-group">
+                                  <label class="col-md-6 col-sm-6 col-xs-12">Religión*</label>
+                                  <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                      <option>Catolico</option>
+                                      <option>Evangelico</option>
+                                      
+                                    </select>
+                                    <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+                                  </div>
+                                </div>
+                              <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                  <label>Teléfono*</label>
+                                  <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Teléfono">
+                                  <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                    <label>Celular*</label>
+                                    <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Celular">
+                                    <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+                                  </div>
+
+                                  
+                            <div class="item form-group">
+                                <label class="col-md-12 col-sm-12 col-xs-12">Miembros de la Familia<span class="required">*</span>
+                                </label>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Miembros de la Familia">
+                                    <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                              </div>
+                              
+                              <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                 <label>Trabaja*</label> 
+                                  <div>
+                                    <select class="form-control" id="EstadoCivilAlumno">
+                                      <option>Si</option>
+                                      <option>No</option>
+                                      
+                                    </select>
+                                    
+                                  </div>
+                                </div>
+                                <div class="form-group col-md-6 col-sm-6 col-xs-12">
+                                    <label>Tienen Hijos*</label> 
+                                    <div>
+                                      <select class="form-control" id="EstadoCivilAlumno">
+                                        <option>Si</option>
+                                        <option>No</option>
+                                        
+                                      </select>
+                                      
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix"></div>
+                                  <h2>Información del Padre <small>Rellene la información porfavor</small></h2>
+                                  <div class="clearfix"></div>
+
+                                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                      <label>Nombre Completo del Padre *</label>
+                                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Padre">
+                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+              
+                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                      <label>DUI del Padre *</label>
+                                      <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Apellido del Padre">
+                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                        <label>Telefono del Padre *</label>
+                                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono del Padre">
+                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                      </div>
+                
+                                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                        <label>Trabajo del Padre *</label>
+                                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo del Padre ">
+                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                      </div>
+
+                                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                          <label>Profesion del Padre *</label>
+                                          <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion del Padre">
+                                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <h2>Información de la Madre <small>Rellene la información porfavor</small></h2>
+                                        <div class="clearfix"></div>
+      
+                                        <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                            <label>Nombre Completo de la Madre *</label>
+                                            <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre de la Madre">
+                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                          </div>
+                    
+                                          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                            <label>DUI de la Madre *</label>
+                                            <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="DUI de la Madre">
+                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                          </div>
+      
+                                          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                              <label>Telefono de la Madre *</label>
+                                              <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono de la Madre">
+                                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                      
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                              <label>Trabajo de la Madre *</label>
+                                              <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo de la Madre">
+                                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+      
+                                            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                <label>Profesion de la Madre *</label>
+                                                <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion de la Madre">
+                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                              </div>
+                  
+                                              <div class="clearfix"></div>
+                                              <h2>Información del Responsable <small>Rellene la información porfavor</small></h2>
+                                              <div class="clearfix"></div>
+            
+                                              <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                                  <label>Nombre Completo del Responsable *</label>
+                                                  <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Responsable">
+                                                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+                          
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                  <label>DUI del Responsable *</label>
+                                                  <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="DUI del Responsable">
+                                                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                </div>
+            
+                                                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Telefono del Responsable *</label>
+                                                    <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono del Responsable">
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                  </div>
+                            
+                                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                    <label>Trabajo del Responsable *</label>
+                                                    <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo del Responsable">
+                                                    <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                  </div>
+            
+                                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                      <label>Profesion del Responsable *</label>
+                                                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion del Responsable">
+                                                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                    </div>
+
+                                                    <div class="clearfix"></div>
+                                                    <h2>Información Extra del Alumno <small>Rellene la información porfavor</small></h2>
+                                                    <div class="clearfix"></div>
+
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Enfermedades o Alergias *</label>
+                                                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Enfermedades o Alergias">
+                                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                      </div>
+                                
+                                                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                        <label>Medicamentos *</label>
+                                                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Medicamentos">
+                                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                      </div>
+                
+                                                      <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                                          <label>Observaciones *</label>
+                                                          <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Observaciones">
+                                                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+
+                                                        <div class='col-md-6 col-sm-6 col-xs-12'>
+                                                            
+                                                            <div class="form-group">
+                                                              <label>Fecha de Admision *</label>
+                                                                <div class='input-group date' id='myDatepicker2'>
+                                                                  <span class="input-group-addon">
+                                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                                 </span>
+                                                                  <input type='text' class="form-control" id="FechaNacimientoAlumno" readonly="readonly"/>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class='col-md-6 col-sm-6 col-xs-12'>
+                                                            
+                                                            <div class="form-group">
+                                                              <label>Foto del Alumno *</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" class="form-control">
+                                                                  <span class="input-group-btn">
+                                                                                    <button type="button" class="btn btn-primary">Seleccionar</button>
+                                                                                </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
   
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <input type="text" class="form-control has-feedback-left" id="ApellidoAlumn" placeholder="Apellido del Alumno">
-                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                        </div>
 
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <input type="text" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Email">
-                        <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
-                      </div>
-
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <input type="text" class="form-control" id="inputSuccess5" placeholder="Phone">
-                        <span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Default Input</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" placeholder="Default Input">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Disabled Input </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" disabled="disabled" placeholder="Disabled Input">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Read-Only Input</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="text" class="form-control" readonly="readonly" placeholder="Read-Only Input">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
-                        </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                        </div>
-                      </div>
+                      
+                      
                       <div class="ln_solid"></div>
                       <div class="form-group">
-                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                          <button type="button" class="btn btn-primary">Cancel</button>
-						   <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success">Submit</button>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <button type="button" class="btn btn-primary">Cancelar</button>
+						   <button class="btn btn-primary" type="reset">Limpiar Todo</button>
+                          <button type="submit" class="btn btn-success">Aceptar</button>
                         </div>
                       </div>
 
@@ -452,6 +695,11 @@
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>
       $('#myDatepicker').datetimepicker({
+        format: 'YYYY-MM-DD',
+        ignoreReadonly: true,
+        allowInputToggle: true
+    });
+    $('#myDatepicker2').datetimepicker({
         format: 'YYYY-MM-DD',
         ignoreReadonly: true,
         allowInputToggle: true
