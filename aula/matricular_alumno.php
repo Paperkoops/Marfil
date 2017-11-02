@@ -1,3 +1,53 @@
+<?php
+require 'database.php';
+
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	$emailError = null;
+	$mobileError = null;
+	
+	// keep track post values
+  $nombre = $_POST['nombre'];
+  $apellido = $_POST['apellido'];
+	$email = $_POST['email'];
+	$celular = $_POST['celular'];
+	
+	// validate input
+	$valid = true;
+	if (empty($name)) {
+		$nameError = 'Please enter Name';
+		$valid = false;
+	}
+	
+	if (empty($email)) {
+		$emailError = 'Please enter Email Address';
+		$valid = false;
+	} 
+	else if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+		$emailError = 'Please enter a valid Email Address';
+		$valid = false;
+	}
+	
+	if (empty($mobile)) {
+		$mobileError = 'Please enter Mobile Number';
+		$valid = false;
+	}
+	
+	// insert data
+	if ($valid) {
+		$pdo = Database::connect();
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = "INSERT INTO customers (name, email, mobile) values(?, ?, ?)";
+		$q = $pdo->prepare($sql);
+		$q->execute(array($name, $email, $mobile));
+		Database::disconnect();
+		header("Location: index.php");
+	}
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -319,7 +369,7 @@
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre del Alumno *</label>
-                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Alumno">
+                        <input type="text" class="form-control has-feedback-left" id="nombre" placeholder="Nombre del Alumno" required="required">
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
@@ -702,6 +752,8 @@
     <script src="../build/js/custom.min.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
+    <!-- Parsley -->
+    <script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
    
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
