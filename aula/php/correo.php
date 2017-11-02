@@ -1,6 +1,7 @@
 <?php   
-include '../vendors/PHPMailerAutoload.php';
+include '../vendors/phpmailer/PHPMailerAutoload.php';
 $mail = new PHPMailer;
+$mail>-isSMTP();
 $mail->Debugoutput = 'html';
 $mail->Host = "smtp.gmail.com";
 $mail->Port = 465;
@@ -14,7 +15,7 @@ $mail->addAddress('hokumageos@gmail.com','Yo alterno')
 $mail->Subject = 'Prueba de correo UwU';
 $mail->Body = "Este es un mensaje de prueba <h1>En teoria es full html nativo</h1>";
 $mail->AltBody = "Hola OWO";
-if(1$mail->send){
+if(!$mail->send()){
     echo "Mailer Error:".$mail->ErrorInfo;
 }
 else{
