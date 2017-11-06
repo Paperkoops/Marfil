@@ -1,3 +1,17 @@
+<?php
+include("database.php");
+session_start();
+
+$mes = null;
+if (!empty($_GET['Mes'])) {
+	$mes = $_REQUEST['Mes'];
+}
+
+if (null == $mes ) {
+	header("Location: pagos.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +40,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -322,22 +336,47 @@
 
 
                       <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          
-                          <td><div style="text-align: center;"><button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="right" title="Cambiar"><i class="fa fa-check"> </i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          
-                          <td><div style="text-align: center;"><button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="Cambiar"><i class="fa fa-remove"></i></button>
-                          </td>
-                        </tr>
+
+                      <?php
+$sql="SELECT p.Id_Pago, a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, case p.Status when '1' then 'Pendiente' else 'Pagado' END AS Pagos FROM pago p, alumno a WHERE Mes=? AND p.Id_Alumno=a.NIE";
+$values=array($_GET['Mes']);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
+
+foreach ($datos as $fila) 
+{
+  if ($fila['Pagos']=="Pendiente") {
+    $menu.=
+    "
+    <tr>
+    <td>$fila[NIE]</td>
+    <td>$fila[Nombre_Alumno]</td>
+    <td>$fila[Apellido_Alumno]</td>
+    
+    <td><div style='text-align: center;'><a href='cambiarpago.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-remove'> </i></button></a>
+    </td>
+  </tr>";
+  } else {
+    $menu.=
+    "
+    <tr>
+    <td>$fila[NIE]</td>
+    <td>$fila[Nombre_Alumno]</td>
+    <td>$fila[Apellido_Alumno]</td>
+    
+    <td><div style='text-align: center;'><a href='cambiarpago2.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-check'> </i></button></a>
+    </td>
+  </tr>";
+  }
+  
+  
+}
+
+
+print($menu);
+?>
+                        
                         
 
                       </tbody>

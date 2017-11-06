@@ -1,58 +1,18 @@
 <?php
 require 'database.php';
-$inserted = false;
+
 if (!empty($_POST)) {
 	// keep track validation errors
 	$nameError = null;
 	$emailError = null;
 	$mobileError = null;
 	
-  // keep track post values
-  $nie = $_POST['nie'];
-  $name = $_POST['nombre'];
+	// keep track post values
+  $nombre = $_POST['nombre'];
   $apellido = $_POST['apellido'];
-  $fechanacimiento = $_POST['fechanacimiento'];
-	$genero = $_POST['genero'];
-  $nacionalidad = $_POST['nacionalidad'];
-  $estadocivil = $_POST['estadocivil'];
-  $codigopartida = $_POST['codigopartida'];
-  $mediotransporte = $_POST['mediotransporte'];
-  $email = $_POST['email'];
-  $municipio = $_POST['municipio'];
-  $direccion = $_POST['direccion'];
-  $distancia = $_POST['distancia'];
-  $numerofamiliares = $_POST['numerofamiliares'];
-  $religion = $_POST['religion'];
-  $telefono = $_POST['telefono'];
-  $celular = $_POST['celular'];
-  $miembrosdelafamilia = $_POST['miembrosdelafamilia'];
-  $trabaja = $_POST['trabaja'];
-  $tienehijos = $_POST['tienehijos'];
-  $nombrepadre = $_POST['nombrepadre'];
-  $apellidopadre = $_POST['apellidopadre'];
-  $telpadre = $_POST['telpadre'];
-  $trabpadre = $_POST['trabpadre'];
-  $profpadre = $_POST['profpadre'];
-  $nombremadre = $_POST['nombremadre'];
-  $apellidomadre = $_POST['apellidomadre'];
-  $telmadre = $_POST['telmadre'];
-  $trabmadre = $_POST['trabmadre'];
-  $profmadre = $_POST['profmadre'];
-  $nombreresp = $_POST['nombreresp'];
-  $apellidoresp = $_POST['apellidoresp'];
-  $telresp = $_POST['telresp'];
-  $trabresp = $_POST['trabresp'];
-  $profresp = $_POST['profresp'];
-  $enfermedades = $_POST['enfermedades'];
-  $medicamentos = $_POST['medicamentos'];
-  $observaciones = $_POST['observaciones'];
-  $fechaadmision = $_POST['fechaadmision'];
-  $grado = $_POST['grado'];
-  $foto = $_POST['foto'];
-
-
-  $valid = true;
-	/*
+	$email = $_POST['email'];
+	$celular = $_POST['celular'];
+	
 	// validate input
 	$valid = true;
 	if (empty($name)) {
@@ -73,96 +33,16 @@ if (!empty($_POST)) {
 		$mobileError = 'Please enter Mobile Number';
 		$valid = false;
 	}
-  */
-
-  $nombre=$genero;
-  $sql="SELECT * FROM genero WHERE Nombre_Genero=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $genero = $datos['Id_Genero'];
-
-  $nombre=$estadocivil;
-  $sql="SELECT * FROM estado_civil WHERE Nombre_Estado=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $estadocivil = $datos['Id_Estado'];
-
-  $nombre=$mediotransporte;
-  $sql="SELECT * FROM medio_transporte WHERE Nombre_Medio=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $mediotransporte = $datos['Id_Medio'];
-
-  $nombre=$municipio;
-  $sql="SELECT * FROM municipio WHERE Nombre_Municipio=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $municipio = $datos['Id_Municipio'];
-  
-  $nombre=$religion;
-  $sql="SELECT * FROM religion WHERE Nombre_Religion=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $religion = $datos['Id_Religion'];
-
-  $nombre=$grado;
-  $sql="SELECT * FROM grado WHERE Nombre_Grado=?";
-  $values=array($nombre);
-  $datos=Database::getRow($sql, $values);
-  $grado = $datos['Id_Grado'];
-
-  if ($tienehijos=="Si") {
-    $tienehijos=1;
-  } else {
-    $tienehijos=0;
-  }
-
-  if ($trabaja=="Si") {
-    $trabaja=1;
-  } else {
-    $trabaja=0;
-  }
-  
-  
+	
 	// insert data
 	if ($valid) {
-    /*
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "INSERT INTO `alumno` (`NIE`, `Nombre_Alumno`, `Apellido_Alumno`, `Fecha_Nacimiento`, `Id_Genero`, `Nacionalidad`, `Id_Estado`, `Partida_Nacimiento`, `Distancia`, `Id_Medio`, `Dirección`, `Id_Municipio`, `Telefono`, `Celular`, `Email`, `Id_Religion`, `Miembros_Familia`, `Trabaja`, `Tiene_Hijos`, `Convivencia`, `Nombre_Padre`, `Dui_Padre`, `Telefono_Padre`, `Trabajo_Padre`, `Profesion_Padre`, `Nombre_Madre`, `Dui_Madre`, `Telefono_Madre`, `Trabajo_Madre`, `Profesion_Madre`, `Nombre_Responsable`, `Dui_Responsable`, `Telefono_Responsable`, `Trabajo_Responsable`, `Profesion_Responsable`, `Enfermedades_Alergias`, `Medicamentos`, `Fecha_Admision`, `Id_Grado`, `observacion`, `Foto`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO customers (name, email, mobile) values(?, ?, ?)";
 		$q = $pdo->prepare($sql);
-		$q->execute(array($nie, $nombre, $apellido, $fechanacimiento, $genero, $nacionalidad, $estadocivil, $codigopartida, $distancia, $mediotransporte, $direccion, $municipio, $telefono, $celular, $email, $religion, $numerofamiliares, $trabaja, $tienehijos, $miembrosdelafamilia, $nombrepadre, $apellidopadre, $telpadre, $trabpadre, $profpadre, $nombremadre, $apellidomadre, $telmadre, $trabmadre, $profmadre, $nombreresp, $apellidoresp, $telresp, $trabresp, $profresp, $enfermedades, $medicamentos, $fechaadmision, $grado, $observaciones, $foto, 1));
+		$q->execute(array($name, $email, $mobile));
 		Database::disconnect();
-    header("Location: index.php");*/
-    
-    $sql = "INSERT INTO `alumno` (`NIE`, `Nombre_Alumno`, `Apellido_Alumno`, `Fecha_Nacimiento`, `Id_Genero`, `Nacionalidad`, `Id_Estado`, `Partida_Nacimiento`, `Distancia`, `Id_Medio`, `Dirección`, `Id_Municipio`, `Telefono`, `Celular`, `Email`, `Id_Religion`, `Miembros_Familia`, `Trabaja`, `Tiene_Hijos`, `Convivencia`, `Nombre_Padre`, `Dui_Padre`, `Telefono_Padre`, `Trabajo_Padre`, `Profesion_Padre`, `Nombre_Madre`, `Dui_Madre`, `Telefono_Madre`, `Trabajo_Madre`, `Profesion_Madre`, `Nombre_Responsable`, `Dui_Responsable`, `Telefono_Responsable`, `Trabajo_Responsable`, `Profesion_Responsable`, `Enfermedades_Alergias`, `Medicamentos`, `Fecha_Admision`, `Id_Grado`, `observacion`, `Foto`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $values=array($nie, $name, $apellido, $fechanacimiento, $genero, $nacionalidad, $estadocivil, $codigopartida, $distancia, $mediotransporte, $direccion, $municipio, $telefono, $celular, $email, $religion, $numerofamiliares, $trabaja, $tienehijos, $miembrosdelafamilia, $nombrepadre, $apellidopadre, $telpadre, $trabpadre, $profpadre, $nombremadre, $apellidomadre, $telmadre, $trabmadre, $profmadre, $nombreresp, $apellidoresp, $telresp, $trabresp, $profresp, $enfermedades, $medicamentos, $fechaadmision, $grado, $observaciones, $foto, 1);
-    
-
-    Database::executeRow($sql, $values);
-
-    $sql = "INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Enero',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Febrero',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Marzo',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Abril',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Mayo',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Junio',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Julio',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Agosto',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Septiembre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Octubre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Noviembre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Diciembre',1);
-    ";
-    $values=array($nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie);
-    
-
-    Database::executeRow($sql, $values);
-
-    
-
-    $inserted = true;
-
+		header("Location: index.php");
 	}
 }
 ?>
@@ -203,7 +83,7 @@ if (!empty($_POST)) {
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -485,17 +365,19 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask" method="post">
+                    <form class="form-horizontal form-label-left input_mask" novalidate>
                         
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label>Nombre del Alumno *</label>
-                        <input type="text" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del Alumno" required="required">
+                      <div class="col-md-6 col-sm-6 col-xs-12 item form-group has-feedback">
+                        <label>Nombre del Alumno*</label>
+                        <input type="text" class="form-control has-feedback-left" id="nombre" placeholder="Nombre del Alumno" required="required" name="nombre">
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
+                     
+
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Apellido del Alumno *</label>
-                        <input type="text" class="form-control has-feedback-left" name="apellido" placeholder="Apellido del Alumno" required="required">
+                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Apellido del Alumno">
                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
@@ -508,61 +390,38 @@ if (!empty($_POST)) {
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                              </span>
-                              <input required="required" type='text' class="form-control" name="fechanacimiento" />
+                              <input type='text' class="form-control" id="FechaNacimientoAlumno" readonly="readonly"/>
                                 
                             </div>
                         </div>
                     </div>
                           
+                    
                    
-                    <div class="form-group">
-                        <label class="col-md-6 col-sm-6 col-xs-12">Genero *</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <select class="form-control has-feedback-left" name="genero" required="required">
-                            <?php
-                              $sql="SELECT * FROM genero WHERE Status=?";
-                              $values=array(1);
-                              $datos=Database::getRows($sql, $values);
-                              $menu="";
-                                
-                              foreach ($datos as $fila) 
-                              {
-                                $menu.="
-                                            <option>$fila[Nombre_Genero]</option>
-                                        ";
-                              }
-                              print($menu);
-                            ?>
+                    <div class="col-md-6 col-sm-6 col-xs-12 item form-group">
+                        <label>Genero *</label>
+                        <div>
+                          <select class="form-control" id="genero" required="required">
+                            <option>Masculino</option>
+                            <option>Femenino</option>
                             
                           </select>
-                          <span class="fa fa-at form-control-feedback left" aria-hidden="true"></span>
+                          
                         </div>
                       </div>
                     
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                           <label>Nacionalidad del Alumno *</label>
-                          <input type="text" class="form-control has-feedback-left" name="nacionalidad" placeholder="Nacionalidad del Alumno" required="required">
+                          <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Nacionalidad del Alumno">
                           <span class="fa fa-flag form-control-feedback left" aria-hidden="true"></span>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-6 col-sm-6 col-xs-12">Estado Civil *</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                              <select class="form-control has-feedback-left" name="estadocivil" required="required">
-                              <?php
-                              $sql="SELECT * FROM estado_civil WHERE Status=?";
-                              $values=array(1);
-                              $datos=Database::getRows($sql, $values);
-                              $menu="";
-                                
-                              foreach ($datos as $fila) 
-                              {
-                                $menu.="
-                                            <option>$fila[Nombre_Estado]</option>
-                                        ";
-                              }
-                              print($menu);
-                            ?>
+                              <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                <option>Soltero</option>
+                                <option>Casado</option>
                                 
                               </select>
                               <span class="fa fa-smile-o form-control-feedback left" aria-hidden="true"></span>
@@ -572,28 +431,16 @@ if (!empty($_POST)) {
                           
                           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                               <label>Codigo de Partida de Nacimiento del Alumno*</label>
-                              <input type="text" class="form-control has-feedback-left" name="codigopartida" placeholder="Codigo de Partida de Nacimiento del Alumno" required="required">
+                              <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Codigo de Partida de Nacimiento del Alumno">
                               <span class="fa fa-file-text form-control-feedback left" aria-hidden="true"></span>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-6 col-sm-6 col-xs-12">Medio de Transporte*</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <select class="form-control has-feedback-left" name="mediotransporte" required="required">
-                                  <?php
-                                  $sql="SELECT * FROM medio_transporte WHERE Status=?";
-                                  $values=array(1);
-                                  $datos=Database::getRows($sql, $values);
-                                  $menu="";
-                                    
-                                  foreach ($datos as $fila) 
-                                  {
-                                    $menu.="
-                                                <option>$fila[Nombre_Medio]</option>
-                                            ";
-                                  }
-                                  print($menu);
-                                ?>
+                                  <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                    <option>Transporte Publico</option>
+                                    <option>Automovil</option>
                                     
                                   </select>
                                   <span class="fa fa-car form-control-feedback left" aria-hidden="true"></span>
@@ -602,28 +449,16 @@ if (!empty($_POST)) {
 
                               <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                               <label>Email del Alumno*</label>
-                              <input type="text" class="form-control has-feedback-left" name="email" placeholder="Email del Alumno" required="required">
+                              <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Email del Alumno">
                               <span class="fa fa-envelope-o form-control-feedback left" aria-hidden="true"></span>
                             </div>
 
                             <div class="form-group">
                                 <label class="col-md-6 col-sm-6 col-xs-12">Municipio*</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <select class="form-control has-feedback-left" name="municipio" required="required">
-                                  <?php
-                              $sql="SELECT * FROM municipio WHERE Status=?";
-                              $values=array(1);
-                              $datos=Database::getRows($sql, $values);
-                              $menu="";
-                                
-                              foreach ($datos as $fila) 
-                              {
-                                $menu.="
-                                            <option>$fila[Nombre_Municipio]</option>
-                                        ";
-                              }
-                              print($menu);
-                            ?>
+                                  <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                    <option>San Salvador</option>
+                                    <option>Soyapango</option>
                                     
                                   </select>
                                   <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
@@ -632,42 +467,30 @@ if (!empty($_POST)) {
 
                               <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                   <label>Dirección del Alumno*</label>
-                                  <input type="text" class="form-control has-feedback-left" name="direccion" placeholder="Direccion del Alumno" required="required">
+                                  <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Direccion del Alumno">
                                   <span class="fa fa-mail-forward form-control-feedback left" aria-hidden="true"></span>
                                 </div>
                             <div class="item form-group">
-                                <label class="col-md-6 col-sm-6 col-xs-12">Distancia desde el lugar de Residencia hasta la Institución (Km) <span class="required">*</span>
+                                <label class="col-md-6 col-sm-6 col-xs-12">Distancia desde el lugar de Residencia hasta la Institución (Km) 
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="number" name="distancia" name="number" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
+                                  <input type="number" id="DistanciaAlumno" name="distancia" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
                                   <span class="fa fa-location-arrow form-control-feedback left" aria-hidden="true"></span>
                                 </div>
                               </div>
                               
                               <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                   <label>Numero de Familiares del Alumno*</label>
-                                  <input type="number" name="numerofamiliares" name="number" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
+                                  <input type="number" id="numerofamiliares" name="number" required="required" data-validate-minmax="10,100" class="form-control has-feedback-left col-md-7 col-xs-12">
                                   <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
                                 </div>
                                 
                               <div class="form-group">
                                   <label class="col-md-6 col-sm-6 col-xs-12">Religión*</label>
                                   <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <select class="form-control has-feedback-left" name="religion" required="required">
-                                    <?php
-                                    $sql="SELECT * FROM religion WHERE Status=?";
-                                    $values=array(1);
-                                    $datos=Database::getRows($sql, $values);
-                                    $menu="";
-                                      
-                                    foreach ($datos as $fila) 
-                                    {
-                                      $menu.="
-                                                  <option>$fila[Nombre_Religion]</option>
-                                              ";
-                                    }
-                                    print($menu);
-                                  ?>
+                                    <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
+                                      <option>Catolico</option>
+                                      <option>Evangelico</option>
                                       
                                     </select>
                                     <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
@@ -675,13 +498,13 @@ if (!empty($_POST)) {
                                 </div>
                               <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                   <label>Teléfono*</label>
-                                  <input type="text" class="form-control has-feedback-left" name="telefono" placeholder="Teléfono" required="required">
+                                  <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Teléfono">
                                   <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
                                 </div>
 
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                     <label>Celular*</label>
-                                    <input type="text" class="form-control has-feedback-left" name="celular" placeholder="Celular" required="required">
+                                    <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Celular">
                                     <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
                                   </div>
 
@@ -690,7 +513,7 @@ if (!empty($_POST)) {
                                 <label class="col-md-12 col-sm-12 col-xs-12">Miembros de la Familia<span class="required">*</span>
                                 </label>
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <input type="text" class="form-control has-feedback-left" name="miembrosdelafamilia" placeholder="Miembros de la Familia" required="required">
+                                    <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Miembros de la Familia">
                                     <span class="fa fa-users form-control-feedback left" aria-hidden="true"></span>
                                 </div>
                               </div>
@@ -698,7 +521,7 @@ if (!empty($_POST)) {
                               <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                  <label>Trabaja*</label> 
                                   <div>
-                                    <select class="form-control" name="trabaja" required="required">
+                                    <select class="form-control" id="EstadoCivilAlumno">
                                       <option>Si</option>
                                       <option>No</option>
                                       
@@ -709,7 +532,7 @@ if (!empty($_POST)) {
                                 <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                     <label>Tienen Hijos*</label> 
                                     <div>
-                                      <select class="form-control" name="tienehijos" required="required">
+                                      <select class="form-control" id="EstadoCivilAlumno">
                                         <option>Si</option>
                                         <option>No</option>
                                         
@@ -724,31 +547,31 @@ if (!empty($_POST)) {
 
                                   <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                       <label>Nombre Completo del Padre *</label>
-                                      <input type="text" class="form-control has-feedback-left" name="nombrepadre" placeholder="Nombre del Padre" required="required">
+                                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Padre">
                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
               
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                       <label>DUI del Padre *</label>
-                                      <input type="text" class="form-control has-feedback-left" name="apellidopadre" placeholder="Apellido del Padre" required="required">
+                                      <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Apellido del Padre">
                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                     </div>
 
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                         <label>Telefono del Padre *</label>
-                                        <input type="text" class="form-control has-feedback-left" name="telpadre" placeholder="Telefono del Padre" required="required">
+                                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono del Padre">
                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                       </div>
                 
                                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                         <label>Trabajo del Padre *</label>
-                                        <input type="text" class="form-control has-feedback-left" name="trabpadre" placeholder="Trabajo del Padre " required="required">
+                                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo del Padre ">
                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                       </div>
 
                                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                           <label>Profesion del Padre *</label>
-                                          <input type="text" class="form-control has-feedback-left" name="profpadre" placeholder="Profesion del Padre" required="required">
+                                          <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion del Padre">
                                           <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                         </div>
 
@@ -758,31 +581,31 @@ if (!empty($_POST)) {
       
                                         <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                             <label>Nombre Completo de la Madre *</label>
-                                            <input type="text" class="form-control has-feedback-left" name="nombremadre" placeholder="Nombre de la Madre" required="required">
+                                            <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre de la Madre">
                                             <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                           </div>
                     
                                           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                             <label>DUI de la Madre *</label>
-                                            <input type="text" class="form-control has-feedback-left" name="apellidomadre" placeholder="DUI de la Madre" required="required">
+                                            <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="DUI de la Madre">
                                             <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                           </div>
       
                                           <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                               <label>Telefono de la Madre *</label>
-                                              <input type="text" class="form-control has-feedback-left" name="telmadre" placeholder="Telefono de la Madre" required="required">
+                                              <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono de la Madre">
                                               <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                       
                                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                               <label>Trabajo de la Madre *</label>
-                                              <input type="text" class="form-control has-feedback-left" name="trabmadre" placeholder="Trabajo de la Madre" required="required">
+                                              <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo de la Madre">
                                               <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                             </div>
       
                                             <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                 <label>Profesion de la Madre *</label>
-                                                <input type="text" class="form-control has-feedback-left" name="profmadre" placeholder="Profesion de la Madre" required="required">
+                                                <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion de la Madre">
                                                 <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                               </div>
                   
@@ -792,31 +615,31 @@ if (!empty($_POST)) {
             
                                               <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                                   <label>Nombre Completo del Responsable *</label>
-                                                  <input type="text" class="form-control has-feedback-left" name="nombreresp" placeholder="Nombre del Responsable" required="required">
+                                                  <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre del Responsable">
                                                   <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                           
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                   <label>DUI del Responsable *</label>
-                                                  <input type="text" class="form-control has-feedback-left" name="apellidoresp" placeholder="DUI del Responsable" required="required">
+                                                  <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="DUI del Responsable">
                                                   <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
             
                                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                     <label>Telefono del Responsable *</label>
-                                                    <input type="text" class="form-control has-feedback-left" name="telresp" placeholder="Telefono del Responsable" required="required">
+                                                    <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Telefono del Responsable">
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                   </div>
                             
                                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                     <label>Trabajo del Responsable *</label>
-                                                    <input type="text" class="form-control has-feedback-left" name="trabresp" placeholder="Trabajo del Responsable" required="required">
+                                                    <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Trabajo del Responsable">
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                   </div>
             
                                                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                       <label>Profesion del Responsable *</label>
-                                                      <input type="text" class="form-control has-feedback-left" name="profresp" placeholder="Profesion del Responsable" required="required">
+                                                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Profesion del Responsable">
                                                       <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                     </div>
 
@@ -827,51 +650,33 @@ if (!empty($_POST)) {
 
                                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                         <label>Enfermedades o Alergias *</label>
-                                                        <input type="text" class="form-control has-feedback-left" name="enfermedades" placeholder="Enfermedades o Alergias" required="required">
+                                                        <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Enfermedades o Alergias">
                                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                       </div>
                                 
                                                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                         <label>Medicamentos *</label>
-                                                        <input type="text" class="form-control has-feedback-left" name="medicamentos" placeholder="Medicamentos" required="required">
+                                                        <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Medicamentos">
                                                         <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                       </div>
                 
                                                       <div class="col-md-6 col-sm-6 col-xs-6 form-group has-feedback">
-                                                          <label>NIE*</label>
-                                                          <input type="text" class="form-control has-feedback-left" name="nie" placeholder="NIE" required="required">
+                                                          <label>Observaciones *</label>
+                                                          <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Observaciones">
                                                           <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
 
                                                         <div class="form-group col-md-6 col-sm-6 col-xs-12">
                                                             <label>Grado*</label> 
                                                             <div>
-                                                              <select class="form-control" name="grado" required="required">
-                                                              <?php
-                                                              $sql="SELECT * FROM grado WHERE Status=?";
-                                                              $values=array(1);
-                                                              $datos=Database::getRows($sql, $values);
-                                                              $menu="";
-                                                                
-                                                              foreach ($datos as $fila) 
-                                                              {
-                                                                $menu.="
-                                                                            <option>$fila[Nombre_Grado]</option>
-                                                                        ";
-                                                              }
-                                                              print($menu);
-                                                            ?>
+                                                              <select class="form-control" id="EstadoCivilAlumno">
+                                                                <option>1</option>
+                                                                <option>2</option>
                                                                 
                                                               </select>
                                                               
                                                             </div>
                                                           </div>
-
-                                                          <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                                          <label>Observaciones *</label>
-                                                          <input type="text" class="form-control has-feedback-left" name="observaciones" placeholder="Observaciones" required="required">
-                                                          <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                                                        </div>
 
                                                         <div class='col-md-6 col-sm-6 col-xs-12'>
                                                             
@@ -881,7 +686,7 @@ if (!empty($_POST)) {
                                                                   <span class="input-group-addon">
                                                                     <span class="glyphicon glyphicon-calendar"></span>
                                                                  </span>
-                                                                  <input type='text' class="form-control" name="fechaadmision" required="required"/>
+                                                                  <input type='text' class="form-control" id="FechaNacimientoAlumno" readonly="readonly"/>
                                                                     
                                                                 </div>
                                                             </div>
@@ -892,7 +697,7 @@ if (!empty($_POST)) {
                                                             <div class="form-group">
                                                               <label>Foto del Alumno *</label>
                                                               <div class="input-group">
-                                                                  <input type="text" class="form-control" required="required" name="foto">
+                                                                  <input type="text" class="form-control">
                                                                   <span class="input-group-btn">
                                                                                     <button type="button" class="btn btn-primary">Seleccionar</button>
                                                                                 </span>
@@ -936,7 +741,6 @@ if (!empty($_POST)) {
       </div>
     </div>
 
-    
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -951,36 +755,8 @@ if (!empty($_POST)) {
     <script src="../build/js/custom.min.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
-
-    <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-
-<?php
-if ($inserted) {
-  print("
-  <script>
-  swal({
-    title: 'Matricula',
-    text: 'El alumno fue Matriculado exitosamente',
-    type: 'success',
-    
-    confirmButtonColor: '#3085d6',
-    
-    confirmButtonText: 'Ok'
-  }).then(function () {
-    window.location='alumnos.php'
-  });
-  
-  
-   </script>");
-} else {
-  
-}
-
-?>
-
-
+    <!-- validator -->
+    <script src="../vendors/validator/validator.js"></script>
    
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
@@ -989,12 +765,12 @@ if ($inserted) {
         format: 'YYYY-MM-DD',
         ignoreReadonly: true,
         allowInputToggle: true
-    }).attr('readonly','readonly');
+    });
     $('#myDatepicker2').datetimepicker({
         format: 'YYYY-MM-DD',
         ignoreReadonly: true,
         allowInputToggle: true
-    }).attr('readonly','readonly');
+    });
     </script>
   </body>
 </html>

@@ -1,3 +1,84 @@
+<?php
+require 'database.php';
+
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: grados.php");
+}
+
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	$orientadorError = null;
+	
+	
+	// keep track post values
+	$name = $_POST['patata'];
+	$orientador = $_POST['orientador'];
+  
+  $data = $orientador;    
+  $whatIWant = substr($data, strpos($data, ",") + 1);    
+ 
+
+  $arr = explode(",", $orientador, 2);
+  $first = $arr[0];
+  
+  $nombre=$whatIWant;
+  $apell = $first;
+  $sql="SELECT * FROM docente WHERE Nombre_Docente=? AND Apellido_Docente=?";
+  $values=array($nombre, $apell);
+  $datos=Database::getRow($sql, $values);
+  $orientador = $datos['Id_Docente'];
+  
+  $valid= true;
+  /*
+	// validate input
+	$valid = true;
+	if (empty($name)) {
+		$nameError = 'Please enter Name';
+		$valid = false;
+	}
+	
+	if (empty($email)) {
+		$emailError = 'Please enter Email Address';
+		$valid = false;
+	} 
+	else if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+		$emailError = 'Please enter a valid Email Address';
+		$valid = false;
+	}
+	
+	if (empty($mobile)) {
+		$mobileError = 'Please enter Mobile Number';
+		$valid = false;
+	}
+	*/
+	// update data
+	if ($valid) {
+		
+$sql="UPDATE grado SET Nombre_Grado=?, Id_Docente=? WHERE Id_Grado=?";
+$values=array($name, $orientador, $id);
+
+ Database::executeRow($sql, $values);
+    header("location: grados.php");
+	}
+} 
+else {
+	$sql="SELECT g.Id_Grado, g.Nombre_Grado, g.Id_Docente, d.Nombre_Docente, d.Apellido_Docente  FROM grado g, docente d WHERE g.Id_Grado=? AND g.Id_Docente=d.Id_Docente";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+  $orientador = $datos['Id_Docente'];
+  $doce = $datos['Apellido_Docente'];
+  $doce.= ",";
+  $doce.= $datos['Nombre_Docente'];
+  $name = $datos['Nombre_Grado'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -33,7 +114,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -315,22 +396,50 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       
                     
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                           <label>Nombre del Grado*</label>
-                          <input type="text" class="form-control has-feedback-left" id="NacAlumno" placeholder="Nombre del Grado">
+                          <input type="text" class="form-control has-feedback-left" name="patata" placeholder="Nombre del Grado" value="<?php echo !empty($name)?$name:''; ?>" >
                           <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-6 col-sm-6 col-xs-12">Orientador/a*</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                              <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
-                                <option>Mario Palacios</option>
-                                <option>Casado</option>
+                              <select class="form-control has-feedback-left" name="orientador">
+                              <?php
+                              $sql="SELECT * FROM docente WHERE Status=?";
+                              $values=array(1);
+                              $datos=Database::getRows($sql, $values);
+
+                              
+
+                              $menu="";
+                                
+                              foreach ($datos as $fila) 
+                              {
+                                
+                                $maestro = $fila['Apellido_Docente'];
+                                $maestro.= ",";
+                                $maestro.= $fila['Nombre_Docente'];
+                                if ($maestro == $doce) {
+                                  $menu.="
+                                  <option selected>$fila[Apellido_Docente],$fila[Nombre_Docente]</option>
+                              ";
+                                } else {
+                                  $menu.="
+                                  <option>$fila[Apellido_Docente],$fila[Nombre_Docente]</option>
+                              ";
+                                }
+                                
+                                
+                                
+                              }
+                              print($menu);
+                            ?>
                                 
                               </select>
                               <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>

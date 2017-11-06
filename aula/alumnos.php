@@ -31,7 +31,7 @@ session_start();
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -355,7 +355,7 @@ foreach ($datos as $fila)
               <div style='text-align: center;'>
               <a href='#' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
               <a href='#' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-              <a href='#' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+              <a href='eliminar_alumno.php?id=$fila[NIE]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
               
               <a href='#' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='right' title='Re-Matricular'><i class='fa fa-history'></i></a>
               </div>
@@ -404,7 +404,7 @@ print($menu);
                           <th>NIE</th>
                           <th>Nombres</th>
                           <th>Apellidos</th>
-                          <th>Edad</th>
+                          <th>Fecha de Nacimiento</th>
                           <th>Genero</th>
                           <th>Grado</th>
                         </tr>
@@ -412,42 +412,35 @@ print($menu);
 
 
                       <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>2011/04/25</td>
-                          <td>$320,800</td>
+                      <?php
+$sql="SELECT * FROM alumno WHERE Status=?";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
 
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>63</td>
-                          <td>2011/07/25</td>
-                          <td>$170,750</td>
+foreach ($datos as $fila) 
+{
+  
 
-                        </tr>
-                        <tr>
-                          <td>Ashton Cox</td>
-                          <td>Junior Technical Author</td>
-                          <td>San Francisco</td>
-                          <td>66</td>
-                          <td>2009/01/12</td>
-                          <td>$86,000</td>
+  $menu.="<tr>
+              <td>$fila[NIE]</td>
+              <td>$fila[Nombre_Alumno]</td>
+              <td>$fila[Apellido_Alumno]</td>
+              <td>$fila[Fecha_Nacimiento]</td>
+              <td>$fila[Id_Genero]</td>
+              <td>$fila[Id_Grado]</td>
+              
+              
 
-                        </tr>
-                        <tr>
-                          <td>Cedric Kelly</td>
-                          <td>Senior Javascript Developer</td>
-                          <td>Edinburgh</td>
-                          <td>22</td>
-                          <td>2012/03/29</td>
-                          <td>$433,060</td>
+          </tr>";
+         
 
-                        </tr>
+}
+
+
+print($menu);
+?>
 
                       </tbody>
                     </table>

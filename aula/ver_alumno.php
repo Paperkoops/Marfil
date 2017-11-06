@@ -28,7 +28,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -335,16 +335,17 @@
                             <i class="fa fa-mobile user-profile-icon"></i> #Celular#
                           </li>
 
-                        <li class="m-top-xs">
+                        <!--<li class="m-top-xs">
                           <i class="fa fa-external-link user-profile-icon"></i>
                           <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
-                        </li>
+                        </li>-->
                       </ul>
 
                       <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Editar Perfil</a>
                       <br />
 
                       <!-- start skills -->
+                      <!--
                       <h4>Skills</h4>
                       <ul class="list-unstyled user_data">
                         <li>
@@ -371,7 +372,7 @@
                             <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
                           </div>
                         </li>
-                      </ul>
+                      </ul>-->
                       <!-- end of skills -->
 
                     </div>
@@ -403,8 +404,7 @@
                         </ul>
                         <div id="myTabContent" class="tab-content">
                           <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                              <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                                  photo booth letterpress, commodo enim craft beer mlkshk </p>
+                              <p>Informacion </p>
                             
 
                           </div>

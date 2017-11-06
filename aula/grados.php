@@ -1,3 +1,7 @@
+<?php
+include("database.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pagos</title>
+    <title>Contact Form | Gentelella Alela! by Colorlib</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +30,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -264,7 +268,8 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Meses de Pago</h3>
+                <h3>Grados</h3>
+                <a href="agregar_grado.php"><button type="button" class="btn btn-round btn-success">Añadir un nuevo Grado <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
 
@@ -283,68 +288,52 @@
 
                       <div class="clearfix"></div>
 
-                      <!-- price element -->
-                      <div class="col-md-3 col-sm-6 col-xs-12">
-                          <div class="pricing ui-ribbon-container">
-                            <div class="ui-ribbon-wrapper">
-                              <div class="ui-ribbon">
-                                <!--30% Off-->
-                                Completo
-                              </div>
-                            </div>
-                            <div class="title">
-                              
-                              <h1>Enero</h1>
-                              <a href="admin_pagos.html"><button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Ver"><i class="fa fa-folder"> </i> Administrar </button></a>
-                            </div>
-                            <div class="x_content">
-                              
-                            </div>
-                          </div>
-                        </div>
-                        <!-- price element -->
+                      <?php
+$sql="SELECT g.Id_Grado, g.Nombre_Grado, g.Id_Docente, d.Nombre_Docente, d.Apellido_Docente  FROM grado g, docente d WHERE g.Status=? AND g.Id_Docente=d.Id_Docente";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
 
-                        <!-- price element -->
-                      <div class="col-md-3 col-sm-6 col-xs-12">
-                          <div class="pricing ui-ribbon-container">
-                            <div class="ui-ribbon-wrapper">
-                              <div class="ui-ribbon">
-                                <!--30% Off-->
-                                Incompleto
-                              </div>
-                            </div>
-                            <div style="background-color:darkkhaki" class="title">
-                              
-                              <h1>Febrero</h1>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Ver"><i class="fa fa-folder"> </i> Administrar </button>
-                            </div>
-                            <div class="x_content">
-                              
-                            </div>
-                          </div>
-                        </div>
-                        <!-- price element -->
-                        
-                        <!-- price element -->
-                      <div class="col-md-3 col-sm-6 col-xs-12">
-                          <div class="pricing ui-ribbon-container">
-                            <div class="ui-ribbon-wrapper">
-                              <div class="ui-ribbon">
-                                <!--30% Off-->
-                                Vacio
-                              </div>
-                            </div>
-                            <div style="background-color:tomato;" class="title">
-                              
-                              <h1>Marzo</h1>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Ver"><i class="fa fa-folder"> </i> Administrar </button>
-                            </div>
-                            <div class="x_content">
-                              
-                            </div>
-                          </div>
-                        </div>
-                        <!-- price element -->
+foreach ($datos as $fila) 
+{
+  
+
+  $menu.="<div class='col-md-4 col-sm-4 col-xs-12 profile_details'>
+  <div class='well profile_view'>
+    <div class='col-sm-12'>
+      <!--<h4 class='brief'><i>Digital Strategist</i></h4>-->
+      <div class='left col-xs-7'>
+        <h2>$fila[Nombre_Grado]</h2>
+        <p><strong>Orientador/a: </strong></br>$fila[Nombre_Docente] $fila[Apellido_Docente] </p>
+      </br>
+        <ul class='list-unstyled'>
+         <!-- <li><i class='fa fa-users'></i> Numero de Alumnos: 39 </li>-->
+          
+        </ul>
+      </div>
+      <div class='right col-xs-5 text-center'>
+        <img src='images/img.jpg' alt='' class='img-circle img-responsive'>
+      </div>
+    </div>
+    <div class='col-xs-12 bottom text-center'>
+      
+      <div class='col-xs-12 col-sm-6 emphasis'>
+          <!--<a href='#' class='btn btn-primary btn-xs'><i class='fa fa-folder'></i> View </a>-->
+          <a href='editar_grado.php?id=$fila[Id_Grado]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+          <a href='eliminar_grado.php?id=$fila[Id_Grado]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+      </div>
+    </div>
+  </div>
+</div>";
+         
+
+}
+
+
+print($menu);
+?>
+
 
                       
                     </div>
