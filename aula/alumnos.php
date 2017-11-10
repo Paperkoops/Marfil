@@ -353,8 +353,8 @@ foreach ($datos as $fila)
               <td>$fila[Id_Grado]</td>
               <td>
               <div style='text-align: center;'>
-              <a href='#' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
-              <a href='#' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+              <a href='ver_alumno.php?Nie=$fila[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
+              <a href='editar_alumno.php?id=$fila[NIE]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
               <a href='eliminar_alumno.php?id=$fila[NIE]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
               
               <a href='#' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='right' title='Re-Matricular'><i class='fa fa-history'></i></a>

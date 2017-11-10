@@ -1,3 +1,17 @@
+<?php
+include("database.php");
+if (isset($_GET['Nie'])) {
+  $id=$_GET['Nie'];
+  $sql="SELECT a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, a.Fecha_Nacimiento, a.Id_Genero, a.Nacionalidad, a.Id_Estado, a.Partida_Nacimiento, a.Distancia, a.Id_Medio, a.Dirección, a.Id_Municipio, a.Telefono, a.Celular, a.Email, a.Id_Religion, a.Miembros_Familia, a.Trabaja, a.Tiene_Hijos, a.Convivencia, a.Nombre_Padre, a.Dui_Padre, a.Telefono_Padre, a.Trabajo_Padre, a.Profesion_Padre, a.Nombre_Madre, a.Dui_Madre, a.Telefono_Madre, a.Trabajo_Madre, a.Profesion_Madre, a.Nombre_Responsable, a.Dui_Responsable, a.Telefono_Responsable, a.Trabajo_Responsable, a.Profesion_Responsable, a.Enfermedades_Alergias, a.Medicamentos, a.Fecha_Admision, a.Id_Grado, a.observacion, a.Foto, a.Status, g.Nombre_Grado, ec.Nombre_Estado, gene.Nombre_Genero, mt.Nombre_Medio, mt.Nombre_Medio, m.Nombre_Municipio, r.Nombre_Religion, case a.Trabaja when 1 then 'Si' else 'No' end as Trabaj, case a.Tiene_Hijos when 1 then 'Si' else 'No' end as Hijos FROM alumno a, grado g, estado_civil ec, genero gene, medio_transporte mt, municipio m, religion r WHERE a.Id_Genero=gene.Id_Genero AND a.Id_Estado=ec.Id_Estado AND a.Id_Medio=mt.Id_Medio AND a.Id_Municipio=m.Id_Municipio AND a.Id_Religion=r.Id_Religion AND a.Id_Grado=g.Id_Grado AND a.NIE=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+}
+else
+{
+  header("location: alumnos.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,7 +42,8 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span>
+            </a>
             </div>
 
             <div class="clearfix"></div>
@@ -313,26 +328,28 @@
                           <img class="img-responsive avatar-view" src="images/picture.jpg" alt="Avatar" title="Imagen de Perfil">
                         </div>
                       </div>
-                      <h3>#Nombre Alumno#</h3>
+                      <h3><?php print($datos['Nombre_Alumno']); print('</br>'); print($datos['Apellido_Alumno']); ?></h3>
 
                       <ul class="list-unstyled user_data">
-                          <li><i class="fa fa-institution user-profile-icon"></i> #Grado#
+                      <li><i class="fa fa-credit-card user-profile-icon"></i> <?php print($datos['NIE']); ?>
+                          </li>
+                      <li><i class="fa fa-institution user-profile-icon"></i> <?php print($datos['Nombre_Grado']); ?>
                           </li>
 
                           <li>
-                              <i class="fa fa-user user-profile-icon"></i> #Genero#
+                              <i class="fa fa-user user-profile-icon"></i> <?php print($datos['Nombre_Genero']); ?>
                             </li>
 
-                        <li><i class="fa fa-map-marker user-profile-icon"></i> #Direccion#
+                        <li><i class="fa fa-map-marker user-profile-icon"></i> <?php print($datos['Dirección']); ?>
                         </li>
 
                         <li>
-                          <i class="fa fa-phone user-profile-icon"></i> #Telefono#
+                          <i class="fa fa-phone user-profile-icon"></i> <?php print($datos['Telefono']); ?>
                         </li>
                         
 
                         <li>
-                            <i class="fa fa-mobile user-profile-icon"></i> #Celular#
+                            <i class="fa fa-mobile user-profile-icon"></i> <?php print($datos['Celular']); ?>
                           </li>
 
                         <!--<li class="m-top-xs">
@@ -404,8 +421,61 @@
                         </ul>
                         <div id="myTabContent" class="tab-content">
                           <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                              <p>Informacion </p>
-                            
+                            <h2>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</br></br><strong>Informacion del Alumno</strong></br></br>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</h2>
+                              <p>
+                                <strong>Fecha de Nacimiento:</strong> <?php print($datos['Fecha_Nacimiento']); ?> </br>
+                                <strong>Nacionalidad:</strong> <?php print($datos['Nacionalidad']); ?>  </br>
+                                <strong>Estado Civil:</strong> <?php print($datos['Nombre_Estado']); ?>  </br>
+                                <strong>Numero de Partida de Nacimiento:</strong> <?php print($datos['Partida_Nacimiento']); ?>  </br>
+                                <strong>Distancia desde el lugar de residencia hasta la institucion:</strong> <?php print($datos['Distancia']); ?> Km  </br>
+                                <strong>Municipio:</strong> <?php print($datos['Nombre_Municipio']); ?>  </br>
+                                <strong>Email:</strong> <?php print($datos['Email']); ?>  </br>
+                                <strong>Religion:</strong> <?php print($datos['Nombre_Religion']); ?>  </br>
+                                <strong>Numero de Familiares:</strong> <?php print($datos['Miembros_Familia']); ?>  </br>
+                                <strong>Miembros de la Familia:</strong>  <?php print($datos['Convivencia']); ?>  </br>
+                                <strong>Trabaja:</strong> <?php print($datos['Trabaj']); ?>  </br>
+                                <strong>Tiene Hijos:</strong> <?php print($datos['Hijos']); ?>  </br>
+
+                              </p>
+                              </br>
+                              <h2>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</br></br><strong>Informacion del Padre</strong></br></br>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</h2>
+                              <p>
+                                <strong>Nombre del Padre:</strong> <?php print($datos['Nombre_Padre']); ?> </br>
+                                <strong>DUI Padre:</strong> <?php print($datos['Dui_Padre']); ?>  </br>
+                                <strong>Telefono Padre:</strong> <?php print($datos['Telefono_Padre']); ?>  </br>
+                                <strong>Trabajo Padre:</strong> <?php print($datos['Trabajo_Padre']); ?>  </br>
+                                <strong>Profesion Padre:</strong> <?php print($datos['Profesion_Padre']); ?>   </br>
+
+                              </p>
+                              </br>
+                              <h2>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</br></br><strong>Informacion de la Madre</strong></br></br>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</h2>
+                              <p>
+                                <strong>Nombre de la Madre:</strong> <?php print($datos['Nombre_Madre']); ?> </br>
+                                <strong>DUI Madre:</strong> <?php print($datos['Dui_Madre']); ?>  </br>
+                                <strong>Telefono Madre:</strong> <?php print($datos['Telefono_Madre']); ?>  </br>
+                                <strong>Trabajo Madre:</strong> <?php print($datos['Trabajo_Madre']); ?>  </br>
+                                <strong>Profesion Madre:</strong> <?php print($datos['Profesion_Madre']); ?>   </br>
+
+                              </p>
+                              </br>
+                              <h2>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</br></br><strong>Informacion del Responsable</strong></br></br>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</h2>
+                              <p>
+                                <strong>Nombre del Responsable:</strong> <?php print($datos['Nombre_Responsable']); ?> </br>
+                                <strong>DUI Responsable:</strong> <?php print($datos['Dui_Responsable']); ?>  </br>
+                                <strong>Telefono Responsable:</strong> <?php print($datos['Telefono_Responsable']); ?>  </br>
+                                <strong>Trabajo Responsable:</strong> <?php print($datos['Trabajo_Responsable']); ?>  </br>
+                                <strong>Profesion Responsable:</strong> <?php print($datos['Profesion_Responsable']); ?>   </br>
+
+                              </p>
+                              </br>
+                              <h2>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</br></br><strong>Informacion Adicional</strong></br></br>▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀</h2>
+                              <p>
+                                <strong>Enfermedades o Alergias:</strong> <?php print($datos['Enfermedades_Alergias']); ?> </br>
+                                <strong>Medicamentos:</strong> <?php print($datos['Medicamentos']); ?>  </br>
+                                <strong>Observaciones:</strong> <?php print($datos['observacion']); ?>  </br>
+                                
+
+                              </p>                            
 
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
