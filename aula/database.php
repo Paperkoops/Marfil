@@ -2,7 +2,6 @@
 class Database
 {
     private static $connection;
-
     private static function connect()
     {
         $server = 'localhost';
@@ -21,12 +20,10 @@ class Database
             die($exception->getMessage());
         }
     }
-
     private static function desconnect()
     {
         self::$connection = null;
     }
-
     public static function executeRow($query, $values)
     {
         self::connect();
@@ -35,7 +32,6 @@ class Database
         self::desconnect();
         return $exito;
     }
-
     public static function getRow($query, $values)
     {
         self::connect();
@@ -44,7 +40,6 @@ class Database
         self::desconnect();
         return $statement->fetch(PDO::FETCH_BOTH);
     }
-
     public static function getRows($query, $values)
     {
         self::connect();

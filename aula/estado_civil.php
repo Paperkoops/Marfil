@@ -333,9 +333,9 @@
                     <br />
                     <form class="form-horizontal form-label-left input_mask">
                         
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" action="agregar_estado_civil.php" method="post">
                         <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" id="NombreEstadoCivil" placeholder="Nombre del Estado civíl">
+                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Estado civíl">
                         <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
@@ -395,36 +395,28 @@
         
         
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Soltero</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Casado</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
+                            <?php
+                            $sql="SELECT Id_Estado, Nombre_Estado FROM estado_civil WHERE Status=?";
+                            $values=array(1);
+                            $datos=Database::getRows($sql, $values);
+                            $menu="";
+                              
+                            foreach ($datos as $fila) 
+                            {
+                              $menu.="<tr>
+                                          <td>$fila[Id_Estado]</td>
+                                          <td>$fila[Nombre_Estado]</td>
+                                          <td>
+                                          <div style='text-align: center;'>
+                                          <a href='estado_civil_editar.php?id=$fila[Id_Estado]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                          <a href='eliminar_estado_civil.php?id=$fila[Id_Estado]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                          </div>
+                                        </td>
+                                      </tr>";
+                                     
+                            }
+                            print($menu);
+                            ?>
                             </tbody>
                           </table>
                           </div>

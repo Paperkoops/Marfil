@@ -1,3 +1,26 @@
+<?php
+require 'database.php';
+
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	
+  // keep track post values
+  $desde = $_POST['fdesde'];
+  $desde = $_POST['fhasta'];
+
+  $valid = true;
+  
+	// insert data
+	if ($valid) {
+    
+    $sql = "INSERT INTO `periodo` (`desde`, `hasta`, `Status`) VALUES (?, ?, ?)";
+    $values=array($desde, $hasta, 1);
+    Database::executeRow($sql, $values);
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

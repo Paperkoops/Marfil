@@ -13,13 +13,12 @@ if (!empty($_POST)) {
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
+    $sql = "INSERT INTO `medio_transporte` (`Nombre_Medio`, `Status`) VALUES (?, ?)";
     $values=array($name, 1);
     Database::executeRow($sql, $values);
 	}
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,7 +28,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Estados civíles</title>
+    <title>Agregar Medios de Transporte</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -45,6 +44,7 @@ if (!empty($_POST)) {
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
     
   </head>
 
@@ -332,7 +332,7 @@ if (!empty($_POST)) {
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Estado civíl <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Medio de Transporte <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -352,21 +352,18 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    
-                    <!-- fooooorm -->
-                    <form class="form-horizontal form-label-left input_mask" action="estado_civil.php" method="post">
-                        
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Estado civíl">
-                        <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
+                    <form class="form-horizontal form-label-left input_mask"method="post">
+                      
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Nombre del Medio *</label>
+                      <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del medio">
+                        <span class="fa fa-bus form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
                           <button type="submit" class="btn btn-success">Agregar</button>
-                          
                         </div>
                       </div>
 
@@ -375,86 +372,116 @@ if (!empty($_POST)) {
                 </div>
 
 
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                      <div class="x_panel">
-                        <div class="x_title">
-                          <h2>Estado Civíl </h2>
-                          <ul class="nav navbar-right panel_toolbox">
-                            <li>
-                              <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                              </a>
-                            </li>
-                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa fa-wrench"></i>
-                              </a>
-                              <ul class="dropdown-menu" role="menu">
-                                <li>
-                                  <a href="#">Settings 1</a>
-                                </li>
-                                <li>
-                                  <a href="#">Settings 2</a>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              <a class="close-link">
-                                <i class="fa fa-close"></i>
-                              </a>
-                            </li>
-                          </ul>
-                          <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-        
-                          <table id="datatable" class="table table-striped table-bordered">
-                            <thead>
-                              <tr>
-                                <th>Id</th>
-                                <th>Estado civíl</th>
-                              </tr>
-                            </thead>
-        
-        
-                            <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Soltero</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Casado</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          </div>
-                          </div>
-                        </div>
-                      </div>
+              <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Medios de Transporte </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                          <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                          <a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a class="close-link">
+                        <i class="fa fa-close"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Medio</th>
+                      </tr>
+                    </thead>
+
+
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Automóvil</td>
+                        <td>
+                          <div style="text-align: center;">
+                           <a href="transporte_editar.html">
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
+                              <i class="fa fa-pencil"> </i>
+                            </button>
+                           </a>
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
+                              <i class="fa fa-trash"> </i>
+                            </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>Transporte público</td>
+                        <td>
+                          <div style="text-align: center;">
+                           <a href="transporte_editar.html">
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
+                              <i class="fa fa-pencil"> </i>
+                            </button>
+                           </a>
+                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
+                              <i class="fa fa-trash"> </i>
+                            </button>
+                        </td>
+                      </tr>
+                      <tr>
+                          <td>3</td>
+                          <td>Caminando</td>
+                          <td>
+                            <div style="text-align: center;">
+                             <a href="transporte_editar.html">  
+                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
+                                <i class="fa fa-pencil"> </i>
+                              </button>
+                             </a>
+                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
+                                <i class="fa fa-trash"> </i>
+                              </button>
+                          </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Bicicleta</td>
+                            <td>
+                              <div style="text-align: center;">
+                               <a href="transporte_editar.html">
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
+                                  <i class="fa fa-pencil"> </i>
+                                </button>
+                               </a>
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
+                                  <i class="fa fa-trash"> </i>
+                                </button>
+                            </td>
+                          </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+                </div>
+              </div>
                 
 
               </div>
@@ -505,4 +532,3 @@ if (!empty($_POST)) {
     </script>
   </body>
 </html>
-

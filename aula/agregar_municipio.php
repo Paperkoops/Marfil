@@ -7,14 +7,21 @@ if (!empty($_POST)) {
 	
   // keep track post values
   $name = $_POST['name'];
+  $dpto = $_POST['dpto'];
 
   $valid = true;
   
+  $nombre=$dpto;
+  $sql="SELECT * FROM departamento WHERE Nombre_Departamento=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $dpto = $datos['Id_Departamento'];
+
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);
+    $sql = "INSERT INTO `municipio` (`Nombre_Municipio`, `Id_Departamento`, `Status`) VALUES (?, ?, ?)";
+    $values=array($name, $dpto, 1);
     Database::executeRow($sql, $values);
 	}
 }
@@ -45,6 +52,7 @@ if (!empty($_POST)) {
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
     
   </head>
 
@@ -354,19 +362,43 @@ if (!empty($_POST)) {
                     <br />
                     
                     <!-- fooooorm -->
-                    <form class="form-horizontal form-label-left input_mask" action="estado_civil.php" method="post">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label>Nombre del Estado civíl *</label>
+                        <label>Nombre del Municipio *</label>
                         <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Estado civíl">
-                        <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
+                        <span class="fa fa-dot-circle-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
+
+                   <!-- combobokz -->  
+                      <div class="form-group">
+                                <label class="col-md-6 col-sm-6 col-xs-12">Departamento *</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <select class="form-control has-feedback-left" name="dpto" required="required">
+                                  <?php
+                              $sql="SELECT * FROM departamento WHERE Status=?";
+                              $values=array(1);
+                              $datos=Database::getRows($sql, $values);
+                              $menu="";
+                                
+                              foreach ($datos as $fila) 
+                              {
+                                $menu.="
+                                            <option>$fila[Nombre_Departamento]</option>
+                                        ";
+                              }
+                              print($menu);
+                            ?>
+                                    
+                                  </select>
+                                  <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                              </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
                           <button type="submit" class="btn btn-success">Agregar</button>
-                          
                         </div>
                       </div>
 

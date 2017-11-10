@@ -13,7 +13,7 @@ if (!empty($_POST)) {
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
+    $sql = "INSERT INTO `departamento` (`Nombre_Departamento`, `Status`) VALUES (?, ?)";
     $values=array($name, 1);
     Database::executeRow($sql, $values);
 	}
@@ -45,6 +45,7 @@ if (!empty($_POST)) {
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
     
   </head>
 
@@ -354,7 +355,7 @@ if (!empty($_POST)) {
                     <br />
                     
                     <!-- fooooorm -->
-                    <form class="form-horizontal form-label-left input_mask" action="estado_civil.php" method="post">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre del Estado civíl *</label>
