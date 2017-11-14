@@ -6,8 +6,8 @@ class Database
     {
         $server = 'localhost';
         $database = 'base_colegio';
-        $username = 'Irelia';
-        $password = 'Ireliaeschida';
+        $username = 'root';
+        $password = '';
         $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "set names utf8");
         self::$connection = null;
         try

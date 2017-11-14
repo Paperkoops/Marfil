@@ -1,6 +1,6 @@
 <?php
 require 'database.php';
-
+$inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
 	$nameError = null;
@@ -9,13 +9,15 @@ if (!empty($_POST)) {
   $name = $_POST['name'];
 
   $valid = true;
-  
+	
 	// insert data
 	if ($valid) {
     
     $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);
-    Database::executeRow($sql, $values);
+    $values=array($name, 1);    
+
+    $inserted = true;
+
 	}
 }
 ?>
@@ -354,18 +356,18 @@ if (!empty($_POST)) {
                     <br />
                     
                     <!-- fooooorm -->
-                    <form class="form-horizontal form-label-left input_mask" action="estado_civil.php" method="post">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Estado civíl">
-                        <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
+                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Alumno" required="required">
+                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Agregar</button>
+                          <button type="submit" class="btn btn-success">Aceptar</button>
                           
                         </div>
                       </div>
@@ -489,6 +491,30 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+<?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Estado civíl',
+    text: 'El estado civíl fue agregado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='estado_civil.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>

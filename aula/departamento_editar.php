@@ -1,3 +1,46 @@
+<?php
+require 'database.php';
+
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: departamento.php");
+}
+
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	
+  // keep track post values
+  $name = $_POST['name'];
+
+  $valid = true;
+	
+	// insert data
+	if ($valid) {
+    
+    $sql = "UPDATE `departamento` SET `Nombre_Departamento`=?, `Status`=? WHERE Id_Departamento=?";
+    $values=array($name, 1, $id);
+
+    Database::executeRow($sql, $values);
+    $inserted = true;
+	}
+}
+else {
+	$sql="SELECT Id_Departamento, Nombre_Departamento FROM departamento WHERE Id_Departamento=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Departamento'];
+  $name = $datos['Nombre_Departamento'];
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +50,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Editar Municipios</title>
+    <title>Editar Departamentos</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -311,7 +354,7 @@
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Municipio <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Departamento <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -331,29 +374,20 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                            <label>Nombre del Municipio *</label>
-                            <input type="text" class="form-control has-feedback-left" id="NombreMunicipio" placeholder="Nombre del Municipio">
-                            <span class="fa fa-dot-circle-o form-control-feedback left" aria-hidden="true"></span>
-                          </div>
-    
-                          <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <label>Departamento *</label>
-                          <select id="heard" class="form-control" required>
-                              <option value="">Departamentos</option>
-                              <option value="press">San Salvador</option>
-                              <option value="net">La Libertad</option>
-                            </select>
-                          </div>
-    
-                          <div class="form-group">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                              <button type="button" class="btn btn-primary">Cancelar</button>
-                              <button type="submit" class="btn btn-success">Agregar</button>
-                            </div>
-                          </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label>Nombre del Departamento *</label>
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" class="form-control has-feedback-left" name="name" placeholder="Nombre del Departamento">
+                        <span class="fa fa-circle-o form-control-feedback left" aria-hidden="true"></span>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <button type="button" class="btn btn-primary">Cancelar</button>
+                          <button type="submit" class="btn btn-info">Editar</button>
+                        </div>
+                      </div>
 
                     </form>
                   </div>
@@ -364,7 +398,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Municipios </h2>
+                    <h2>Departamentos </h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li>
                         <a class="collapse-link">
@@ -398,46 +432,34 @@
                       <thead>
                         <tr>
                           <th>Id</th>
-                          <th>Municipio</th>
                           <th>Departamento</th>
                         </tr>
                       </thead>
   
   
                       <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>San Salvador</td>
-                          <td>San Salvador</td>
-                          <td>
-                            <div style="text-align: center;">
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Soyapango</td>
-                          <td>San Salvador</td>
-                          <td>
-                            <div style="text-align: center;">
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Mejicanos</td>
-                            <td>San Salvador</td>
-                            <td>
-                              <div style="text-align: center;">
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                  <i class="fa fa-trash"> </i>
-                                </button>
-                            </td>
-                          </tr>
+                      <?php
+                      $sql="SELECT Id_Departamento, Nombre_Departamento FROM departamento WHERE Status=?";
+                      $values=array(1);
+                      $datos=Database::getRows($sql, $values);
+                      $menu="";
+                        
+                      foreach ($datos as $fila) 
+                      {
+                        $menu.="<tr>
+                                    <td>$fila[Id_Departamento]</td>
+                                    <td>$fila[Nombre_Departamento]</td>
+                                    <td>
+                                    <div style='text-align: center;'>
+                                    <a href='departamento_editar.php?id=$fila[Id_Departamento]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                    <a href='eliminar_departamento.php?id=$fila[Id_Departamento]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                    </div>
+                                  </td>
+                                </tr>";
+                               
+                      }
+                      print($menu);
+                      ?>
                       </tbody>
                     </table>
                     </div>

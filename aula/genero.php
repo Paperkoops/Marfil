@@ -1,3 +1,28 @@
+<?php
+require 'database.php';
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	
+  // keep track post values
+  $name = $_POST['nombre'];
+
+  $valid = true;
+	
+	// insert data
+	if ($valid) {
+    
+    $sql = "INSERT INTO `genero` (`Nombre_Genero`, `Status`) VALUES (?, ?)";
+    $values=array($name, 1);    
+
+    Database::executeRow($sql, $values); 
+    $inserted = true;
+
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +32,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Municipios</title>
+    <title>Agregar Géneros</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -311,7 +336,7 @@
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Municipio <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Género <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -331,21 +356,12 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
-                        
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label>Nombre del Municipio *</label>
-                        <input type="text" class="form-control has-feedback-left" id="NombreMunicipio" placeholder="Nombre del Municipio">
-                        <span class="fa fa-dot-circle-o form-control-feedback left" aria-hidden="true"></span>
-                      </div>
-
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Departamento *</label>
-                      <select id="heard" class="form-control" required>
-                          <option value="">Departamentos</option>
-                          <option value="press">San Salvador</option>
-                          <option value="net">La Libertad</option>
-                        </select>
+                    <form class="form-horizontal form-label-left input_mask" method="post">
+                      
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Nombre del Género *</label>
+                      <input type="text" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del género">
+                        <span class="fa fa-child form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
@@ -361,104 +377,77 @@
 
 
                 <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Municipios </h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li>
-                        <a class="collapse-link">
-                          <i class="fa fa-chevron-up"></i>
-                        </a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                          <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li>
-                            <a href="#">Settings 1</a>
-                          </li>
-                          <li>
-                            <a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <a class="close-link">
-                          <i class="fa fa-close"></i>
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Género </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                          <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                          <a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a class="close-link">
+                        <i class="fa fa-close"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Género</th>
+                      </tr>
+                    </thead>
+
+
+                    <tbody>
+                    <?php
+                    $sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Status=?";
+                    $values=array(1);
+                    $datos=Database::getRows($sql, $values);
+                    $menu="";
+                      
+                    foreach ($datos as $fila) 
+                    {
+                      $menu.="<tr>
+                                  <td>$fila[Id_Genero]</td>
+                                  <td>$fila[Nombre_Genero]</td>
+                                  <td>
+                                  <div style='text-align: center;'>
+                                  <a href='genero_editar.php?id=$fila[Id_Genero]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                  <a href='eliminar_genero.php?id=$fila[Id_Genero]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                  </div>
+                                </td>
+                              </tr>";
+                             
+                    }
+                    print($menu);
+                    ?>
+                    </tbody>
+                  </table>
                   </div>
-                  <div class="x_content">
-  
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Id</th>
-                          <th>Municipio</th>
-                          <th>Departamento</th>
-                        </tr>
-                      </thead>
-  
-  
-                      <tbody>
-                        <tr>
-                          <td>1</td>
-                          <td>San Salvador</td>
-                          <td>San Salvador</td>
-                          <td>
-                            <div style="text-align: center;">                 
-                                <a href="municipio_editar.html">
-                                  <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                    <i class="fa fa-pencil"> </i>
-                                  </button>
-                                </a>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Soyapango</td>
-                          <td>San Salvador</td>
-                          <td>
-                            <div style="text-align: center;">                     
-                                <a href="municipio_editar.html">
-                                  <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                    <i class="fa fa-pencil"> </i>
-                                  </button>
-                                </a>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Mejicanos</td>
-                            <td>San Salvador</td>
-                            <td>
-                              <div style="text-align: center;">                     
-                                  <a href="municipio_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                  </a>
-                                  <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                    <i class="fa fa-trash"> </i>
-                                  </button>
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table>
-                    </div>
-                    </div>
                   </div>
                 </div>
+              </div>
                 
 
               </div>
@@ -493,6 +482,30 @@
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+    <?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Géneros',
+    text: 'El género fue agregado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='genero.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>

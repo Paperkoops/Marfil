@@ -1,22 +1,43 @@
 <?php
 require 'database.php';
 
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: estado_civil.php");
+}
+
+$inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
 	$nameError = null;
 	
   // keep track post values
-  $name = $_POST['name'];
+  $name = $_POST['nombre'];
 
   $valid = true;
-  
+	
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `genero` (`Nombre_Genero`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);
+    $sql = "UPDATE `medio_transporte` SET `Nombre_Medio`=?, `Status`=? WHERE Id_Medio=?";
+    $values=array($name, 1, $id);
+
     Database::executeRow($sql, $values);
+    $inserted = true;
 	}
+}
+else {
+	$sql="SELECT Id_Medio, Nombre_Medio FROM medio_transporte WHERE Id_Medio=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Medio'];
+  $name = $datos['Nombre_Medio'];
+
 }
 ?>
 
@@ -29,7 +50,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Géneros</title>
+    <title>Editar Medios de Transporte</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -333,7 +354,7 @@ if (!empty($_POST)) {
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Género <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Medio de Transporte <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -353,18 +374,18 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask" method="post">
-                      
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Nombre del Estado civíl *</label>
-                      <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del género">
-                        <span class="fa fa-child form-control-feedback left" aria-hidden="true"></span>
+                    <form class="form-horizontal form-label-left input_mask"  method="post">
+                        
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                        <label>Nombre del Medio *</label>
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" name="nombre" placeholder="Nombre del medio">
+                        <span class="fa fa-bus form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Agregar</button>
+                          <button type="submit" class="btn btn-info">Editar</button>
                         </div>
                       </div>
 
@@ -373,11 +394,11 @@ if (!empty($_POST)) {
                 </div>
 
 
-                <div class="row">
+              <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Género </h2>
+                  <h2>Medios de Transporte </h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li>
                       <a class="collapse-link">
@@ -411,42 +432,35 @@ if (!empty($_POST)) {
                     <thead>
                       <tr>
                         <th>Id</th>
-                        <th>Género</th>
+                        <th>Medio</th>
                       </tr>
                     </thead>
 
 
                     <tbody>
                       <tr>
-                        <td>1</td>
-                        <td>Femenino</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="genero_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Masculino</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="genero_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
+                      <?php
+                      $sql="SELECT Id_Medio, Nombre_Medio FROM medio_transporte WHERE Status=?";
+                      $values=array(1);
+                      $datos=Database::getRows($sql, $values);
+                      $menu="";
+                        
+                      foreach ($datos as $fila) 
+                      {
+                        $menu.="<tr>
+                                    <td>$fila[Id_Medio]</td>
+                                    <td>$fila[Nombre_Medio]</td>
+                                    <td>
+                                    <div style='text-align: center;'>
+                                    <a href='transporte_editar.php?id=$fila[Id_Medio]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                    <a href='eliminar_mediol.php?id=$fila[Id_Medio]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                    </div>
+                                  </td>
+                                </tr>";
+                               
+                      }
+                      print($menu);
+                      ?>
                     </tbody>
                   </table>
                   </div>
@@ -487,6 +501,29 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+    <?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Medios de transporte',
+    text: 'La informacion del medio de transporte fue modificada exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='transporte.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>

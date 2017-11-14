@@ -1,24 +1,39 @@
 <?php
 require 'database.php';
-
+$inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
 	$nameError = null;
+	$emailError = null;
+	$mobileError = null;
 	
   // keep track post values
-  $name = $_POST['name'];
+  $name = $_POST['nombre'];
+  $municipio = $_POST['dpto'];
 
   $valid = true;
+
+  $nombre=$municipio;
+  $sql="SELECT * FROM departamento WHERE Nombre_Departamento=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $municipio = $datos['Id_Departamento'];
+  
   
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `medio_transporte` (`Nombre_Medio`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);
+    $sql = "INSERT INTO `municipio` (`Nombre_Municipio`, `Id_Departamento`, `Status`) VALUES (?, ?, ?)";
+    $values=array($name, $municipio, 1);
     Database::executeRow($sql, $values);
+
+    $inserted = true;
+
 	}
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,7 +43,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Medios de Transporte</title>
+    <title>Agregar Municipios</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -332,7 +347,7 @@ if (!empty($_POST)) {
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Medio de Transporte <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Municipio <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -352,17 +367,43 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask"method="post">
-                      
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Nombre del Medio *</label>
-                      <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del medio">
-                        <span class="fa fa-bus form-control-feedback left" aria-hidden="true"></span>
+                    <form class="form-horizontal form-label-left input_mask" method="post">
+                    
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <label>Nombre del Municipio *</label>
+                    <input type="text" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del municipio" required="required">
+                    <span class="fa fa-circle-o form-control-feedback left" aria-hidden="true"></span>
+                  </div>
+
+                      <div class="form-group">
+                      <label class="col-md-6 col-sm-6 col-xs-12">Departamento *</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control has-feedback-left" name="dpto" required="required">
+                          <?php
+                            $sql="SELECT * FROM departamento WHERE Status=?";
+                            $values=array(1);
+                            $datos=Database::getRows($sql, $values);
+                            $menu="";
+                              
+                            foreach ($datos as $fila) 
+                            {
+                              $menu.="
+                                          <option>$fila[Nombre_Departamento]</option>
+                                      ";
+                            }
+                            print($menu);
+                          ?>
+                          
+                        </select>
+                        <span class="fa fa-at form-control-feedback left" aria-hidden="true"></span>
                       </div>
+                    </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
+                          <a href="mantenimiento2.php">
                           <button type="button" class="btn btn-primary">Cancelar</button>
+                          </a>
                           <button type="submit" class="btn btn-success">Agregar</button>
                         </div>
                       </div>
@@ -372,116 +413,80 @@ if (!empty($_POST)) {
                 </div>
 
 
-              <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Medios de Transporte </h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                      <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                      </a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <i class="fa fa-wrench"></i>
-                      </a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li>
-                          <a href="#">Settings 1</a>
-                        </li>
-                        <li>
-                          <a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="close-link">
-                        <i class="fa fa-close"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
-                  <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Medio</th>
-                      </tr>
-                    </thead>
-
-
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Automóvil</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="transporte_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Transporte público</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="transporte_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-                      <tr>
-                          <td>3</td>
-                          <td>Caminando</td>
-                          <td>
-                            <div style="text-align: center;">
-                             <a href="transporte_editar.html">  
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                <i class="fa fa-pencil"> </i>
-                              </button>
-                             </a>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
+                <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Municipios </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li>
+                        <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                        </a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                          <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a href="#">Settings 1</a>
+                          </li>
+                          <li>
+                            <a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a class="close-link">
+                          <i class="fa fa-close"></i>
+                        </a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+  
+                    <table id="datatable" class="table table-striped table-bordered">
+                      <thead>
                         <tr>
-                            <td>4</td>
-                            <td>Bicicleta</td>
-                            <td>
-                              <div style="text-align: center;">
-                               <a href="transporte_editar.html">
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                  <i class="fa fa-pencil"> </i>
-                                </button>
-                               </a>
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                  <i class="fa fa-trash"> </i>
-                                </button>
-                            </td>
-                          </tr>
-                    </tbody>
-                  </table>
-                  </div>
+                          <th>Id</th>
+                          <th>Municipio</th>
+                          <th>Departamento</th>
+                        </tr>
+                      </thead>
+  
+  
+                      <tbody>
+                      <?php
+                    $sql="SELECT m.Id_Municipio, m.Nombre_Municipio, d.Nombre_Departamento FROM municipio m, departamento d WHERE m.Id_Departamento = d.Id_Departamento AND m.Status=?";
+                    $values=array(1);
+                    $datos=Database::getRows($sql, $values);
+                    $menu="";
+                      
+                    foreach ($datos as $fila) 
+                    {
+                      $menu.="<tr>
+                                  <td>$fila[Id_Municipio]</td>
+                                  <td>$fila[Nombre_Municipio]</td>
+                                  <td>$fila[Nombre_Departamento]</td>
+                                  <td>
+                                  <div style='text-align: center;'>
+                                  <a href='municipio_editar.php?id=$fila[Id_Municipio]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                  <a href='eliminar_municipio.php?id=$fila[Id_Municipio]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                  </div>
+                                </td>
+                              </tr>";
+                             
+                    }
+                    print($menu);
+                    ?>
+                      </tbody>
+                    </table>
+                    </div>
+                    </div>
                   </div>
                 </div>
-              </div>
                 
 
               </div>

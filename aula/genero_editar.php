@@ -1,67 +1,45 @@
 <?php
 require 'database.php';
 
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: estado_civil.php");
+}
+
+$inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
-
- 
+	$nameError = null;
 	
-	// keep track post values
+  // keep track post values
   $name = $_POST['name'];
- 
-	$orientador = $_POST['orientador'];
-  
+
   $valid = true;
 	
-  // validate input
-  /*
-	$valid = true;
-	if (empty($name)) {
-		$nameError = 'Please enter Name';
-		$valid = false;
-	}
-	
-	if (empty($email)) {
-		$emailError = 'Please enter Email Address';
-		$valid = false;
-	} 
-	else if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
-		$emailError = 'Please enter a valid Email Address';
-		$valid = false;
-	}
-	
-	if (empty($mobile)) {
-		$mobileError = 'Please enter Mobile Number';
-		$valid = false;
-	}
-  */
-
-  $data = $orientador;    
-  $whatIWant = substr($data, strpos($data, ",") + 1);    
- 
-
-  $arr = explode(",", $orientador, 2);
-  $first = $arr[0];
-  
-  $nombre=$whatIWant;
-  $apell = $first;
-  $sql="SELECT * FROM docente WHERE Nombre_Docente=? AND Apellido_Docente=?";
-  $values=array($nombre, $apell);
-  $datos=Database::getRow($sql, $values);
-  $orientador = $datos['Id_Docente'];
-
 	// insert data
 	if ($valid) {
-		$sql = "INSERT INTO `grado` (`Nombre_Grado`, `Id_Docente`, `Status`) VALUES (?, ?, ?)";
-    $values=array($name, $orientador, 1);
     
+    $sql = "UPDATE `genero` SET `Nombre_Genero`=?, `Status`=? WHERE Id_Genero=?";
+    $values=array($name, 1, $id);
 
     Database::executeRow($sql, $values);
     $inserted = true;
 	}
 }
-?>
+else {
+	$sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Id_Genero=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Genero'];
+  $name = $datos['Nombre_Genero'];
 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,7 +49,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Matricular Alumnos</title>
+    <title>Editar Géneros</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -152,6 +130,22 @@ if (!empty($_POST)) {
                 <li><a href="grados.html"><i class="fa fa-book"></i> Grados </a></li>
 
                 <li><a href="materias.html"><i class="fa fa-pencil"></i> Materias </a></li>
+
+                <li><a><i class="fa fa-gear"></i> Mantenimiento<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a>Departamento<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li class="sub_menu"><a href="mantenimiento2.html">Departamento</a></li>
+                          <li><a href="mantenimiento2.html">Municipio</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="mantenimiento.html">Estado Civìl</a></li>
+                      <li><a href="mantenimiento.html">Género</a></li>
+                      <li> <a href="mantenimiento.html">Medios de Transporte</a></li>
+                      <li><a href="mantenimiento.html">Periodos</a></li>
+                      <li><a href="mantenimiento.html">Religión</a></li>
+                    </ul>
+                </li>
 
                 <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
@@ -337,7 +331,7 @@ if (!empty($_POST)) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Agregar Grado</h3>
+                <h3>Mantenimiento</h3>
               </div>
 
               <div class="title_right">
@@ -359,7 +353,7 @@ if (!empty($_POST)) {
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Grado <small>Rellene la información porfavor</small></h2>
+                    <h2>Nuevo Género <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -379,46 +373,18 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask" method="post">
+                    <form class="form-horizontal form-label-left input_mask">
                         
-                      
-                    
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <label>Nombre del Grado*</label>
-                          <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Grado">
-                          <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
-                        </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" method="post">
+                        <label>Nombre del Género *</label>
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" name="name" placeholder="Nombre del género">
+                        <span class="fa fa-child form-control-feedback left" aria-hidden="true"></span>
+                      </div>
 
-                        <div class="form-group">
-                            <label class="col-md-6 col-sm-6 col-xs-12">Orientador/a*</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                              <select class="form-control has-feedback-left" name="orientador">
-                              <?php
-                              $sql="SELECT * FROM docente WHERE Status=?";
-                              $values=array(1);
-                              $datos=Database::getRows($sql, $values);
-                              $menu="";
-                                
-                              foreach ($datos as $fila) 
-                              {
-                                $menu.="
-                                            <option>$fila[Apellido_Docente],$fila[Nombre_Docente]</option>
-                                        ";
-                              }
-                              print($menu);
-                            ?>
-                                
-                              </select>
-                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                            </div>
-                          </div>
-                      
-                      <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-						   <button class="btn btn-primary" type="reset">Limpiar Todo</button>
-                          <button type="submit" class="btn btn-success">Aceptar</button>
+                          <button type="submit" class="btn btn-info">Editar</button>
                         </div>
                       </div>
 
@@ -427,6 +393,78 @@ if (!empty($_POST)) {
                 </div>
 
 
+                <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Género </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                          <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                          <a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a class="close-link">
+                        <i class="fa fa-close"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Género</th>
+                      </tr>
+                    </thead>
+
+
+                    <tbody>
+                    <?php
+                    $sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Status=?";
+                    $values=array(1);
+                    $datos=Database::getRows($sql, $values);
+                    $menu="";
+                      
+                    foreach ($datos as $fila) 
+                    {
+                      $menu.="<tr>
+                                  <td>$fila[Id_Genero]</td>
+                                  <td>$fila[Nombre_Genero]</td>
+                                  <td>
+                                  <div style='text-align: center;'>
+                                  <a href='genero_editar.php?id=$fila[Id_Genero]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                  <a href='eliminar_genero.php?id=$fila[Id_Genero]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                  </div>
+                                </td>
+                              </tr>";
+                             
+                    }
+                    print($menu);
+                    ?>
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+                </div>
+              </div>
                 
 
               </div>
@@ -461,6 +499,30 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+    <?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Género',
+    text: 'La informacion del género fue modificada exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='genero.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>
