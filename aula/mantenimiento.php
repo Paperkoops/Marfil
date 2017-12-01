@@ -429,7 +429,7 @@ session_start();
           <div class="page-title">
             <div class="title_left">
               <h3>Mantenimiento</h3>
-              <a href="estado_civil.html">
+              <a href="estado_civil.php">
                 <button type="button" class="btn btn-round btn-success">Agregar registros 
                   <i class="fa fa-plus-circle"></i>
                 </button>
@@ -532,7 +532,7 @@ session_start();
           
           <div class="page-title">
               <div class="title_left">
-                <a href="genero.html">
+                <a href="genero.php">
                   <button type="button" class="btn btn-round btn-success">Agregar registros 
                     <i class="fa fa-plus-circle"></i>
                   </button>
@@ -636,7 +636,7 @@ session_start();
           
           <div class="page-title">
               <div class="title_left">
-                <a href="transporte.html">
+                <a href="transporte.php">
                   <button type="button" class="btn btn-round btn-success">Agregar registros 
                     <i class="fa fa-plus-circle"></i>
                   </button>
@@ -740,7 +740,7 @@ session_start();
           
           <div class="page-title">
               <div class="title_left">
-                <a href="periodo.html">
+                <a href="periodo.php">
                   <button type="button" class="btn btn-round btn-success">Agregar registros 
                     <i class="fa fa-plus-circle"></i>
                   </button>
@@ -858,7 +858,7 @@ session_start();
           
           <div class="page-title">
               <div class="title_left">
-                <a href="religion.html">
+                <a href="religion.php">
                   <button type="button" class="btn btn-round btn-success">Agregar registros 
                     <i class="fa fa-plus-circle"></i>
                   </button>

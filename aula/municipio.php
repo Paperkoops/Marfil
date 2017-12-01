@@ -395,7 +395,7 @@ if (!empty($_POST)) {
                           ?>
                           
                         </select>
-                        <span class="fa fa-at form-control-feedback left" aria-hidden="true"></span>
+                        <span class="fa fa-dot-circle-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
                     </div>
 

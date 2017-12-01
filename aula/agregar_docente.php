@@ -1,3 +1,45 @@
+<?php
+require 'database.php';
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	$emailError = null;
+	$mobileError = null;
+	
+  // keep track post values
+  $nombreDocente = $_POST['nombreDocente'];
+  $apellidoDocente = $_POST['apellidoDocente'];
+  $especialidad = $_POST['especialidad'];
+  $dui = $_POST['dui'];
+  $escalafon = $_POST['escalafon'];
+  $isss = $_POST['isss'];
+  $afp = $_POST['afp'];
+  $religion = $_POST['religion'];
+  $tipoUsuario = $_POST['tipoUsuario'];
+  $foto = $_POST['foto'];
+
+  $valid = true;
+
+  $nombre=$religion;
+  $sql="SELECT * FROM religion WHERE Nombre_Religion=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $religion = $datos['Id_Religion'];
+  
+  
+	// insert data
+	if ($valid) {
+    
+    $sql = "INSERT INTO `docente` (`Nombre_Docente`, `Apellido_Docente`, `Especialidad`, `DUI`, `Escalafón`, `isss`, `afp`, `Tipo_Usuario`, `Foto`, `Id_Religion`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1);
+    Database::executeRow($sql, $values);
+    $inserted = true;
+
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +50,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Agregar Materia</title>
+  <title>Agregar Docente</title>
 
   <!-- Bootstrap -->
   <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -429,7 +471,7 @@
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Plain Page</h3>
+              <h3>Agregar Docentes</h3>
             </div>
 
             <div class="title_right">
@@ -451,7 +493,7 @@
 
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Nueva Materia
+                  <h2>Nuevo Docente
                     <small>Rellene la información por favor</small>
                   </h2>
                   <ul class="nav navbar-right panel_toolbox">
@@ -483,49 +525,99 @@
                 </div>
                 <div class="x_content">
                   <br />
-                  <form class="form-horizontal form-label-left input_mask">
+                  <form class="form-horizontal form-label-left input_mask" method="post">
 
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Nombre de la Materia *</label>
-                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre de la Materia">
-                      <span class="fa fa-mortar-board form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="col-md-6 col-sm-6 col-xs-12">Docente *</label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
-                          <option>Rodrigo Candray</option>
-                          <option>Ricardo Antonio</option>
-
-                        </select>
-                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                      </div>
+                      <label>Nombre del Docente *</label>
+                      <input type="text" class="form-control has-feedback-left" name="nombreDocente" placeholder="Nombre del Docente" required="required">
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Eval del MINED *</label>
-                      <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Numero de Eval del MINED">
-                      <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
+                      <label>Apellido del Docente *</label>
+                      <input type="text" class="form-control has-feedback-left" name="apellidoDocente" placeholder="Apellido del Docente" required="required">
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Especialidad *</label>
+                      <input type="text" class="form-control has-feedback-left" name="especialidad" placeholder="Especialidad" required="required">
+                      <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Número de DUI *</label>
+                      <input type="text" class="form-control has-feedback-left" name="dui" placeholder="Número de DUI" required="required">
+                      <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Escalafón *</label>
+                      <input type="text" class="form-control has-feedback-left" name="escalafon" placeholder="Escalafón" required="required">
+                      <span class="fa fa-money form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Número del ISSS *</label>
+                      <input type="text" class="form-control has-feedback-left" name="isss" placeholder="Numero de ISSS" required="required">
+                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Número del AFP *</label>
+                      <input type="text" class="form-control has-feedback-left" name="afp" placeholder="Numero del AFP" required="required">
+                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
                     <div class="form-group">
-                      <label class="col-md-6 col-sm-6 col-xs-12">Grado *</label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control has-feedback-left" id="GeneroAlumno">
-                          <option>1 año</option>
-                          <option>2 año</option>
+                    <label class="col-md-6 col-sm-6 col-xs-12">Religión *</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" name="religion" required="required">
+                      <?php
+                  $sql="SELECT * FROM religion WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Religion]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-plus form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                  </div>
 
-                        </select>
-                        <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
+                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Tipo de Usuario *</label>
+                      <input type="text" class="form-control has-feedback-left" name="tipoUsuario" placeholder="Numero del DUI" required="required">
+                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+
+                    <div class='col-md-6 col-sm-6 col-xs-12'>
+                      <div class="form-group">
+                        <label>Foto del Docente *</label>
+                        <div class="input-group">
+                          <input type="text" class="form-control" name="foto" required="required">
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-primary">Seleccionar</button>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <span class="input-group-btn"></span>
 
                     <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="ln_solid"></div>
+                        <a href="docente.php">
                         <button type="button" class="btn btn-primary">Cancelar</button>
+                        </a>
                         <button class="btn btn-primary" type="reset">Limpiar Todo</button>
                         <button type="submit" class="btn btn-success">Aceptar</button>
                       </div>
@@ -570,6 +662,31 @@
   <script src="../build/js/custom.min.js"></script>
   <!-- bootstrap-daterangepicker -->
   <script src="../vendors/moment/min/moment.min.js"></script>
+
+  <?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Docentes',
+    text: 'El docente fue registrado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='docente.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
 
   <!-- bootstrap-datetimepicker -->
   <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>

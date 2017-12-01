@@ -1,3 +1,7 @@
+<?php
+include("database.php");
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -284,7 +288,7 @@
           <div class="page-title">
             <div class="title_left">
               <h3>Materias</h3>
-              <a href="agregar_materia.html">
+              <a href="agregar_materia.php">
                 <button type="button" class="btn btn-round btn-success">Registrar nueva materia
                   <i class="fa fa-plus-circle"></i>
                 </button>
@@ -346,41 +350,47 @@
                 </div>
                 <div class="x_content">
 
-                  <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Nombre</th>
-                        <th>Docente</th>
-                        <th>Grado</th>
-                        <th>Eval</th>
-                        <th>Administrar</th>
-                      </tr>
-                    </thead>
+                <table id="datatable" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                      <th>Id</th>
+                      <th>Nombre de la Materia</th>
+                      <th>Docente</th>
+                      <th>Grado</th>
+                      <th>Número Eval del MINED</th>
+                      <th>Administrar</th>
+                    </tr>
+                  </thead>
 
 
-                    <tbody>
-                      <tr>
-                        <td>Matematicas</td>
-                        <td>Rodrigo Candray</td>
-                        <td>1 año</td>
-                        <td>1245704</td>
-                        <td>
-                          <div style="text-align: center;">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Ver">
-                              <i class="fa fa-eye"> </i>
-                            </button>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-
-
-                    </tbody>
-                  </table>
+                  <tbody>
+                        <?php
+                        $sql="SELECT m.Id_Materia, m.Nombre_Materia, d.Nombre_Docente, g.Nombre_Grado, m.Eval_Mined FROM materia m, docente d, grado g WHERE m.Id_Grado = g.Id_Grado AND m.Id_Docente = d.Id_Docente AND m.Status=?";
+                        $values=array(1);
+                        $datos=Database::getRows($sql, $values);
+                        $menu="";
+                          
+                        foreach ($datos as $fila) 
+                        {
+                          $menu.="<tr>
+                                      <td>$fila[Id_Materia]</td>
+                                      <td>$fila[Nombre_Materia]</td>
+                                      <td>$fila[Nombre_Docente]</td>
+                                      <td>$fila[Nombre_Grado]</td>
+                                      <td>$fila[Eval_Mined]</td>
+                                      <td>
+                                      <div style='text-align: center;'>
+                                      <a href='editar_materia.php?id=$fila[Id_Materia]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                      <a href='eliminar_materia.php?id=$fila[Id_Materia]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                      </div>
+                                      </td>
+                                  </tr>";
+                                 
+                        }
+                        print($menu);
+                        ?>
+                </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -408,26 +418,38 @@
                   <div class="x_content">
 
                     <table id="datata" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Nombre</th>
-                          <th>Docente</th>
-                          <th>Grado</th>
-                          <th>Eval</th>
-                        </tr>
-                      </thead>
+                    <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Nombre de la Materia</th>
+                      <th>Docente</th>
+                      <th>Grado</th>
+                      <th>Número Eval del MINED</th>
+                    </tr>
+                  </thead>
 
 
-                      <tbody>
-                        <tr>
-                          <td>Matematicas</td>
-                          <td>Rodrigo Candray</td>
-                          <td>1 año</td>
-                          <td>1245704</td>
-                        </tr>
-
-
-                      </tbody>
+                  <tbody>
+                        <?php
+                        $sql="SELECT m.Id_Materia, m.Nombre_Materia, d.Nombre_Docente, g.Nombre_Grado, m.Eval_Mined FROM materia m, docente d, grado g WHERE m.Id_Grado = g.Id_Grado AND m.Id_Docente = d.Id_Docente AND m.Status=?";
+                        $values=array(1);
+                        $datos=Database::getRows($sql, $values);
+                        $menu="";
+                          
+                        foreach ($datos as $fila) 
+                        {
+                          $menu.="<tr>
+                                      <td>$fila[Id_Materia]</td>
+                                      <td>$fila[Nombre_Materia]</td>
+                                      <td>$fila[Nombre_Docente]</td>
+                                      <td>$fila[Nombre_Grado]</td>
+                                      <td>$fila[Eval_Mined]</td>
+                                  </tr>";
+                                 
+                        }
+                        print($menu);
+                        ?>
+                </tbody>
                     </table>
                     </div>
                   </div>

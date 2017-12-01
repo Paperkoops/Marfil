@@ -368,7 +368,7 @@ if (!empty($_POST)) {
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <a href="mantenimiento.php">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-</a>
+                          </a>
                           <button type="submit" class="btn btn-success">Agregar</button>
                         </div>
                       </div>
