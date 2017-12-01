@@ -1,3 +1,46 @@
+<?php
+require 'database.php';
+
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: religion.php");
+}
+
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	
+  // keep track post values
+  $name = $_POST['nombre'];
+
+  $valid = true;
+	
+	// insert data
+	if ($valid) {
+    
+    $sql = "UPDATE `religion` SET `Nombre_Religion`=?, `Status`=? WHERE Id_Religion=?";
+    $values=array($name, 1, $id);
+
+    Database::executeRow($sql, $values);
+    $inserted = true;
+	}
+}
+else {
+	$sql="SELECT Id_Religion, Nombre_Religion FROM religion WHERE Id_Religion=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Religion'];
+  $name = $datos['Nombre_Religion'];
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +50,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Religiones</title>
+    <title>Editar Religiones</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -331,18 +374,18 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre de la religión *</label>
-                        <input type="text" class="form-control has-feedback-left" id="NombreReligion" placeholder="Nombre de la Religión">
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" name="nombre" placeholder="Nombre de la Religión">
                         <span class="fa fa-angle-double-right form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                          <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Agregar</button>
+                          <button type="button" class="btn btn-primary" href="religion.php">Cancelar</button>
+                          <button type="submit" class="btn btn-info">Editar</button>
                         </div>
                       </div>
 
@@ -395,66 +438,28 @@
 
 
                     <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Católica</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="religion_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Cristiana</td>
-                        <td>
-                          <div style="text-align: center;">
-                           <a href="religion_editar.html">
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                              <i class="fa fa-pencil"> </i>
-                            </button>
-                           </a>
-                            <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                              <i class="fa fa-trash"> </i>
-                            </button>
-                        </td>
-                      </tr>
-                      <tr>
-                          <td>3</td>
-                          <td>Budísta</td>
-                          <td>
-                            <div style="text-align: center;">
-                             <a href="religion_editar.html">
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                <i class="fa fa-pencil"> </i>
-                              </button>
-                             </a>
-                              <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                <i class="fa fa-trash"> </i>
-                              </button>
-                          </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Ninguna</td>
-                            <td>
-                              <div style="text-align: center;">
-                               <a href="religion_editar.html">
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                  <i class="fa fa-pencil"> </i>
-                                </button>
-                               </a>
-                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                  <i class="fa fa-trash"> </i>
-                                </button>
-                            </td>
-                          </tr>
+                    <?php
+                    $sql="SELECT Id_Religion, Nombre_Religion FROM religion WHERE Status=?";
+                    $values=array(1);
+                    $datos=Database::getRows($sql, $values);
+                    $menu="";
+                      
+                    foreach ($datos as $fila) 
+                    {
+                      $menu.="<tr>
+                                  <td>$fila[Id_Religion]</td>
+                                  <td>$fila[Nombre_Religion]</td>
+                                  <td>
+                                  <div style='text-align: center;'>
+                                  <a href='religion_editar.php?id=$fila[Id_Religion]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                  <a href='eliminar_religion.php?id=$fila[Id_Religion]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                  </div>
+                                </td>
+                              </tr>";
+                             
+                    }
+                    print($menu);
+                    ?>
                     </tbody>
                   </table>
                   </div>
@@ -494,7 +499,30 @@
     <script src="../build/js/custom.min.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
-   
+
+<?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Religiónl',
+    text: 'La informacion de la religión fue modificada exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='religion.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>

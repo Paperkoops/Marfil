@@ -1,3 +1,27 @@
+<?php
+require 'database.php';
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+  $nameError = null;
+	$emailError = null;
+	$mobileError = null;
+	
+  // keep track post values
+  $name = $_POST['nombre'];
+
+  $valid = true;
+	// insert data
+	if ($valid) {
+    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`,  `Status`) VALUES (?, ?)";
+    $values=array($name, 1);
+
+    Database::executeRow($sql, $values);  
+    $inserted = true;
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -331,17 +355,20 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form class="form-horizontal form-label-left input_mask">
+                    <form class="form-horizontal form-label-left input_mask" method="post">
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" id="NombreEstadoCivil" placeholder="Nombre del Estado civíl">
+                        <input type="text" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del estado civíl" required="required">
                         <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
+
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
+                          <a href="mantenimiento.php">
                           <button type="button" class="btn btn-primary">Cancelar</button>
+</a>
                           <button type="submit" class="btn btn-success">Agregar</button>
                         </div>
                       </div>
@@ -395,36 +422,28 @@
         
         
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Soltero</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Casado</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
+                            <?php
+                            $sql="SELECT Id_Estado, Nombre_Estado FROM estado_civil WHERE Status=?";
+                            $values=array(1);
+                            $datos=Database::getRows($sql, $values);
+                            $menu="";
+                              
+                            foreach ($datos as $fila) 
+                            {
+                              $menu.="<tr>
+                                          <td>$fila[Id_Estado]</td>
+                                          <td>$fila[Nombre_Estado]</td>
+                                          <td>
+                                          <div style='text-align: center;'>
+                                          <a href='estado_civil_editar.php?id=$fila[Id_Estado]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                          <a href='eliminar_estado_civil.php?id=$fila[Id_Estado]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                          </div>
+                                        </td>
+                                      </tr>";
+                                     
+                            }
+                            print($menu);
+                            ?>
                             </tbody>
                           </table>
                           </div>
@@ -464,7 +483,31 @@
     <script src="../build/js/custom.min.js"></script>
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
-   
+  
+<?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Estado civíl',
+    text: 'El estado civíl fue agregado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='estado_civil.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
     <!-- bootstrap-datetimepicker -->    
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script>

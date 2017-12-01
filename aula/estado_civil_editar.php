@@ -1,24 +1,43 @@
 <?php
 require 'database.php';
+
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: estado_civil.php");
+}
+
 $inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
 	$nameError = null;
 	
   // keep track post values
-  $name = $_POST['name'];
+  $name = $_POST['nombre'];
 
   $valid = true;
 	
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);    
+    $sql = "UPDATE `estado_civil` SET `Nombre_Estado`=?, `Status`=? WHERE Id_Estado=?";
+    $values=array($name, 1, $id);
 
+    Database::executeRow($sql, $values);
     $inserted = true;
-
 	}
+}
+else {
+	$sql="SELECT Id_Estado, Nombre_Estado FROM estado_civil WHERE Id_Estado=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Estado'];
+  $name = $datos['Nombre_Estado'];
+
 }
 ?>
 
@@ -31,7 +50,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Estados civíles</title>
+    <title>Editar Estados civíles</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +66,7 @@ if (!empty($_POST)) {
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
     
   </head>
 
@@ -354,21 +374,18 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    
-                    <!-- fooooorm -->
                     <form class="form-horizontal form-label-left input_mask" method="post">
                         
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback"  >
                         <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Alumno" required="required">
-                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                        <input type="text" class="form-control has-feedback-left"  value="<?php print($name); ?>" name="nombre" placeholder="Nombre del Estado civíl">
+                        <span class="fa fa-heart-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Aceptar</button>
-                          
+                          <button type="submit" class="btn btn-info">Editar</button>
                         </div>
                       </div>
 
@@ -421,36 +438,28 @@ if (!empty($_POST)) {
         
         
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Soltero</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Casado</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
+                            <?php
+                            $sql="SELECT Id_Estado, Nombre_Estado FROM estado_civil WHERE Status=?";
+                            $values=array(1);
+                            $datos=Database::getRows($sql, $values);
+                            $menu="";
+                              
+                            foreach ($datos as $fila) 
+                            {
+                              $menu.="<tr>
+                                          <td>$fila[Id_Estado]</td>
+                                          <td>$fila[Nombre_Estado]</td>
+                                          <td>
+                                          <div style='text-align: center;'>
+                                          <a href='estado_civil_editar.php?id=$fila[Id_Estado]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                          <a href='eliminar_estado_civil.php?id=$fila[Id_Estado]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                          </div>
+                                        </td>
+                                      </tr>";
+                                     
+                            }
+                            print($menu);
+                            ?>
                             </tbody>
                           </table>
                           </div>
@@ -491,13 +500,13 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
-<?php
+    <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Estado civíl',
-    text: 'El estado civíl fue agregado exitosamente',
+    title: 'Estado Civíl',
+    text: 'La informacion del estado civíl fue modificada exitosamente',
     type: 'success',
     
     confirmButtonColor: '#3085d6',
@@ -531,4 +540,3 @@ if ($inserted) {
     </script>
   </body>
 </html>
-

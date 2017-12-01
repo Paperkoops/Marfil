@@ -1,5 +1,15 @@
 <?php
 require 'database.php';
+
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: estado_civil.php");
+}
+
 $inserted = false;
 if (!empty($_POST)) {
 	// keep track validation errors
@@ -13,15 +23,23 @@ if (!empty($_POST)) {
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `estado_civil` (`Nombre_Estado`, `Status`) VALUES (?, ?)";
-    $values=array($name, 1);    
+    $sql = "UPDATE `genero` SET `Nombre_Genero`=?, `Status`=? WHERE Id_Genero=?";
+    $values=array($name, 1, $id);
 
+    Database::executeRow($sql, $values);
     $inserted = true;
-
 	}
 }
-?>
+else {
+	$sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Id_Genero=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Genero'];
+  $name = $datos['Nombre_Genero'];
 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,7 +49,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Estados civíles</title>
+    <title>Editar Géneros</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -47,6 +65,7 @@ if (!empty($_POST)) {
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
     
   </head>
 
@@ -334,7 +353,7 @@ if (!empty($_POST)) {
                 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Estado civíl <small>Rellene la información por favor</small></h2>
+                    <h2>Nuevo Género <small>Rellene la información por favor</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -354,21 +373,18 @@ if (!empty($_POST)) {
                   </div>
                   <div class="x_content">
                     <br />
-                    
-                    <!-- fooooorm -->
-                    <form class="form-horizontal form-label-left input_mask" method="post">
+                    <form class="form-horizontal form-label-left input_mask">
                         
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                        <label>Nombre del Estado civíl *</label>
-                        <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre del Alumno" required="required">
-                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" method="post">
+                        <label>Nombre del Género *</label>
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" name="name" placeholder="Nombre del género">
+                        <span class="fa fa-child form-control-feedback left" aria-hidden="true"></span>
                       </div>
 
                       <div class="form-group">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-success">Aceptar</button>
-                          
+                          <button type="submit" class="btn btn-info">Editar</button>
                         </div>
                       </div>
 
@@ -378,85 +394,77 @@ if (!empty($_POST)) {
 
 
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                      <div class="x_panel">
-                        <div class="x_title">
-                          <h2>Estado Civíl </h2>
-                          <ul class="nav navbar-right panel_toolbox">
-                            <li>
-                              <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                              </a>
-                            </li>
-                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                <i class="fa fa-wrench"></i>
-                              </a>
-                              <ul class="dropdown-menu" role="menu">
-                                <li>
-                                  <a href="#">Settings 1</a>
-                                </li>
-                                <li>
-                                  <a href="#">Settings 2</a>
-                                </li>
-                              </ul>
-                            </li>
-                            <li>
-                              <a class="close-link">
-                                <i class="fa fa-close"></i>
-                              </a>
-                            </li>
-                          </ul>
-                          <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content">
-        
-                          <table id="datatable" class="table table-striped table-bordered">
-                            <thead>
-                              <tr>
-                                <th>Id</th>
-                                <th>Estado civíl</th>
-                              </tr>
-                            </thead>
-        
-        
-                            <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Soltero</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Género </h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                      <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                      </a>
+                    </li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li>
+                          <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                          <a href="#">Settings 2</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a class="close-link">
+                        <i class="fa fa-close"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                  <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Género</th>
+                      </tr>
+                    </thead>
+
+
+                    <tbody>
+                    <?php
+                    $sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Status=?";
+                    $values=array(1);
+                    $datos=Database::getRows($sql, $values);
+                    $menu="";
+                      
+                    foreach ($datos as $fila) 
+                    {
+                      $menu.="<tr>
+                                  <td>$fila[Id_Genero]</td>
+                                  <td>$fila[Nombre_Genero]</td>
+                                  <td>
+                                  <div style='text-align: center;'>
+                                  <a href='genero_editar.php?id=$fila[Id_Genero]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                                  <a href='eliminar_genero.php?id=$fila[Id_Genero]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                                  </div>
                                 </td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Casado</td>
-                                <td>
-                                  <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
-                                      <i class="fa fa-pencil"> </i>
-                                    </button>
-                                   </a>
-                                    <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Eliminar">
-                                      <i class="fa fa-trash"> </i>
-                                    </button>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          </div>
-                          </div>
-                        </div>
-                      </div>
+                              </tr>";
+                             
+                    }
+                    print($menu);
+                    ?>
+                    </tbody>
+                  </table>
+                  </div>
+                  </div>
+                </div>
+              </div>
                 
 
               </div>
@@ -491,20 +499,20 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
-<?php
+    <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Estado civíl',
-    text: 'El estado civíl fue agregado exitosamente',
+    title: 'Género',
+    text: 'La informacion del género fue modificada exitosamente',
     type: 'success',
     
     confirmButtonColor: '#3085d6',
     
     confirmButtonText: 'Ok'
   }).then(function () {
-    window.location='estado_civil.php'
+    window.location='genero.php'
   });
   
   
@@ -531,4 +539,3 @@ if ($inserted) {
     </script>
   </body>
 </html>
-
