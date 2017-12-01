@@ -49,6 +49,7 @@ if (!empty($_POST)) {
   $fechaadmision = $_POST['fechaadmision'];
   $grado = $_POST['grado'];
   $foto = $_POST['foto'];
+  $tipo = $_POST['tipo'];
 
 
   $valid = true;
@@ -122,7 +123,12 @@ if (!empty($_POST)) {
   } else {
     $trabaja=0;
   }
-  
+
+  if ($tipo=="Alumno para el presete año electivo") {
+    $tipo=1;
+  } else {
+    $tipo=3;
+  }
   
 	// insert data
 	if ($valid) {
@@ -136,24 +142,43 @@ if (!empty($_POST)) {
     header("Location: index.php");*/
     
     $sql = "INSERT INTO `alumno` (`NIE`, `Nombre_Alumno`, `Apellido_Alumno`, `Fecha_Nacimiento`, `Id_Genero`, `Nacionalidad`, `Id_Estado`, `Partida_Nacimiento`, `Distancia`, `Id_Medio`, `Dirección`, `Id_Municipio`, `Telefono`, `Celular`, `Email`, `Id_Religion`, `Miembros_Familia`, `Trabaja`, `Tiene_Hijos`, `Convivencia`, `Nombre_Padre`, `Dui_Padre`, `Telefono_Padre`, `Trabajo_Padre`, `Profesion_Padre`, `Nombre_Madre`, `Dui_Madre`, `Telefono_Madre`, `Trabajo_Madre`, `Profesion_Madre`, `Nombre_Responsable`, `Dui_Responsable`, `Telefono_Responsable`, `Trabajo_Responsable`, `Profesion_Responsable`, `Enfermedades_Alergias`, `Medicamentos`, `Fecha_Admision`, `Id_Grado`, `observacion`, `Foto`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $values=array($nie, $name, $apellido, $fechanacimiento, $genero, $nacionalidad, $estadocivil, $codigopartida, $distancia, $mediotransporte, $direccion, $municipio, $telefono, $celular, $email, $religion, $numerofamiliares, $trabaja, $tienehijos, $miembrosdelafamilia, $nombrepadre, $apellidopadre, $telpadre, $trabpadre, $profpadre, $nombremadre, $apellidomadre, $telmadre, $trabmadre, $profmadre, $nombreresp, $apellidoresp, $telresp, $trabresp, $profresp, $enfermedades, $medicamentos, $fechaadmision, $grado, $observaciones, $foto, 1);
+    $values=array($nie, $name, $apellido, $fechanacimiento, $genero, $nacionalidad, $estadocivil, $codigopartida, $distancia, $mediotransporte, $direccion, $municipio, $telefono, $celular, $email, $religion, $numerofamiliares, $trabaja, $tienehijos, $miembrosdelafamilia, $nombrepadre, $apellidopadre, $telpadre, $trabpadre, $profpadre, $nombremadre, $apellidomadre, $telmadre, $trabmadre, $profmadre, $nombreresp, $apellidoresp, $telresp, $trabresp, $profresp, $enfermedades, $medicamentos, $fechaadmision, $grado, $observaciones, $foto, $tipo);
     
 
     Database::executeRow($sql, $values);
 
-    $sql = "INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Enero',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Febrero',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Marzo',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Abril',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Mayo',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Junio',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Julio',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Agosto',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Septiembre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Octubre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Noviembre',1);
-    INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Diciembre',1);
-    ";
+    if ($tipo==1) {
+      $sql = "INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Enero',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Febrero',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Marzo',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Abril',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Mayo',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Junio',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Julio',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Agosto',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Septiembre',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Octubre',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Noviembre',1);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Diciembre',1);
+      ";
+    } else {
+      $sql = "INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Enero',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Febrero',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Marzo',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Abril',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Mayo',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Junio',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Julio',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Agosto',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Septiembre',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Octubre',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Noviembre',3);
+      INSERT INTO `pago`( `Id_Alumno`, `Mes`, `Status`) VALUES (?,'Diciembre',3);
+      ";
+    }
+    
+
+    
     $values=array($nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie, $nie);
     
 
@@ -899,6 +924,17 @@ if (!empty($_POST)) {
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                                                            <label>Tipo de Matricula*</label> 
+                                                            <div>
+                                                              <select class="form-control" name="tipo" required="required">
+                                                              <option>Alumno para el presete año electivo</option>
+                                                              <option>Alumno para el siguiente año electivo</option>
+                                                              </select>
+                                                              
+                                                            </div>
+                                                          </div>
   
 
                       
