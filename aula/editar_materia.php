@@ -7,7 +7,7 @@ if (!empty($_GET['id'])) {
 }
 
 if (null == $id ) {
-	header("Location: docente.php");
+	header("Location: materias.php");
 }
 
 $inserted = false;
@@ -16,51 +16,45 @@ if (!empty($_POST)) {
 	$nameError = null;
 	
   // keep track post values
-  $nombreDocente = $_POST['nombreDocente'];
-  $apellidoDocente = $_POST['apellidoDocente'];
-  $especialidad = $_POST['especialidad'];
-  $dui = $_POST['dui'];
-  $escalafon = $_POST['escalafon'];
-  $isss = $_POST['isss'];
-  $afp = $_POST['afp'];
-  $religion = $_POST['religion'];
-  $tipoUsuario = $_POST['tipoUsuario'];
-  $foto = $_POST['foto'];
+  $nombreMateria = $_POST['nombreMateria'];
+  $docente = $_POST['docente'];
+  $grado = $_POST['grado'];
+  $eval = $_POST['eval'];
 
   $valid = true;
-  
-  $nombre=$religion;
-  $sql="SELECT * FROM religion WHERE Nombre_Religion=?";
+
+  $nombre=$docente;
+  $sql="SELECT * FROM docente WHERE Nombre_Docente=?";
   $values=array($nombre);
   $datos=Database::getRow($sql, $values);
-  $religion = $datos['Id_Religion'];
+  $docente = $datos['Id_Docente'];
+  
+  $nombre=$grado;
+  $sql="SELECT * FROM grado WHERE Nombre_Grado=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $grado = $datos['Id_Grado'];
   
 	// insert data
 	if ($valid) {
     
-    $sql = "UPDATE `docente` SET `Nombre_Docente`=?, `Apellido_Docente`=?, `Especialidad`=?, `DUI`=?, `Escalafón`=?, `isss`=?, `afp`=?, `Tipo_Usuario`=?, `Foto`=?, `Id_Religion`=?, `Status`=? WHERE Id_Docente=?";
-    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1, $id);
+    $sql = "UPDATE `materia` SET `Nombre_Materia`=?, `Id_Docente`=?, `Id_Grado`=?, `Eval_Mined`=?, `Status`=? WHERE Id_Materia=?";
+    $values=array($nombreMateria, $docente, $grado, $eval, 1, $id);
 
     Database::executeRow($sql, $values);
     $inserted = true;
 	}
 }
 else {
-	$sql="SELECT * FROM docente WHERE Id_Docente=?";
+	$sql="SELECT * FROM materia WHERE Id_Materia=?";
   $values=array($id);
   $datos=Database::getRow($sql, $values);
    
-  $id = $datos['Id_Docente'];
-  $nombreDocente = $datos['Nombre_Docente'];
-  $apellidoDocente = $datos['Apellido_Docente'];
-  $especialidad = $datos['Especialidad'];
-  $dui = $datos['DUI'];
-  $escalafon = $datos['Escalafón'];
-  $isss = $datos['isss'];
-  $afp = $datos['afp'];
-  $tipoUsuario = $datos['Tipo_Usuario'];
-  $foto = $datos['Foto'];
-  $religion = $datos['Id_Religion'];
+  $id = $datos['Id_Materia'];
+  $nombreMateria = $datos['Nombre_Materia'];
+  $docente = $datos['Id_Docente'];
+  $grado = $datos['Id_Grado'];
+  $eval = $datos['Eval_Mined'];
 }
 ?>
 
@@ -552,53 +546,17 @@ else {
                   <form class="form-horizontal form-label-left input_mask" method="post">
 
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Nombre del Docente *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($nombreDocente); ?>" name="nombreDocente" placeholder="Nombre del Docente" required="required">
-                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Apellido del Docente *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($apellidoDocente); ?>" name="apellidoDocente" placeholder="Apellido del Docente" required="required">
-                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Especialidad *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($especialidad); ?>" name="especialidad" placeholder="Especialidad" required="required">
-                      <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Número de DUI *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($dui); ?>" name="dui" placeholder="Número de DUI" required="required">
-                      <span class="fa fa-pencil-square-o form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Escalafón *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($escalafon); ?>" name="escalafon" placeholder="Escalafón" required="required">
-                      <span class="fa fa-money form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Número del ISSS *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($isss); ?>" name="isss" placeholder="Numero de ISSS" required="required">
-                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
-                    </div>
-                    
-                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Número del AFP *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($afp); ?>" name="afp" placeholder="Numero del AFP" required="required">
-                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
+                      <label>Nombre de la Materia *</label>
+                      <input type="text" class="form-control has-feedback-left" value="<?php print($nombreMateria); ?>" name="nombreMateria" placeholder="Nombre de la Materia" required="required">
+                      <span class="fa fa-mortar-board form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
                     <div class="form-group">
-                    <label class="col-md-6 col-sm-6 col-xs-12">Religión *</label>
+                    <label class="col-md-6 col-sm-6 col-xs-12">Docente *</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                      <select class="form-control has-feedback-left" value="<?php print($religion); ?>" name="religion" required="required">
+                      <select class="form-control has-feedback-left" value="<?php print($docente); ?>" name="docente" required="required">
                       <?php
-                  $sql="SELECT * FROM religion WHERE Status=?";
+                  $sql="SELECT * FROM docente WHERE Status=?";
                   $values=array(1);
                   $datos=Database::getRows($sql, $values);
                   $menu="";
@@ -606,42 +564,55 @@ else {
                   foreach ($datos as $fila) 
                   {
                     $menu.="
-                                <option>$fila[Nombre_Religion]</option>
+                                <option>$fila[Nombre_Docente]</option>
                             ";
                   }
                   print($menu);
                 ?>
                         
                       </select>
-                      <span class="fa fa-plus form-control-feedback left" aria-hidden="true"></span>
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
-                  </div>
-
-                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                      <label>Tipo de Usuario *</label>
-                      <input type="text" class="form-control has-feedback-left" value="<?php print($tipoUsuario); ?>" name="tipoUsuario" placeholder="Tipo de Usuario" required="required">
-                      <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
-
-                    <div class='col-md-6 col-sm-6 col-xs-12'>
-                      <div class="form-group">
-                        <label>Foto del Docente *</label>
-                        <div class="input-group">
-                          <input type="text" class="form-control" value="<?php print($foto); ?>" name="foto" required="required">
-                          <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary">Seleccionar</button>
-                          </span>
-                        </div>
-                      </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Eval del MINED *</label>
+                      <input type="text" class="form-control has-feedback-left" value="<?php print($eval); ?>" name="eval" placeholder="Numero de Eval del MINED" required="required">
+                      <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
                     </div>
+
+                    <div class="form-group">
+                      <label class="col-md-6 col-sm-6 col-xs-12">Grado *</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" value="<?php print($grado); ?>" name="grado" required="required">
+                      <?php
+                  $sql="SELECT * FROM grado WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Grado]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    </div>
+
+                    <span class="input-group-btn"></span>
 
                     <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="ln_solid"></div>
-                        <a href="docente.php">
+                        <a href="materias.php">
                         <button type="button" class="btn btn-primary">Cancelar</button>
-                        </a>
+                        </a> 
                         <button class="btn btn-primary" type="reset">Limpiar Todo</button>
                         <button type="submit" class="btn btn-success">Editar</button>
                       </div>

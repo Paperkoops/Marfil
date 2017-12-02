@@ -271,11 +271,9 @@ session_start();
             <div class="page-title">
               <div class="title_left">
                 <h3>Docentes</h3>
-                <a href="agregar_docente.php"><button type="button" class="btn btn-round btn-success">Registrar Nuevo docente <i class="fa fa-plus-circle"></i></button></a>
+                <a href="agregar_docente.php"><button type="button" class="btn btn-round btn-success">Agregar un nuevo docente <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
-
-
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -289,85 +287,57 @@ session_start();
               </div>
             </div>
 
-            <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Administrar <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
+                      <div class="clearfix"></div>
 
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Id</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Especialidad</th>
-                          <th>DUI</th>
-                          <th>Escalafón</th>
-                          <th>ISSS</th>
-                          <th>AFP</th>
-                          <th>Administrar</th>
-                        </tr>
-                      </thead>
+                      <?php
+$sql="SELECT Id_Docente, Nombre_Docente, Especialidad, Apellido_Docente  FROM docente  WHERE Status=? ";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
 
+foreach ($datos as $fila) 
+{
+  
 
-                      <tbody>
-                            <?php
-                            $sql="SELECT * FROM docente WHERE Status=?";
-                            $values=array(1);
-                            $datos=Database::getRows($sql, $values);
-                            $menu="";
-                              
-                            foreach ($datos as $fila) 
-                            {
-                              $menu.="<tr>
-                                          <td>$fila[Id_Docente]</td>
-                                          <td>$fila[Nombre_Docente]</td>
-                                          <td>$fila[Apellido_Docente]</td>
-                                          <td>$fila[Especialidad]</td>
-                                          <td>$fila[DUI]</td>
-                                          <td>$fila[Escalafón]</td>
-                                          <td>$fila[isss]</td>
-                                          <td>$fila[afp]</td>
-                                          <td>
-                                          <div style='text-align: center;'>
-                                          <a href='editar_docente.php?id=$fila[Id_Docente]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-                                          <a href='eliminar_docente.php?id=$fila[Id_Docente]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
-                                          </div>
-                                        </td>
-                                      </tr>";
-                                     
-                            }
-                            print($menu);
-                            ?>
-                    </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+  $menu.="<div class='col-md-4 col-sm-4 col-xs-12 profile_details'>
+  <div class='well profile_view'>
+    <div class='col-sm-12'>
+      <!--<h4 class='brief'><i>Digital Strategist</i></h4>-->
+      <div class='left col-xs-7'>
+        <h2> $fila[Nombre_Docente] $fila[Apellido_Docente] </h2>
+        <p><strong>Especialidad: </strong></br>$fila[Especialidad]  </p>
+      </br>
+        <ul class='list-unstyled'>
+         <!-- <li><i class='fa fa-users'></i> Numero de Alumnos: 39 </li>-->
+          
+        </ul>
+      </div>
+      <div class='right col-xs-5 text-center'>
+        <img src='images/img.jpg' alt='' class='img-circle img-responsive'>
+      </div>
+    </div>
+    <div class='col-xs-12 bottom text-center'>
+      
+      <div class='col-xs-12 col-sm-6 emphasis'>
+          <!--<a href='#' class='btn btn-primary btn-xs'><i class='fa fa-folder'></i> View </a>-->
+          <a href='editar_docente.php?id=$fila[Id_Docente]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+          <a href='eliminar_docente.php?id=$fila[Id_Docente]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+      </div>
+    </div>
+  </div>
+</div>";
+         
+
+}
 
 
+print($menu);
+?>
+
+
+                     
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
@@ -427,6 +397,18 @@ session_start();
                 </div>
               </div>
             </div>
+
+
+ 
+            </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
           </div>
         </div>
