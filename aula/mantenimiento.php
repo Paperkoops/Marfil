@@ -72,10 +72,10 @@ session_start();
                   </a>
                   <ul class="nav child_menu">
                     <li>
-                      <a href="alumnos.html">Alumnos</a>
+                      <a href="alumnos.php">Alumnos</a>
                     </li>
                     <li>
-                      <a href="index2.html">Docentes</a>
+                      <a href="docente.php">Docentes</a>
                     </li>
 
                   </ul>
@@ -91,7 +91,7 @@ session_start();
                       <a href="calificaciones.html">Calificaciones</a>
                     </li>
                     <li>
-                      <a href="tareas.html">Tareas</a>
+                      <a href="tareas.php">Tareas</a>
                     </li>
                   </ul>
                 </li>
@@ -118,12 +118,12 @@ session_start();
                 </li>
 
                 <li>
-                  <a href="grados.html">
+                  <a href="grados.php">
                     <i class="fa fa-book"></i> Grados </a>
                 </li>
 
                 <li>
-                  <a href="materias.html">
+                  <a href="materias.php">
                     <i class="fa fa-pencil"></i> Materias </a>
                 </li>
 
@@ -139,27 +139,27 @@ session_start();
                       </a>
                       <ul class="nav child_menu">
                         <li class="sub_menu">
-                          <a href="mantenimiento2.html">Departamento</a>
+                          <a href="mantenimiento2.php">Departamento</a>
                         </li>
                         <li>
-                          <a href="mantenimiento2.html">Municipio</a>
+                          <a href="mantenimiento2.php">Municipio</a>
                         </li>
                       </ul>
                     </li>
                     <li>
-                      <a href="mantenimiento.html">Estado Civìl</a>
+                      <a href="mantenimiento.php">Estado Civìl</a>
                     </li>
                     <li>
-                      <a href="mantenimiento.html">Género</a>
+                      <a href="mantenimiento.php">Género</a>
                     </li>
                     <li>
-                      <a href="mantenimiento.html">Medios de Transporte</a>
+                      <a href="mantenimiento.php">Medios de Transporte</a>
                     </li>
                     <li>
-                      <a href="mantenimiento.html">Periodos</a>
+                      <a href="mantenimiento.php">Periodos</a>
                     </li>
                     <li>
-                      <a href="mantenimiento.html">Religión</a>
+                      <a href="mantenimiento.php">Religión</a>
                     </li>
                   </ul>
                 </li>

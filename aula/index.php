@@ -1,3 +1,27 @@
+<?php
+
+session_start();
+if(empty($_SESSION['logged_in']))
+{
+    header('Location: login.php');
+    exit;
+}
+
+  if (empty($_SESSION['email'])) {
+    session_start();
+    session_destroy();
+    header('location: login.php');
+  }
+
+  if (isset($_POST['cerrar_sesion'])) {
+    /* session_start();
+    session_unset();
+    session_destroy();
+    header('location: login.php'); */
+    require 'logout.php';
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -171,7 +195,7 @@
             <!-- /sidebar menu -->
 
             <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small">
+            <div class="sidebar-footer hidden-small" method="post">
               <a data-toggle="tooltip" data-placement="top" title="Settings">
                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
               </a>
@@ -181,7 +205,7 @@
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+              <a href="logout.php" data-toggle="tooltip" data-placement="top" title="Logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -212,7 +236,8 @@
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <!-- los log ooooooooouuuuuuuuuuuuuuuuuutttttttttttt-->
+                    <li><a href="logout.php"><i class="fa fa-sign-out pull-right" name="cerrar_sesion"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -608,6 +633,7 @@
                   </ul>
                   <div class="clearfix"></div>
                 </div>
+                 <!-- holaaaa -->
                 <div class="x_content">
                   <div class="dashboard-widget-content">
                     <ul class="quick-list">
@@ -621,7 +647,7 @@
                       <li><i class="fa fa-bar-chart"></i><a href="#">Auto Renewal</a> </li>
                       <li><i class="fa fa-line-chart"></i><a href="#">Achievements</a>
                       </li>
-                      <li><i class="fa fa-area-chart"></i><a href="#">Logout</a>
+                      <li><i class="fa fa-bar-chart"></i><a href="logout.php">Log out</a>
                       </li>
                     </ul>
 

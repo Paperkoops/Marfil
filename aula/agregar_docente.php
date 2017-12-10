@@ -18,7 +18,7 @@ if (!empty($_POST)) {
   $religion = $_POST['religion'];
   $tipoUsuario = $_POST['tipoUsuario'];
   $foto = $_POST['foto'];
-
+  
   $valid = true;
 
   $nombre=$religion;
@@ -31,8 +31,8 @@ if (!empty($_POST)) {
 	// insert data
 	if ($valid) {
     
-    $sql = "INSERT INTO `docente` (`Nombre_Docente`, `Apellido_Docente`, `Especialidad`, `DUI`, `Escalafón`, `isss`, `afp`, `Tipo_Usuario`, `Foto`, `Id_Religion`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1);
+    $sql = "INSERT INTO `docente` (`Nombre_Docente`, `Apellido_Docente`, `Especialidad`, `DUI`, `Escalafón`, `isss`, `afp`, `Tipo_Usuario`, `Foto`, `Id_Religion`, `Status`, `cuenta`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1, 0);
     Database::executeRow($sql, $values);
     $inserted = true;
 
@@ -595,7 +595,7 @@ if (!empty($_POST)) {
 
                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                       <label>Tipo de Usuario *</label>
-                      <input type="text" class="form-control has-feedback-left" name="tipoUsuario" placeholder="Numero del DUI" required="required">
+                      <input type="text" class="form-control has-feedback-left" name="tipoUsuario" placeholder="Tipo de usuario" required="required">
                       <span class="fa fa-folder-open-o form-control-feedback left" aria-hidden="true"></span>
                     </div>
 

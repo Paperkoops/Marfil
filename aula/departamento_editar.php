@@ -16,7 +16,7 @@ if (!empty($_POST)) {
 	$nameError = null;
 	
   // keep track post values
-  $name = $_POST['name'];
+  $nombre = $_POST['nombre'];
 
   $valid = true;
 	
@@ -24,7 +24,7 @@ if (!empty($_POST)) {
 	if ($valid) {
     
     $sql = "UPDATE `departamento` SET `Nombre_Departamento`=?, `Status`=? WHERE Id_Departamento=?";
-    $values=array($name, 1, $id);
+    $values=array($nombre, 1, $id);
 
     Database::executeRow($sql, $values);
     $inserted = true;
@@ -36,7 +36,7 @@ else {
   $datos=Database::getRow($sql, $values);
    
   $id = $datos['Id_Departamento'];
-  $name = $datos['Nombre_Departamento'];
+  $nombre = $datos['Nombre_Departamento'];
 
 }
 ?>
@@ -378,7 +378,7 @@ else {
                         
                       <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                         <label>Nombre del Departamento *</label>
-                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" class="form-control has-feedback-left" name="name" placeholder="Nombre del Departamento">
+                        <input type="text" class="form-control has-feedback-left" value="<?php print($nombre); ?>" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del Departamento">
                         <span class="fa fa-circle-o form-control-feedback left" aria-hidden="true"></span>
                       </div>
 

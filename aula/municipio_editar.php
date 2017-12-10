@@ -16,14 +16,14 @@ if (!empty($_POST)) {
 	$nameError = null;
 	
   // keep track post values
-  $name = $_POST['nombre'];
-  $municipio = $_POST['dpto'];
+  $nombre = $_POST['nombre'];
+  $municipio = $_POST['municipio'];
 
   $valid = true;
 	
-  $nombre=$municipio;
+  $nombres=$municipio;
   $sql="SELECT * FROM departamento WHERE Nombre_Departamento=?";
-  $values=array($nombre);
+  $values=array($nombres);
   $datos=Database::getRow($sql, $values);
   $municipio = $datos['Id_Departamento'];
   
@@ -31,7 +31,7 @@ if (!empty($_POST)) {
 	if ($valid) {
     
     $sql = "UPDATE `municipio` SET `Nombre_Municipio`=?, `Id_Departamento`=? , `Status`=? WHERE `Id_Municipio`=?";
-    $values=array($name, $municipio, 1, $id);
+    $values=array($nombre, $municipio, 1, $id);
 
     Database::executeRow($sql, $values);
     $inserted = true;
@@ -43,7 +43,7 @@ else {
   $datos=Database::getRow($sql, $values);
    
   $id = $datos['Id_Municipio'];
-  $name = $datos['Nombre_Municipio'];
+  $nombre = $datos['Nombre_Municipio'];
   $municipio = $datos['Id_Departamento'];
 
 }
@@ -386,14 +386,14 @@ else {
                     
                   <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                     <label>Nombre del Municipio *</label>
-                    <input type="text" class="form-control has-feedback-left" name="nombre" placeholder="Nombre del municipio" required="required">
+                    <input type="text" class="form-control has-feedback-left" value="<?php print($nombre); ?>" name="nombre" placeholder="Nombre del municipio" required="required">
                     <span class="fa fa-circle-o form-control-feedback left" aria-hidden="true"></span>
                   </div>
 
                       <div class="form-group">
                       <label class="col-md-6 col-sm-6 col-xs-12">Departamento *</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control has-feedback-left" name="dpto" required="required">
+                        <select class="form-control has-feedback-left" value="<?php print($municipio); ?>" name="municipio" required="required">
                           <?php
                             $sql="SELECT * FROM departamento WHERE Status=?";
                             $values=array(1);
@@ -416,7 +416,9 @@ else {
     
                           <div class="form-group">
                             <div class="col-md-12 col-sm-12 col-xs-12">
+                              <a href="mantenimiento2.php">
                               <button type="button" class="btn btn-primary">Cancelar</button>
+                              </a>
                               <button type="submit" class="btn btn-info">Editar</button>
                             </div>
                           </div>

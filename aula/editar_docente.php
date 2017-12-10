@@ -38,8 +38,8 @@ if (!empty($_POST)) {
 	// insert data
 	if ($valid) {
     
-    $sql = "UPDATE `docente` SET `Nombre_Docente`=?, `Apellido_Docente`=?, `Especialidad`=?, `DUI`=?, `Escalafón`=?, `isss`=?, `afp`=?, `Tipo_Usuario`=?, `Foto`=?, `Id_Religion`=?, `Status`=? WHERE Id_Docente=?";
-    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1, $id);
+    $sql = "UPDATE `docente` SET `Nombre_Docente`=?, `Apellido_Docente`=?, `Especialidad`=?, `DUI`=?, `Escalafón`=?, `isss`=?, `afp`=?, `Tipo_Usuario`=?, `Foto`=?, `Id_Religion`=?, `Status`=?, `cuenta`=? WHERE Id_Docente=?";
+    $values=array($nombreDocente, $apellidoDocente, $especialidad, $dui, $escalafon, $isss, $afp, $tipoUsuario, $foto, $religion, 1, 0, $id);
 
     Database::executeRow($sql, $values);
     $inserted = true;
