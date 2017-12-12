@@ -51,12 +51,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
         //$mail->AltBody = "Hola OWO";
         if(!$mail->send()){
             echo "Mailer Error:".$mail->ErrorInfo;
-            
+            print_r($user); die;
             header("location: login.php");
         }
         else{
             echo "Message sent!";
-            print_r($user); die;
             header("location: success.php");
         }
 

@@ -120,6 +120,7 @@ session_start();
 
                   <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                    <li><a href="agregar_usuario.php">Usuarios</a></li>
                       <li><a href="alumnos.php">Alumnos</a></li>
                       <li><a href="docente.php">Docentes</a></li>
 
@@ -128,7 +129,7 @@ session_start();
                   
                   <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="calificaciones.php">Calificaciones</a></li>
+                      <li><a href="calificar.php">Calificaciones</a></li>
                       <li><a href="tareas.php">Tareas</a></li>
                     </ul>
                   </li>
@@ -171,13 +172,9 @@ session_start();
                     </ul>
                   </li>
 
-                  <li><a href="pagos.html"><i class="fa fa-money"></i> Pagos </a></li>
+                  <li><a href="pagos.php"><i class="fa fa-money"></i>Pagos</a> </li>
                   
-                  <li><a><i class="fa fa-line-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      
-                    </ul>
-                  </li>
+                  <li><a><i class="fa fa-line-chart"></i> Reportes</a></li>
                 </ul>
               </div>
 
@@ -195,7 +192,7 @@ session_start();
                   
                   <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="calificaciones.php">Calificaciones</a></li>
+                      <li><a href="calificar.php">Calificaciones</a></li>
                       <li><a href="tareas.php">Tareas</a></li>
                     </ul>
                   </li>
@@ -360,7 +357,7 @@ session_start();
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
