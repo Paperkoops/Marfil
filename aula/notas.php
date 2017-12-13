@@ -1,6 +1,13 @@
 <?php
 include("database.php");
 session_start();
+if (isset($_GET['I'])) {
+  $id=$_GET['I'];
+}
+else
+{
+  header("location: calificaciones.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +19,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Alumnos </title>
+    <title>Notas </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -271,8 +278,7 @@ session_start();
             <div class="page-title">
               <div class="title_left">
                 <h3>Alumnos</h3>
-                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
-                <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
+                
               </div>
 
 
@@ -295,7 +301,7 @@ session_start();
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Administrar <small>Todos</small></h2>
+                    <h2>Notas <small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -334,8 +340,8 @@ session_start();
 
 
                       <?php
-$sql="SELECT * FROM alumno WHERE Status=?";
-$values=array(1);
+$sql="SELECT a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, a.Fecha_Nacimiento, gen.Nombre_Genero, g.Nombre_Grado from alumno a, genero gen, grado g WHERE a.Id_Genero=gen.Id_Genero AND a.Id_Grado=g.Id_Grado AND a.Status=? AND a.Id_Grado=?";
+$values=array(1, $id);
 $datos=Database::getRows($sql, $values);
 $menu="";
   
@@ -349,15 +355,11 @@ foreach ($datos as $fila)
               <td>$fila[Nombre_Alumno]</td>
               <td>$fila[Apellido_Alumno]</td>
               <td>$fila[Fecha_Nacimiento]</td>
-              <td>$fila[Id_Genero]</td>
-              <td>$fila[Id_Grado]</td>
+              <td>$fila[Nombre_Genero]</td>
+              <td>$fila[Nombre_Grado]</td>
               <td>
               <div style='text-align: center;'>
-              <a href='ver_alumno.php?Nie=$fila[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
-              <a href='editar_alumno.php?id=$fila[NIE]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-              <a href='eliminar_alumno.php?id=$fila[NIE]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
-              
-              <a href='#' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='right' title='Re-Matricular'><i class='fa fa-history'></i></a>
+              <a target='_blank' href='../fpdf/boleta.php?Nie=$fila[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver Boleta de Notas </a>
               </div>
             </td>
               
@@ -383,71 +385,7 @@ print($menu);
             </div>
 
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>NIE</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Fecha de Nacimiento</th>
-                          <th>Genero</th>
-                          <th>Grado</th>
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-                      <?php
-$sql="SELECT * FROM alumno WHERE Status=?";
-$values=array(1);
-$datos=Database::getRows($sql, $values);
-$menu="";
-  
-
-foreach ($datos as $fila) 
-{
-  
-
-  $menu.="<tr>
-              <td>$fila[NIE]</td>
-              <td>$fila[Nombre_Alumno]</td>
-              <td>$fila[Apellido_Alumno]</td>
-              <td>$fila[Fecha_Nacimiento]</td>
-              <td>$fila[Id_Genero]</td>
-              <td>$fila[Id_Grado]</td>
-              
-              
-
-          </tr>";
-         
-
-}
-
-
-print($menu);
-?>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+           
 
           </div>
         </div>

@@ -436,7 +436,49 @@ foreach ($datos as $fila)
     <td>$datos2[Nota_Obtenida]</td>
     <td>
     <div style='text-align: center;'>
-    <a href='editar_alumno.php?id=$fila[NIE]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+    <!-- Large modal -->
+    <button type='button' class='btn btn-info btn-xs' data-toggle='modal' data-target='.bs-example-modal-lg-$fila[NIE]'><i class='fa fa-pencil'></i> Editar</button>
+
+    <div class='modal fade bs-example-modal-lg-$fila[NIE]' tabindex='-1' role='dialog' aria-hidden='true'>
+      <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>×</span>
+            </button>
+            <h4 class='modal-title' id='myModalLabel'>Calificar $fila[NIE]</h4>
+          </div>
+          <div class='modal-body'>
+            <h4>Calificacion</h4>
+            <form class='form-horizontal form-label-left input_mask' method='post'>
+
+            <input type='text' name='nie' value=$fila[NIE] style='display:none;'>
+            <input type='text' name='tipo' value=edit style='display:none;'>
+            <div class='col-md-6 col-sm-6 col-xs-12 form-group'>
+            
+            
+            <input type='number' name='calificacion' value=$datos2[Nota_Obtenida]  required='required' data-validate-minmax='10,100' class='form-control has-feedback-left col-md-7 col-xs-12'>
+            
+          </div>
+
+          
+          <div class='form-group'>
+            <div class='col-md-12 col-sm-12 col-xs-12'>
+              
+              <button type='submit' class='btn btn-success'>Aceptar</button>
+            </div>
+          </div>
+
+        </form>
+
+            </div>
+          <div class='modal-footer'>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
  </div>
   </td>
     
@@ -522,71 +564,7 @@ print($menu);
             </div>
 
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>NIE</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Fecha de Nacimiento</th>
-                          <th>Genero</th>
-                          <th>Grado</th>
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-                      <?php
-$sql="SELECT * FROM alumno WHERE Status=?";
-$values=array(1);
-$datos=Database::getRows($sql, $values);
-$menu="";
-  
-
-foreach ($datos as $fila) 
-{
-  
-
-  $menu.="<tr>
-              <td>$fila[NIE]</td>
-              <td>$fila[Nombre_Alumno]</td>
-              <td>$fila[Apellido_Alumno]</td>
-              <td>$fila[Fecha_Nacimiento]</td>
-              <td>$fila[Id_Genero]</td>
-              <td>$fila[Id_Grado]</td>
-              
-              
-
-          </tr>";
-         
-
-}
-
-
-print($menu);
-?>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
 
           </div>
         </div>
