@@ -308,6 +308,7 @@ session_start();
             <div class="page-title">
               <div class="title_left">
                 <h3>Meses de Pago</h3>
+                <a href="../fpdf/circular_pagos.php"><button type="button" class="btn btn-round btn-success">Circulares de Pago <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
 
