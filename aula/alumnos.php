@@ -92,14 +92,7 @@ session_start();
             <h3>General</h3>
             <ul class="nav side-menu">
 
-<<<<<<< HEAD
-                  <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="alumnos.php">Alumnos</a></li>
-                      <li><a href="index2.html">Docentes</a></li>
-=======
               <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
->>>>>>> 4bcb1c9659edb9e94fa04914ca1f1c876e389b6d
 
               <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
