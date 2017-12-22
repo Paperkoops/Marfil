@@ -22,15 +22,70 @@ session_start();
     require 'logout.php';
   }
 
-  $docente = $_SESSION['docente'];
+  $docentes = $_SESSION['docente'];
   
   $aVar = mysqli_connect("localhost", "root", "", "base_colegio");
-  $result = mysqli_query($aVar, "SELECT d.Id_Docente, d.Nombre_Docente, d.Tipo_Usuario FROM docente d, usuarios u WHERE d.Id_Docente = '$docente' AND u.Id_Docente=d.Id_Docente AND u.Status = 1");
+  $result = mysqli_query($aVar, "SELECT d.Id_Docente, d.Nombre_Docente, d.Tipo_Usuario FROM docente d, usuarios u WHERE d.Id_Docente = '$docentes' AND u.Id_Docente=d.Id_Docente AND u.Status = 1");
 
   //$row = mysqli_fetch_assoc($result);
   $user = $result->fetch_assoc();
-  //print_r($user); die;
+  //print_r($user); die; 
 
+$id = null;
+if (!empty($_GET['id'])) {
+	$id = $_REQUEST['id'];
+}
+
+if (null == $id ) {
+	header("Location: materias.php");
+}
+
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	
+  // keep track post values
+  $nombreMateria = $_POST['nombreMateria'];
+  $docente = $_POST['docente'];
+  $grado = $_POST['grado'];
+  $eval = $_POST['eval'];
+
+  $valid = true;
+
+  $nombre=$docente;
+  $sql="SELECT * FROM docente WHERE Nombre_Docente=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $docente = $datos['Id_Docente'];
+  
+  $nombre=$grado;
+  $sql="SELECT * FROM grado WHERE Nombre_Grado=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $grado = $datos['Id_Grado'];
+  
+	// insert data
+	if ($valid) {
+    
+    $sql = "UPDATE `materia` SET `Nombre_Materia`=?, `Id_Docente`=?, `Id_Grado`=?, `Eval_Mined`=?, `Status`=? WHERE Id_Materia=?";
+    $values=array($nombreMateria, $docente, $grado, $eval, 1, $id);
+
+    Database::executeRow($sql, $values);
+    $inserted = true;
+	}
+}
+else {
+	$sql="SELECT * FROM materia WHERE Id_Materia=?";
+  $values=array($id);
+  $datos=Database::getRow($sql, $values);
+   
+  $id = $datos['Id_Materia'];
+  $nombreMateria = $datos['Nombre_Materia'];
+  $docente = $datos['Id_Docente'];
+  $grado = $datos['Id_Grado'];
+  $eval = $datos['Eval_Mined'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +98,7 @@ session_start();
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Mantenimiento </title>
+  <title>Editar Docente</title>
 
   <!-- Bootstrap -->
   <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,8 +107,15 @@ session_start();
   <!-- NProgress -->
   <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
 
+  <!-- bootstrap-daterangepicker -->
+  <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+  <!-- bootstrap-datetimepicker -->
+  <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
   <!-- Custom Theme Style -->
   <link href="../build/css/custom.min.css" rel="stylesheet">
+
+
 </head>
 
 <body class="nav-md">
@@ -63,7 +125,9 @@ session_start();
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
             <a href="index.html" class="site_title">
-                <span>Colegio Nuevo Milenio</span>
+              <span>
+                <small>Colegio Nuevo Milenio</small>
+              </span>
             </a>
           </div>
 
@@ -100,7 +164,7 @@ session_start();
 
               <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="agregar_usuario.php">Usuarios</a></li>   
+                  <li><a href="agregar_usuario.php">Usuarios</a></li>                
                   <li><a href="alumnos.php">Alumnos</a></li>
                   <li><a href="docente.php">Docentes</a></li>
 
@@ -152,6 +216,7 @@ session_start();
                 </ul>
               </li>
 
+             
               <li><a href="pagos.php"><i class="fa fa-money"></i>Pagos</a> </li>
               
               <li><a><i class="fa fa-line-chart"></i> Reportes</a></li>
@@ -324,24 +389,13 @@ session_start();
       </div>
       <!-- /top navigation -->
 
-
       <!-- page content -->
-      <!-- Departamento -->
       <div class="right_col" role="main">
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Mantenimiento</h3>
-              <a href="departamento.php">
-                <button type="button" class="btn btn-round btn-success">Agregar registros 
-                  <i class="fa fa-plus-circle"></i>
-                </button>
-              </a>
-              <button type="button" class="btn btn-round btn-info">Ayuda
-                <i class="fa fa-question-circle"></i>
-              </button>
+              <h3>Editar Docentes</h3>
             </div>
-
 
             <div class="title_right">
               <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -359,9 +413,12 @@ session_start();
 
           <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
+
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Departamentos </h2>
+                  <h2>Editar Docente
+                    <small>Rellene la información por favor</small>
+                  </h2>
                   <ul class="nav navbar-right panel_toolbox">
                     <li>
                       <a class="collapse-link">
@@ -390,327 +447,161 @@ session_start();
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
+                  <br />
+                  <form class="form-horizontal form-label-left input_mask" method="post">
 
-                  <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Departamento</th>
-                        <th>Administrar</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                            <?php
-                            $sql="SELECT Id_Departamento, Nombre_Departamento FROM departamento WHERE Status=?";
-                            $values=array(1);
-                            $datos=Database::getRows($sql, $values);
-                            $menu="";
-                              
-                            foreach ($datos as $fila) 
-                            {
-                              $menu.="<tr>
-                                          <td>$fila[Id_Departamento]</td>
-                                          <td>$fila[Nombre_Departamento]</td>
-                                          <td>
-                                          <div style='text-align: center;'>
-                                          <a href='departamento_editar.php?id=$fila[Id_Departamento]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-                                          <a href='eliminar_departamento.php?id=$fila[Id_Departamento]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
-                                          </div>
-                                        </td>
-                                      </tr>";
-                                     
-                            }
-                            print($menu);
-                            ?>
-                    </tbody>
-                  </table>
-                  </div>
-                  </div>
-                </div>
-              </div>
-
-          <!-- Municipios -->
-          <br>
-          <br>
-          
-          <div class="page-title">
-              <div class="title_left">
-                <a href="municipio.php">
-                  <button type="button" class="btn btn-round btn-success">Agregar registros 
-                    <i class="fa fa-plus-circle"></i>
-                  </button>
-                </a>
-                <button type="button" class="btn btn-round btn-info">Ayuda
-                  <i class="fa fa-question-circle"></i>
-                </button>
-              </div>
-  
-  
-              <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          <div class="clearfix"></div>
-
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Municipios </h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                      <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                      </a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <i class="fa fa-wrench"></i>
-                      </a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li>
-                          <a href="#">Settings 1</a>
-                        </li>
-                        <li>
-                          <a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="close-link">
-                        <i class="fa fa-close"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Municipio</th>
-                        <th>Departamento</th>
-                        <th>Administrar</th>
-                      </tr>
-                    </thead>
-
-
-                    <tbody>
-                   <?php
-                    $sql="SELECT m.Id_Municipio, m.Nombre_Municipio, d.Nombre_Departamento FROM municipio m, departamento d WHERE m.Id_Departamento = d.Id_Departamento AND m.Status=?";
-                    $values=array(1);
-                    $datos=Database::getRows($sql, $values);
-                    $menu="";
-                      
-                    foreach ($datos as $fila) 
-                    {
-                      $menu.="<tr>
-                                  <td>$fila[Id_Municipio]</td>
-                                  <td>$fila[Nombre_Municipio]</td>
-                                  <td>$fila[Nombre_Departamento]</td>
-                                  <td>
-                                  <div style='text-align: center;'>
-                                  <a href='municipio_editar.php?id=$fila[Id_Municipio]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-                                  <a href='eliminar_municpio.php?id=$fila[Id_Municipio]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
-                                  </div>
-                                </td>
-                              </tr>";
-                             
-                    }
-                    print($menu);
-                    ?> 
-                    </tbody>
-                  </table> 
-                  </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir
-                      <small>Todos</small>
-                    </h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li>
-                        <a class="collapse-link">
-                          <i class="fa fa-chevron-up"></i>
-                        </a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Nombre del Departamento</th>
-                    </tr>
-                  </thead>
-
-
-                  <tbody>
-                        <?php
-                        $sql="SELECT Id_Departamento, Nombre_Departamento FROM departamento WHERE Status=?";
-                        $values=array(1);
-                        $datos=Database::getRows($sql, $values);
-                        $menu="";
-                          
-                        foreach ($datos as $fila) 
-                        {
-                          $menu.="<tr>
-                                      <td>$fila[Id_Departamento]</td>
-                                      <td>$fila[Nombre_Departamento]</td>
-                                  </tr>";
-                                 
-                        }
-                        print($menu);
-                        ?>
-                </tbody>
-                    </table>
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Nombre de la Materia *</label>
+                      <input type="text" class="form-control has-feedback-left" value="<?php print($nombreMateria); ?>" name="nombreMateria" placeholder="Nombre de la Materia" required="required">
+                      <span class="fa fa-mortar-board form-control-feedback left" aria-hidden="true"></span>
                     </div>
-                  </div>
-                </div>
-              </div>  
 
-
-      
-
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir
-                      <small>Todos</small>
-                    </h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li>
-                        <a class="collapse-link">
-                          <i class="fa fa-chevron-up"></i>
-                        </a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Nombre del Municipio</th>
-                      <th>Departamento</th>
-                    </tr>
-                  </thead>
-
-
-                  <tbody>
-                        <?php
-                        $sql="SELECT m.Id_Municipio, m.Nombre_Municipio, d.Nombre_Departamento FROM municipio m, departamento d WHERE m.Id_Departamento = d.Id_Departamento AND m.Status=?";
-                        $values=array(1);
-                        $datos=Database::getRows($sql, $values);
-                        $menu="";
-                          
-                        foreach ($datos as $fila) 
-                        {
-                          $menu.="<tr>
-                                      <td>$fila[Id_Municipio]</td>
-                                      <td>$fila[Nombre_Municipio]</td>
-                                      <td>$fila[Nombre_Departamento]</td>
-                                  </tr>";
-                                 
-                        }
-                        print($menu);
-                        ?>
-                </tbody>
-                    </table>
+                    <div class="form-group">
+                    <label class="col-md-6 col-sm-6 col-xs-12">Docente *</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" value="<?php print($docente); ?>" name="docente" required="required">
+                      <?php
+                  $sql="SELECT * FROM docente WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Docente]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                     </div>
-                  </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <label>Eval del MINED *</label>
+                      <input type="text" class="form-control has-feedback-left" value="<?php print($eval); ?>" name="eval" placeholder="Numero de Eval del MINED" required="required">
+                      <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-6 col-sm-6 col-xs-12">Grado *</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" value="<?php print($grado); ?>" name="grado" required="required">
+                      <?php
+                  $sql="SELECT * FROM grado WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Grado]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    </div>
+
+                    <span class="input-group-btn"></span>
+
+                    <div class="form-group">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="ln_solid"></div>
+                        <a href="materias.php">
+                        <button type="button" class="btn btn-primary">Cancelar</button>
+                        </a> 
+                        <button class="btn btn-primary" type="reset">Limpiar Todo</button>
+                        <button type="submit" class="btn btn-success">Editar</button>
+                      </div>
+                    </div>
+
+                  </form>
                 </div>
               </div>
-
-
 
 
 
 
             </div>
           </div>
-            <!-- /page content -->
-            
-            <!-- footer content -->
-            <footer>
-              <div class="pull-right">
-                Gentelella - Bootstrap Admin Template by
-                <a href="https://colorlib.com">Colorlib</a>
-              </div>
-              <div class="clearfix"></div>
-            </footer>
-            <!-- /footer content -->
-            </div>
-            </div>
-            
-            <!-- jQuery -->
-            <script src="../vendors/jquery/dist/jquery.min.js"></script>
-            <!-- Bootstrap -->
-            <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-            <!-- FastClick -->
-            <script src="../vendors/fastclick/lib/fastclick.js"></script>
-            <!-- NProgress -->
-            <script src="../vendors/nprogress/nprogress.js"></script>
-            
-            <!-- Datatables -->
-            <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-            <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-            <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-            <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-            <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-            <script src="../vendors/jszip/dist/jszip.min.js"></script>
-            <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-            <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-            
-            <!-- Custom Theme Scripts -->
-            <script src="../build/js/custom.min.js"></script>
-            <script src="js/custo.js"></script>
-            </body>
-            
-            </html>
+        </div>
+      </div>
+      <!-- /page content -->
+
+      <!-- footer content -->
+      <footer>
+        <div class="pull-right">
+          Gentelella - Bootstrap Admin Template by
+          <a href="https://colorlib.com">Colorlib</a>
+        </div>
+        <div class="clearfix"></div>
+      </footer>
+      <!-- /footer content -->
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script src="../vendors/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- FastClick -->
+  <script src="../vendors/fastclick/lib/fastclick.js"></script>
+  <!-- NProgress -->
+  <script src="../vendors/nprogress/nprogress.js"></script>
+
+
+  <!-- Custom Theme Scripts -->
+  <script src="../build/js/custom.min.js"></script>
+  <!-- bootstrap-daterangepicker -->
+  <script src="../vendors/moment/min/moment.min.js"></script>
+
+  <?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Docentes',
+    text: 'El docente fue registrado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='docente.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
+
+  <!-- bootstrap-datetimepicker -->
+  <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <script>
+    $('#myDatepicker').datetimepicker({
+      format: 'YYYY-MM-DD',
+      ignoreReadonly: true,
+      allowInputToggle: true
+    });
+    $('#myDatepicker2').datetimepicker({
+      format: 'YYYY-MM-DD',
+      ignoreReadonly: true,
+      allowInputToggle: true
+    });
+  </script>
+</body>
+
+</html>

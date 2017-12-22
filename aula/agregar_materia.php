@@ -1,3 +1,76 @@
+<?php
+include("database.php");
+session_start();
+
+  if(empty($_SESSION['logged_in']))
+  {
+    header('Location: login.php');
+    exit;
+  }
+
+  if (empty($_SESSION['email'])) {
+    session_start();
+    session_destroy();
+    header('location: login.php');
+  }
+
+  if (isset($_POST['cerrar_sesion'])) {
+    /* session_start();
+    session_unset();
+    session_destroy();
+    header('location: login.php'); */
+    require 'logout.php';
+  }
+
+  $docentes = $_SESSION['docente'];
+  
+  $aVar = mysqli_connect("localhost", "root", "", "base_colegio");
+  $result = mysqli_query($aVar, "SELECT d.Id_Docente, d.Nombre_Docente, d.Tipo_Usuario FROM docente d, usuarios u WHERE d.Id_Docente = '$docentes' AND u.Id_Docente=d.Id_Docente AND u.Status = 1");
+
+  //$row = mysqli_fetch_assoc($result);
+  $user = $result->fetch_assoc();
+  //print_r($user); die; 
+
+$inserted = false;
+if (!empty($_POST)) {
+	// keep track validation errors
+	$nameError = null;
+	$emailError = null;
+	$mobileError = null;
+	
+  // keep track post values
+  $nombreMateria = $_POST['nombreMateria'];
+  $docente = $_POST['docente'];
+  $grado = $_POST['grado'];
+  $eval = $_POST['eval'];
+
+  $valid = true;
+
+  $nombre=$docente;
+  $sql="SELECT * FROM docente WHERE Nombre_Docente=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $docente = $datos['Id_Docente'];
+  
+  $nombre=$grado;
+  $sql="SELECT * FROM grado WHERE Nombre_Grado=?";
+  $values=array($nombre);
+  $datos=Database::getRow($sql, $values);
+  $grado = $datos['Id_Grado'];
+  
+  
+	// insert data
+	if ($valid) {
+    
+    $sql = "INSERT INTO `materia` (`Nombre_Materia`, `Id_Docente`, `Id_Grado`, `Eval_Mined`, `Status`) VALUES (?, ?, ?, ?, ?)";
+    $values=array($nombreMateria, $docente, $grado, $eval, 1);
+    Database::executeRow($sql, $values);
+    $inserted = true;
+
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,269 +117,143 @@
           <div class="clearfix"></div>
 
           <!-- menu profile quick info -->
+            
           <div class="profile clearfix">
-            <div class="profile_pic">
-              <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
-              <span>Bienvenido,</span>
-              <h2>John Doe</h2>
-            </div>
+          <?php
+          $doc_nombre = $user['Nombre_Docente'];
+          ?>
+
+          <div class="profile_info">
+            <h3>Bienvenido/a,</h3>
+            <h2><?php echo $doc_nombre ?> </h2>
           </div>
-          <!-- /menu profile quick info -->
+        </div>
+        <!-- /menu profile quick info -->
 
-          <br />
+        <br />
 
-          <!-- sidebar menu -->
-          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-              <h3>General</h3>
-              <ul class="nav side-menu">
+        <!-- sidebar menu -->
+        <?php
+        if ($user['Tipo_Usuario'] == 1 ) {
 
-                <li>
-                  <a href="index.html">
-                    <i class="fa fa-home"></i> Inicio </a>
-                </li>
+        //print de admin
+        echo  
+        '<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+          <div class="menu_section">
+            <h3>General</h3>
+            <ul class="nav side-menu">
 
-                <li>
-                  <a>
-                    <i class="fa fa-users"></i> Usuarios
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="alumnos.html">Alumnos</a>
-                    </li>
-                    <li>
-                      <a href="docentes.html">Docentes</a>
-                    </li>
+              <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
 
-                  </ul>
-                </li>
+              <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="agregar_usuario.php">Usuarios</a></li>                
+                  <li><a href="alumnos.php">Alumnos</a></li>
+                  <li><a href="docente.php">Docentes</a></li>
 
-                <li>
-                  <a>
-                    <i class="fa fa-graduation-cap"></i> Notas
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="calificaciones.html">Calificaciones</a>
-                    </li>
-                    <li>
-                      <a href="tareas.html">Tareas</a>
-                    </li>
-                  </ul>
-                </li>
+                </ul>
+              </li>
+              
+              <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="calificar.php">Calificaciones</a></li>
+                  <li><a href="tareas.php">Tareas</a></li>
+                </ul>
+              </li>
 
-                <li>
-                  <a>
-                    <i class="fa fa-gavel"></i> Conducta
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="faltas.html">Faltas</a>
-                    </li>
-                    <li>
-                      <a href="tipos_faltas.html">Tipos de Faltas</a>
-                    </li>
-                    <li>
-                      <a href="faltas_aplicadas.html">Faltas Aplicadas</a>
-                    </li>
-                    <li>
-                      <a href="observaciones.html">Observaciones</a>
-                    </li>
-                  </ul>
-                </li>
+              <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="faltas.html">Faltas</a></li>
+                  <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
+                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.html">Observaciones</a></li>
+                </ul>
+              </li>
 
-                <li>
-                  <a href="grados.html">
-                    <i class="fa fa-book"></i> Grados </a>
-                </li>
+              <li><a href="grados.php"><i class="fa fa-book"></i> Grados </a></li>
 
-                <li>
-                  <a href="materias.html">
-                    <i class="fa fa-pencil"></i> Materias </a>
-                </li>
+              <li><a href="materias.php"><i class="fa fa-pencil"></i> Materias </a></li>
 
-                <li>
-                  <a>
-                    <i class="fa fa-gear"></i> Mantenimiento
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a>Departamento
-                        <span class="fa fa-chevron-down"></span>
-                      </a>
-                      <ul class="nav child_menu">
-                        <li class="sub_menu">
-                          <a href="mantenimiento2.html">Departamento</a>
-                        </li>
-                        <li>
-                          <a href="mantenimiento2.html">Municipio</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="mantenimiento.html">Estado Civìl</a>
-                    </li>
-                    <li>
-                      <a href="mantenimiento.html">Género</a>
-                    </li>
-                    <li>
-                      <a href="mantenimiento.html">Medios de Transporte</a>
-                    </li>
-                    <li>
-                      <a href="mantenimiento.html">Periodos</a>
-                    </li>
-                    <li>
-                      <a href="mantenimiento.html">Religión</a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <a>
-                    <i class="fa fa-clock-o"></i> Horarios
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="horas_clase.html">Horas Clase</a>
-                    </li>
-                    <li>
-                      <a href="itinerario.html">Itinerario</a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <a href="pagos.html">
-                    <i class="fa fa-money"></i> Pagos </a>
-                </li>
-
-                <li>
-                  <a>
-                    <i class="fa fa-line-chart"></i> Reportes
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div class="menu_section">
-              <h3>Extra</h3>
-              <ul class="nav side-menu">
-                <li>
-                  <a>
-                    <i class="fa fa-bug"></i> Additional Pages
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="e_commerce.html">E-commerce</a>
-                    </li>
-                    <li>
-                      <a href="projects.html">Projects</a>
-                    </li>
-                    <li>
-                      <a href="project_detail.html">Project Detail</a>
-                    </li>
-                    <li>
-                      <a href="contacts.html">Contacts</a>
-                    </li>
-                    <li>
-                      <a href="profile.html">Profile</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i class="fa fa-windows"></i> Extras
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="page_403.html">403 Error</a>
-                    </li>
-                    <li>
-                      <a href="page_404.html">404 Error</a>
-                    </li>
-                    <li>
-                      <a href="page_500.html">500 Error</a>
-                    </li>
-                    <li>
-                      <a href="plain_page.html">Plain Page</a>
-                    </li>
-                    <li>
-                      <a href="login.html">Login Page</a>
-                    </li>
-                    <li>
-                      <a href="pricing_tables.html">Pricing Tables</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i class="fa fa-sitemap"></i> Multilevel Menu
-                    <span class="fa fa-chevron-down"></span>
-                  </a>
-                  <ul class="nav child_menu">
-                    <li>
-                      <a href="#level1_1">Level One</a>
-                      <li>
-                        <a>Level One
-                          <span class="fa fa-chevron-down"></span>
-                        </a>
-                        <ul class="nav child_menu">
-                          <li class="sub_menu">
-                            <a href="level2.html">Level Two</a>
-                          </li>
-                          <li>
-                            <a href="#level2_1">Level Two</a>
-                          </li>
-                          <li>
-                            <a href="#level2_2">Level Two</a>
-                          </li>
-                        </ul>
+              <li><a><i class="fa fa-gear"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a>Departamento<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li class="sub_menu"><a href="mantenimiento2.php">Departamento</a>
                       </li>
-                      <li>
-                        <a href="#level1_2">Level One</a>
+                      <li><a href="mantenimiento2.php">Municipio</a>
                       </li>
-                  </ul>
+                    </ul>
                   </li>
-                  <li>
-                    <a href="javascript:void(0)">
-                      <i class="fa fa-laptop"></i> Landing Page
-                      <span class="label label-success pull-right">Coming Soon</span>
-                    </a>
-                  </li>
-              </ul>
-            </div>
+                  <li><a href="mantenimiento.php">Estado Civìl</a></li>
+                  <li><a href="mantenimiento.php">Género</a></li>
+                  <li><a href="mantenimiento.php">Medios de Transporte</a></li>
+                  <li><a href="mantenimiento.php">Periodos</a></li>
+                  <li><a href="mantenimiento.php">Religión</a></li>
+                </ul>
+              </li>
 
+              <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="horas_clase.html">Horas Clase</a></li>
+                  <li><a href="itinerario.html">Itinerario</a></li>
+                </ul>
+              </li>
+
+              <li><a href="pagos.php"><i class="fa fa-money"></i>Pagos</a> </li>
+              
+              <li><a><i class="fa fa-line-chart"></i> Reportes</a></li>
+            </ul>
           </div>
-          <!-- /sidebar menu -->
+
+        </div>';
+
+        } else {
+        //print de normal
+        echo  
+        '<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+          <div class="menu_section">
+            <h3>General</h3>
+            <ul class="nav side-menu">
+
+              <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
+              
+              <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="calificar.php">Calificaciones</a></li>
+                  <li><a href="tareas.php">Tareas</a></li>
+                </ul>
+              </li>
+
+              <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="faltas.html">Faltas</a></li>
+                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.html">Observaciones</a></li>
+                </ul>
+              </li>
+
+              <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li><a href="horas_clase.html">Horas Clase</a></li>
+                  <li><a href="itinerario.html">Itinerario</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+        </div>';
+        }
+        ?>
+        
+        <!-- /sidebar menu -->
 
           <!-- /menu footer buttons -->
-          <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings">
-              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-              <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Lock">
-              <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            </a>
-          </div>
-          <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small" method="post">
+              <a href="logout.php" data-toggle="tooltip" data-placement="top" title="Logout">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
         </div>
       </div>
 
@@ -323,7 +270,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="images/img.jpg" alt="">John Doe
+                  <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -429,7 +376,7 @@
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Plain Page</h3>
+              <h3>Agregar materias</h3>
             </div>
 
             <div class="title_right">
@@ -483,49 +430,76 @@
                 </div>
                 <div class="x_content">
                   <br />
-                  <form class="form-horizontal form-label-left input_mask">
+                  <form class="form-horizontal form-label-left input_mask" method="post">
 
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                       <label>Nombre de la Materia *</label>
-                      <input type="text" class="form-control has-feedback-left" id="NombreAlumno" placeholder="Nombre de la Materia">
+                      <input type="text" class="form-control has-feedback-left" name="nombreMateria" placeholder="Nombre de la Materia" required="required">
                       <span class="fa fa-mortar-board form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
                     <div class="form-group">
-                      <label class="col-md-6 col-sm-6 col-xs-12">Docente *</label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control has-feedback-left" id="EstadoCivilAlumno">
-                          <option>Rodrigo Candray</option>
-                          <option>Ricardo Antonio</option>
-
-                        </select>
-                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                      </div>
+                    <label class="col-md-6 col-sm-6 col-xs-12">Docente *</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" name="docente" required="required">
+                      <?php
+                  $sql="SELECT * FROM docente WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Docente]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                    </div>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                       <label>Eval del MINED *</label>
-                      <input type="text" class="form-control has-feedback-left" id="ApellidoAlumno" placeholder="Numero de Eval del MINED">
+                      <input type="text" class="form-control has-feedback-left" name="eval" placeholder="Numero de Eval del MINED" required="required">
                       <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
                     </div>
 
                     <div class="form-group">
                       <label class="col-md-6 col-sm-6 col-xs-12">Grado *</label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control has-feedback-left" id="GeneroAlumno">
-                          <option>1 año</option>
-                          <option>2 año</option>
-
-                        </select>
-                        <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
-                      </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <select class="form-control has-feedback-left" name="grado" required="required">
+                      <?php
+                  $sql="SELECT * FROM grado WHERE Status=?";
+                  $values=array(1);
+                  $datos=Database::getRows($sql, $values);
+                  $menu="";
+                    
+                  foreach ($datos as $fila) 
+                  {
+                    $menu.="
+                                <option>$fila[Nombre_Grado]</option>
+                            ";
+                  }
+                  print($menu);
+                ?>
+                        
+                      </select>
+                      <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
                     </div>
+                    </div>
+
                     <span class="input-group-btn"></span>
 
                     <div class="form-group">
                       <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="ln_solid"></div>
+                        <a href="materias.php">
                         <button type="button" class="btn btn-primary">Cancelar</button>
+                        </a> 
                         <button class="btn btn-primary" type="reset">Limpiar Todo</button>
                         <button type="submit" class="btn btn-success">Aceptar</button>
                       </div>
