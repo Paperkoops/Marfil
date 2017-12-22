@@ -4,6 +4,7 @@ include 'exfpdf.php';
 include 'easyTable.php';
 include('../aula/database.php');
 
+/*
 if (isset($_GET['g'])) {
     $id=$_GET['g'];
     $sql="SELECT * from grado Where Id_Grado=? AND Status=?";
@@ -15,7 +16,7 @@ if (isset($_GET['g'])) {
     header("location: ../aula/calificaciones.php");
   }
 
-  
+  */
 
  $pdf=new exFPDF();
  $pdf->AddPage('P', 'Letter'); 
@@ -111,7 +112,7 @@ switch($mes)
      $table->easyCell("", 'font-size:6; align:C; valign:M; colspan:12; font-style:B');
      $table->printRow(); 
     
-     $sql="SELECT a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, a.Fecha_Nacimiento, a.Id_Genero, a.Nacionalidad, a.Id_Estado, a.Partida_Nacimiento, a.Distancia, a.Id_Medio, a.Dirección, a.Id_Municipio, a.Telefono, a.Celular, a.Email, a.Id_Religion, a.Miembros_Familia, a.Trabaja, a.Tiene_Hijos, a.Convivencia, a.Nombre_Padre, a.Dui_Padre, a.Telefono_Padre, a.Trabajo_Padre, a.Profesion_Padre, a.Nombre_Madre, a.Dui_Madre, a.Telefono_Madre, a.Trabajo_Madre, a.Profesion_Madre, a.Nombre_Responsable, a.Dui_Responsable, a.Telefono_Responsable, a.Trabajo_Responsable, a.Profesion_Responsable, a.Enfermedades_Alergias, a.Medicamentos, a.Fecha_Admision, a.Id_Grado, a.observacion, a.Foto, a.Status, g.Nombre_Grado, ec.Nombre_Estado, gene.Nombre_Genero, mt.Nombre_Medio, mt.Nombre_Medio, m.Nombre_Municipio, r.Nombre_Religion, case a.Trabaja when 1 then 'Si' else 'No' end as Trabaj, case a.Tiene_Hijos when 1 then 'Si' else 'No' end as Hijos FROM alumno a, grado g, estado_civil ec, genero gene, medio_transporte mt, municipio m, religion r WHERE a.Id_Genero=gene.Id_Genero AND a.Id_Estado=ec.Id_Estado AND a.Id_Medio=mt.Id_Medio AND a.Id_Municipio=m.Id_Municipio AND a.Id_Religion=r.Id_Religion AND a.Id_Grado=g.Id_Grado AND a.NIE=?";
+     $sql="SELECT a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, a.Fecha_Nacimiento, a.Id_Genero, a.Nacionalidad, a.Id_Estado, a.Partida_Nacimiento, a.Distancia, a.Id_Medio, a.Dirección, a.Id_Municipio, a.Telefono, a.Celular, a.Email, a.Id_Religion, a.Miembros_Familia, a.Trabaja, a.Tiene_Hijos, a.Convivencia, a.Nombre_Padre, a.Dui_Padre, a.Telefono_Padre, a.Trabajo_Padre, a.Profesion_Padre, a.Nombre_Madre, a.Dui_Madre, a.Telefono_Madre, a.Trabajo_Madre, a.Profesion_Madre, a.Nombre_Responsable, a.Dui_Responsable, a.Telefono_Responsable, a.Trabajo_Responsable, a.Profesion_Responsable, a.Enfermedades_Alergias, a.Medicamentos, a.Fecha_Admision, a.Id_Grado, a.observacion, a.Foto, a.Status, g.Nombre_Grado, ec.Nombre_Estado, gene.Nombre_Genero, mt.Nombre_Medio, mt.Nombre_Medio, m.Nombre_Municipio, r.Nombre_Religion, case a.Trabaja when 1 then 'Si' else 'No' end as Trabaj, case a.Tiene_Hijos when 1 then 'Si' else 'No' end as Hijos FROM alumno a, grado g, estado_civil ec, genero gene, medio_transporte mt, municipio m, religion r WHERE a.Id_Genero=gene.Id_Genero AND a.Id_Estado=ec.Id_Estado AND a.Id_Medio=mt.Id_Medio AND a.Id_Municipio=m.Id_Municipio AND a.Id_Religion=r.Id_Religion AND a.Id_Grado=g.Id_Grado AND a.NIE=? AND a.Status=1";
      $values=array($fila['Id_Alumno']);
      $datos3=Database::getRow($sql, $values);
      if ($datos3['Id_Genero'] == 1) {
