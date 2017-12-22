@@ -1,15 +1,6 @@
 <?php
 include("database.php");
 session_start();
-
-$mes = null;
-if (!empty($_GET['Mes'])) {
-	$mes = $_REQUEST['Mes'];
-}
-
-if (null == $mes ) {
-	header("Location: pagos.php");
-}
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +12,7 @@ if (null == $mes ) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pagos</title>
+    <title>Tareas </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -279,7 +270,8 @@ if (null == $mes ) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Administrar Pagos</h3>
+                <h3>Alumnos</h3>
+                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
 
@@ -299,92 +291,241 @@ if (null == $mes ) {
 
             <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Administrar <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>NIE</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Solvente</th>
-                          
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-
-                      <?php
-$sql="SELECT p.Id_Pago, a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, case p.Status when '1' then 'Pendiente' else 'Pagado' END AS Pagos FROM pago p, alumno a WHERE Mes=? AND a.Status=1 AND p.Id_Alumno=a.NIE";
-$values=array($_GET['Mes']);
-$datos=Database::getRows($sql, $values);
-$menu="";
+            <?php
+            $sql="SELECT m.Id_Materia, m.Nombre_Materia, m.Id_Docente, m.Id_Grado, m.Eval_Mined, m.Status, g.Nombre_Grado, d.Nombre_Docente FROM materia m, grado g, docente d WHERE m.Id_Grado=g.Id_Grado AND m.Id_Docente=d.Id_Docente";
+            $values=array(1);
+            $datos3=Database::getRows($sql, $values);
+            $menu3="";
+              
+            
+            foreach ($datos3 as $fila3) 
+            {
+              
+            
+              $menu3.="
+              <div class='row'>
+              <div class='col-md-12 col-sm-12 col-xs-12'>
+                  <div class='x_panel'>
+                    <div class='x_title'>
+                      <h2><i class='fa fa-bars'></i> $fila3[Nombre_Materia] <small>$fila3[Nombre_Grado] | Docente:$fila3[Nombre_Docente] </small></h2>
+                      <ul class='nav navbar-right panel_toolbox'>
+                        <li><a class='collapse-link'><i class='fa fa-chevron-up'></i></a>
+                        </li>
+                        <li class='dropdown'>
+                          <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false'><i class='fa fa-wrench'></i></a>
+                          <ul class='dropdown-menu' role='menu'>
+                            <li><a href='#'>Settings 1</a>
+                            </li>
+                            <li><a href='#'>Settings 2</a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li><a class='close-link'><i class='fa fa-close'></i></a>
+                        </li>
+                      </ul>
+                      <div class='clearfix'></div>
+                    </div>
+                    <div class='x_content'>
   
+                      <div class='col-xs-3'>
+                        <!-- required for floating -->
+                        <!-- Nav tabs -->
+                        <ul class='nav nav-tabs tabs-left'>
+              
+              ";
+                     
+            
+              $sql="SELECT * FROM periodo WHERE Status=?";
+              $values=array(1);
+              $datos=Database::getRows($sql, $values);
+              $menu="";
+                
+              $patata = 1;
 
-foreach ($datos as $fila) 
-{
-  if ($fila['Pagos']=="Pendiente") {
-    $menu.=
-    "
-    <tr>
-    <td>$fila[NIE]</td>
-    <td>$fila[Nombre_Alumno]</td>
-    <td>$fila[Apellido_Alumno]</td>
-    
-    <td><div style='text-align: center;'><a href='cambiarpago.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-remove'> </i></button></a>
-    </td>
-  </tr>";
-  } else {
-    $menu.=
-    "
-    <tr>
-    <td>$fila[NIE]</td>
-    <td>$fila[Nombre_Alumno]</td>
-    <td>$fila[Apellido_Alumno]</td>
-    
-    <td><div style='text-align: center;'><a href='cambiarpago2.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-check'> </i></button></a>
-    </td>
-  </tr>";
-  }
-  
-  
-}
+              foreach ($datos as $fila) 
+              {
+                
+                if ($patata == 1) {
+                  $menu.="<li class='active'><a href='#p$fila[Id_Periodo]m$fila3[Eval_Mined]' data-toggle='tab'>Periodo $patata </a>
+                  </li>";
+                } else {
+                  $menu.="<li><a href='#p$fila[Id_Periodo]m$fila3[Eval_Mined]' data-toggle='tab'>Periodo $patata</a>
+                  </li>";
+                }
+                
+                $patata = $patata +1;
+
+                
+                      
+
+              }
 
 
-print($menu);
-?>
-                        
-                        
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              $menu3.= $menu;
+              $menu3.= "
+              </ul>
               </div>
+
+              <div class='col-xs-9'>
+                <!-- Tab panes -->
+                <div class='tab-content'>";
+
+
+                $sql="SELECT * FROM periodo WHERE Status=?";
+                $values=array(1);
+                $datos=Database::getRows($sql, $values);
+                $menu="";
+                  
+                $patata = 1;
+
+                foreach ($datos as $fila) 
+                {
+                  
+                  if ($patata == 1) {
+                    $menu.="<div class='tab-pane active' id='p$fila[Id_Periodo]m$fila3[Eval_Mined]'>
+                    <p class='lead'>Periodo $patata</p>
+                    <p><small>Desde: $fila[desde] Hasta: $fila[hasta]</small></p>
+                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
+                      synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                      ";
+
+
+
+                  } else {
+                    $menu.="<div class='tab-pane' id='p$fila[Id_Periodo]m$fila3[Eval_Mined]'>
+                    <p class='lead'>Periodo $patata</p>
+                    <p><small>Desde: $fila[desde] Hasta: $fila[hasta]</small></p>
+                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
+                      synth. Cosby sweater eu banh mi, qui irure terr.</p>
+                  ";
+                  }
+                  
+                  $menu.="<table class='table table-bordered'>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Actividad</th>
+                      <th>Descripcion</th>
+                      <th>Ponderacion</th>
+                      <th>Fecha de Entrega</th>
+                      <th>Administrar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  ";
+                  $sql="SELECT * FROM tarea WHERE Id_Periodo=? AND Id_Materia=? AND Status=?";
+                  $values=array($fila['Id_Periodo'], $fila3['Id_Materia'], 1);
+                  $datos2=Database::getRows($sql, $values);
+                  $zoe = 1;
+                  $kled= 0;
+                  $azir= 0;
+                  foreach ($datos2 as $fila2) {
+                    $menu.="
+                    <tr>
+                    <th scope='row'>$zoe</th>
+                    <td>$fila2[Nombre_Tarea]</td>
+                    <td>$fila2[Descripcion_Tarea]</td>
+                    <td>$fila2[ponderacion]%</td>
+                    <td>$fila2[Fecha_Entrega]</td>
+                    <td><a href='editar_tarea.php?id=$fila2[Id_Tarea]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a><a href='calificar.php?t=$fila2[Id_Tarea]&m=$fila3[Id_Materia]' class='btn btn-warning btn-xs'><i class='fa fa-pencil'></i> Calificar </a>
+                    </td>
+                  </tr>
+                    ";
+                    $zoe = $zoe + 1;
+                    if ($fila2['ponderacion']==35) {
+                      $kled = $kled + 1;
+                    } else {
+                      $azir = $azir + 1;
+                    }
+                    
+                  }
+                  if ($zoe!=4) {
+                    if ($kled < 2) {
+                      for($kled; $kled <= 1; $kled++){
+                        $menu.="
+                        <tr>
+                        <th scope='row'>$zoe</th>
+                        <td>Sin Asignar</td>
+                        <td>Sin Asignar</td>
+                        <td>35%</td>
+                        <td>Sin Asignar</td>
+                        <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$fila[Id_Periodo]&Tipo=1' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
+                        </td>
+                      </tr>
+                        ";
+                        $zoe++;
+                      }
+                    } else {
+                      
+                      
+                    }
+                    if ($azir<1) {
+                      $menu.="
+                      <tr>
+                      <th scope='row'>$zoe</th>
+                      <td>Examen de Periodo</td>
+                      <td>Sin Asignar</td>
+                      <td>30%</td>
+                      <td>Sin Asignar</td>
+                      <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$fila[Id_Periodo]&Tipo=2' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
+                      </td>
+                    </tr>
+                      ";
+                    } else {
+                      # code...
+                    }
+                    
+                  } else {
+                    # code...
+                  }
+                  
+
+
+
+                  $menu.="
+                  </tbody>
+                  </table>
+                </div>
+                  ";
+
+                  $patata = $patata +1;
+
+                  
+                        
+
+                }
+
+
+                $menu3.= $menu;
+                $menu3.= "
+                
+              </div>
+
             </div>
+
+            <div class='clearfix'></div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>";
+
+
+            }
+            
+            
+            print($menu3);
+            ?>
+
+            
+
+                      
+
+                        
+                      
+
 
 
             <div class="row">
@@ -408,50 +549,43 @@ print($menu);
                           <th>NIE</th>
                           <th>Nombres</th>
                           <th>Apellidos</th>
+                          <th>Fecha de Nacimiento</th>
+                          <th>Genero</th>
                           <th>Grado</th>
-                          <th>Solvente</th>
-                          
                         </tr>
                       </thead>
 
 
                       <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>Si</td>
-                          
+                      <?php
+$sql="SELECT * FROM alumno WHERE Status=?";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
 
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>63</td>
-                          <td>Si</td>
-                          
+foreach ($datos as $fila) 
+{
+  
 
-                        </tr>
-                        <tr>
-                          <td>Ashton Cox</td>
-                          <td>Junior Technical Author</td>
-                          <td>San Francisco</td>
-                          <td>66</td>
-                          <td>No</td>
-                          
+  $menu.="<tr>
+              <td>$fila[NIE]</td>
+              <td>$fila[Nombre_Alumno]</td>
+              <td>$fila[Apellido_Alumno]</td>
+              <td>$fila[Fecha_Nacimiento]</td>
+              <td>$fila[Id_Genero]</td>
+              <td>$fila[Id_Grado]</td>
+              
+              
 
-                        </tr>
-                        <tr>
-                          <td>Cedric Kelly</td>
-                          <td>Senior Javascript Developer</td>
-                          <td>Edinburgh</td>
-                          <td>22</td>
-                          <td>Si</td>
-                          
+          </tr>";
+         
 
-                        </tr>
+}
+
+
+print($menu);
+?>
 
                       </tbody>
                     </table>

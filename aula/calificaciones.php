@@ -319,7 +319,7 @@ foreach ($datos as $fila)
       
       <div class='col-xs-12 col-sm-6 emphasis'>
           <!--<a href='#' class='btn btn-primary btn-xs'><i class='fa fa-folder'></i> View </a>-->
-          <a href='notas.php?I=$fila[Id_Grado]' class='btn btn-warning btn-xs'><i class='fa fa-eye'></i> Ver </a>
+          <a href='../fpdf/boleta.php?g=$fila[Id_Grado]' class='btn btn-warning btn-xs'><i class='fa fa-eye'></i> Ver </a>
           
       </div>
     </div>

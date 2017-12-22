@@ -292,7 +292,7 @@ session_start();
             <div class="clearfix"></div>
 
             <?php
-            $sql="SELECT m.Id_Materia, m.Nombre_Materia, m.Id_Docente, m.Id_Grado, m.Eval_Mined, m.Status, g.Nombre_Grado, d.Nombre_Docente FROM materia m, grado g, docente d WHERE m.Id_Grado=g.Id_Grado AND m.Id_Docente=d.Id_Docente";
+            $sql="SELECT m.Id_Materia, m.Nombre_Materia, m.Id_Docente, m.Id_Grado, m.Eval_Mined, m.Status, g.Nombre_Grado, g.Tipo, d.Nombre_Docente FROM materia m, grado g, docente d WHERE m.Id_Grado=g.Id_Grado AND m.Id_Docente=d.Id_Docente";
             $values=array(1);
             $datos3=Database::getRows($sql, $values);
             $menu3="";
@@ -333,33 +333,54 @@ session_start();
                         <ul class='nav nav-tabs tabs-left'>
               
               ";
-                     
-            
-              $sql="SELECT * FROM periodo WHERE Status=?";
-              $values=array(1);
-              $datos=Database::getRows($sql, $values);
               $menu="";
-                
-              $patata = 1;
+            if ($fila3['Tipo']==1) {
+              $menu.="<li class='active'><a href='#p1m1m$fila3[Eval_Mined]' data-toggle='tab'>Febrero</a>
+              </li>
+              <li><a href='#p1m2m$fila3[Eval_Mined]' data-toggle='tab'>Marzo</a>
+              </li>
+              <li><a href='#p2m3m$fila3[Eval_Mined]' data-toggle='tab'>Abril</a>
+              </li>
+              <li><a href='#p2m4m$fila3[Eval_Mined]' data-toggle='tab'>Mayo</a>
+              </li>
+              <li><a href='#p3m5m$fila3[Eval_Mined]' data-toggle='tab'>Junio</a>
+              </li>
+              <li><a href='#p3m6m$fila3[Eval_Mined]' data-toggle='tab'>Julio</a>
+              </li>
+              <li><a href='#p4m7m$fila3[Eval_Mined]' data-toggle='tab'>Agosto</a>
+              </li>
+              <li><a href='#p4m8m$fila3[Eval_Mined]' data-toggle='tab'>Septiembre</a>
+              </li>
+              <li><a href='#p5m9m$fila3[Eval_Mined]' data-toggle='tab'>Octubre</a>
+              </li>
+              
+              ";
+            } else {
+              $menu.="<li class='active'><a href='#p1m1m$fila3[Eval_Mined]' data-toggle='tab'>Febrero</a>
+              </li>
+              <li><a href='#p1m2m$fila3[Eval_Mined]' data-toggle='tab'>Marzo</a>
+              </li>
+              <li><a href='#p2m3m$fila3[Eval_Mined]' data-toggle='tab'>Abril</a>
+              </li>
+              <li><a href='#p2m4m$fila3[Eval_Mined]' data-toggle='tab'>Mayo</a>
+              </li>
+              <li><a href='#p3m5m$fila3[Eval_Mined]' data-toggle='tab'>Junio</a>
+              </li>
+              <li><a href='#p3m6m$fila3[Eval_Mined]' data-toggle='tab'>Julio</a>
+              </li>
+              <li><a href='#p4m7m$fila3[Eval_Mined]' data-toggle='tab'>Agosto</a>
+              </li>
+              <li><a href='#p4m8m$fila3[Eval_Mined]' data-toggle='tab'>Septiembre</a>
+              </li>
+              <li><a href='#p4m9m$fila3[Eval_Mined]' data-toggle='tab'>Octubre</a>
+              </li>
+              
+              ";
+            }
+            
+           
 
-              foreach ($datos as $fila) 
-              {
-                
-                if ($patata == 1) {
-                  $menu.="<li class='active'><a href='#p$fila[Id_Periodo]m$fila3[Eval_Mined]' data-toggle='tab'>Periodo $patata </a>
-                  </li>";
-                } else {
-                  $menu.="<li><a href='#p$fila[Id_Periodo]m$fila3[Eval_Mined]' data-toggle='tab'>Periodo $patata</a>
-                  </li>";
-                }
-                
-                $patata = $patata +1;
-
-                
-                      
-
-              }
-
+              
 
               $menu3.= $menu;
               $menu3.= "
@@ -370,34 +391,91 @@ session_start();
                 <!-- Tab panes -->
                 <div class='tab-content'>";
 
-
-                $sql="SELECT * FROM periodo WHERE Status=?";
-                $values=array(1);
-                $datos=Database::getRows($sql, $values);
+                
                 $menu="";
                   
                 $patata = 1;
 
-                foreach ($datos as $fila) 
-                {
+                for($i = 1; $i <= 12; $i++){
+                  $periodo = 0;
+                  if ($fila3['Tipo']==1) {
+                    switch ($i) {
+                      case 1:
+                          $periodo = 1;
+                          break;
+                      case 2:
+                          $periodo = 1;
+                          break;
+                      case 3:
+                          $periodo = 2;
+                          break;
+                      case 4:
+                          $periodo = 2;
+                          break;
+                      case 5:
+                          $periodo = 3;
+                          break;
+                      case 6:
+                          $periodo = 3;
+                          break;
+                      case 7:
+                          $periodo = 4;
+                          break;
+                      case 8:
+                          $periodo = 4;
+                          break;
+                      case 9:
+                          $periodo = 5;
+                          break;
+                    }
+                  } else {
+                    switch ($i) {
+                      case 1:
+                          $periodo = 1;
+                          break;
+                      case 2:
+                          $periodo = 1;
+                          break;
+                      case 3:
+                          $periodo = 2;
+                          break;
+                      case 4:
+                          $periodo = 2;
+                          break;
+                      case 5:
+                          $periodo = 3;
+                          break;
+                      case 6:
+                          $periodo = 3;
+                          break;
+                      case 7:
+                          $periodo = 4;
+                          break;
+                      case 8:
+                          $periodo = 4;
+                          break;
+                      case 9:
+                          $periodo = 4;
+                          break;
+                    }
+                  }
+                  
+                  
                   
                   if ($patata == 1) {
-                    $menu.="<div class='tab-pane active' id='p$fila[Id_Periodo]m$fila3[Eval_Mined]'>
-                    <p class='lead'>Periodo $patata</p>
-                    <p><small>Desde: $fila[desde] Hasta: $fila[hasta]</small></p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
-                      synth. Cosby sweater eu banh mi, qui irure terr.</p>
-                      ";
-
+                    $menu.="<div class='tab-pane active' id='p$periodo";
+                    $menu.="m$i" ;
+                    $menu.="m$fila3[Eval_Mined]'>
+                    <p class='lead'>Tareas</p>
+                    ";
 
 
                   } else {
-                    $menu.="<div class='tab-pane' id='p$fila[Id_Periodo]m$fila3[Eval_Mined]'>
-                    <p class='lead'>Periodo $patata</p>
-                    <p><small>Desde: $fila[desde] Hasta: $fila[hasta]</small></p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher
-                      synth. Cosby sweater eu banh mi, qui irure terr.</p>
-                  ";
+                    $menu.="<div class='tab-pane' id='p$periodo" ;
+                    $menu.="m$i" ;
+                    $menu.="m$fila3[Eval_Mined]'>
+                    <p class='lead'>Tareas</p>
+                    ";
                   }
                   
                   $menu.="<table class='table table-bordered'>
@@ -414,8 +492,8 @@ session_start();
                   <tbody>
                     
                   ";
-                  $sql="SELECT * FROM tarea WHERE Id_Periodo=? AND Id_Materia=? AND Status=?";
-                  $values=array($fila['Id_Periodo'], $fila3['Id_Materia'], 1);
+                  $sql="SELECT * FROM tarea WHERE Id_Periodo=? AND Id_Materia=? AND Status=? AND Mes_Tarea=?";
+                  $values=array($periodo, $fila3['Id_Materia'], 1, $i);
                   $datos2=Database::getRows($sql, $values);
                   $zoe = 1;
                   $kled= 0;
@@ -450,7 +528,7 @@ session_start();
                         <td>Sin Asignar</td>
                         <td>35%</td>
                         <td>Sin Asignar</td>
-                        <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$fila[Id_Periodo]&Tipo=1' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
+                        <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$periodo&Mes=$i&Tipo=1' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
                         </td>
                       </tr>
                         ";
@@ -468,7 +546,7 @@ session_start();
                       <td>Sin Asignar</td>
                       <td>30%</td>
                       <td>Sin Asignar</td>
-                      <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$fila[Id_Periodo]&Tipo=2' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
+                      <td><a href='agregar_tarea.php?Materia=$fila3[Id_Materia]&Periodo=$periodo&Mes=$i&Tipo=2' class='btn btn-success btn-xs'><i class='fa fa-plus-circle'></i> Asignar </a>
                       </td>
                     </tr>
                       ";

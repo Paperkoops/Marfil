@@ -768,6 +768,7 @@ class easyTable{
    ***********************************************************************/
 
    public function easyCell($data, $style=''){
+         $data = utf8_decode($data); ///Agregado para tildes y caracteres especiales
       if($this->col_counter<$this->col_num){
          $sty=$this->set_style($style, 'C', $this->col_counter);
          $this->col_counter++;

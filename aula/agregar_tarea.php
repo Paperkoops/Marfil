@@ -1,9 +1,10 @@
 <?php
 require 'database.php';
 
-if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Tipo'])) {
+if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Mes']) && isset($_GET['Tipo'])) {
   $materia=$_GET['Materia'];
   $periodo=$_GET['Periodo'];
+  $mes=$_GET['Mes'];
   if ($_GET['Tipo']==1) {
     $ponderacion=35;
   } else {
@@ -58,8 +59,8 @@ if (!empty($_POST)) {
 
 	// insert data
 	if ($valid) {
-		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, 1);
+		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Mes_Tarea`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, $mes, 1);
     
 
     Database::executeRow($sql, $values);

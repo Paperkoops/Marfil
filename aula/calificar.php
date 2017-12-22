@@ -424,8 +424,8 @@ foreach ($datos as $fila)
 {
   
   $id2=$fila['NIE'];
-  $sql="SELECT * From nota Where Id_Alumno=?";
-  $values=array($id2);
+  $sql="SELECT * From nota Where Id_Alumno=? AND Id_Tarea=?";
+  $values=array($id2, $id);
   $datos2=Database::getRow($sql, $values);
 
   if (!empty($datos2)) {
@@ -457,7 +457,7 @@ foreach ($datos as $fila)
             <div class='col-md-6 col-sm-6 col-xs-12 form-group'>
             
             
-            <input type='number' name='calificacion' value=$datos2[Nota_Obtenida]  required='required' data-validate-minmax='10,100' class='form-control has-feedback-left col-md-7 col-xs-12'>
+            <input type='number' name='calificacion' value=$datos2[Nota_Obtenida]  required='required' min='0' max='10' step='0.1' class='form-control has-feedback-left col-md-7 col-xs-12'>
             
           </div>
 
@@ -513,7 +513,7 @@ foreach ($datos as $fila)
             <div class='col-md-6 col-sm-6 col-xs-12 form-group'>
             
             
-            <input type='number' name='calificacion'  required='required' data-validate-minmax='10,100' class='form-control has-feedback-left col-md-7 col-xs-12'>
+            <input type='number' name='calificacion'  required='required'  min='0' max='10' step='0.1' class='form-control has-feedback-left col-md-7 col-xs-12'>
             
           </div>
 
