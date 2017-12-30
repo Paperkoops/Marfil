@@ -100,6 +100,7 @@ session_start();
 
               <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
+                  <li><a href="agregar_usuario.php">Usuarios</a></li>
                   <li><a href="alumnos.php">Alumnos</a></li>
                   <li><a href="docente.php">Docentes</a></li>
 

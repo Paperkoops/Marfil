@@ -92,6 +92,34 @@ if (!empty($_POST)) {
 
   <!-- bootstrap-daterangepicker -->
   <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+  <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+<?php
+if ($inserted) {
+  print("
+  <script>
+  swal({
+    title: 'Registro',
+    text: 'La materia fue agregado exitosamente',
+    type: 'success',
+    
+    confirmButtonColor: '#3085d6',
+    
+    confirmButtonText: 'Ok'
+  }).then(function () {
+    window.location='materias.php'
+  });
+  
+  
+   </script>");
+} else {
+  
+}
+
+?>
+
   <!-- bootstrap-datetimepicker -->
   <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 

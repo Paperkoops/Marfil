@@ -506,12 +506,16 @@ if (!empty($_POST)) {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+    <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
     <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Medios de transporte',
+    title: 'Registro',
     text: 'El Medio de transporte fue agregado exitosamente',
     type: 'success',
     

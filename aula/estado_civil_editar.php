@@ -522,13 +522,17 @@ else {
     <!-- bootstrap-daterangepicker -->
     <script src="../vendors/moment/min/moment.min.js"></script>
    
+    <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
     <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Estado Civíl',
-    text: 'La informacion del estado civíl fue modificada exitosamente',
+    title: 'Edición',
+    text: 'El estado cívil fue editado exitosamente',
     type: 'success',
     
     confirmButtonColor: '#3085d6',

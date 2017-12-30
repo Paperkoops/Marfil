@@ -30,46 +30,8 @@ session_start();
   //$row = mysqli_fetch_assoc($result);
   $user = $result->fetch_assoc();
   //print_r($user); die; 
-
-$id = null;
-if (!empty($_GET['id'])) {
-	$id = $_REQUEST['id'];
-}
-
-if (null == $id ) {
-	header("Location: estado_civil.php");
-}
-
-$inserted = false;
-if (!empty($_POST)) {
-	// keep track validation errors
-	$nameError = null;
-	
-  // keep track post values
-  $name = $_POST['name'];
-
-  $valid = true;
-	
-	// insert data
-	if ($valid) {
-    
-    $sql = "UPDATE `genero` SET `Nombre_Genero`=?, `Status`=? WHERE Id_Genero=?";
-    $values=array($name, 1, $id);
-
-    Database::executeRow($sql, $values);
-    $inserted = true;
-	}
-}
-else {
-	$sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Id_Genero=?";
-  $values=array($id);
-  $datos=Database::getRow($sql, $values);
-   
-  $id = $datos['Id_Genero'];
-  $name = $datos['Nombre_Genero'];
-
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -79,7 +41,7 @@ else {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Editar Géneros</title>
+    <title>Alumnos </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -88,15 +50,8 @@ else {
     <!-- NProgress -->
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
 
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- bootstrap-datetimepicker -->
-    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-
-    
   </head>
 
   <body class="nav-md">
@@ -353,8 +308,12 @@ else {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Mantenimiento</h3>
+                <h3>Alumnos</h3>
+                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
+                <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
+
+
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -370,127 +329,101 @@ else {
 
             <div class="clearfix"></div>
 
+
+
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nuevo Género <small>Rellene la información por favor</small></h2>
+                    <h2>Imprimir <small>Todos</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
+
+
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
-                    <form class="form-horizontal form-label-left input_mask">
-                        
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" method="post">
-                        <label>Nombre del Género *</label>
-                        <input type="text" class="form-control has-feedback-left" value="<?php print($name); ?>" name="name" placeholder="Nombre del género">
-                        <span class="fa fa-child form-control-feedback left" aria-hidden="true"></span>
-                      </div>
 
-                      <div class="form-group">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                          <button type="button" class="btn btn-primary">Cancelar</button>
-                          <button type="submit" class="btn btn-info">Editar</button>
-                        </div>
-                      </div>
+                    <table id="datata" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Nombre de la mteria</th>
+                          <th>Eval</th>
+                          <th>Nie</th>
+                          <th>Nombre del alumno</th>
+                          <th>Nota 1</th>
+                          <th>Nota 2</th>
+                          <th>Nota 3</th>
+                          <th>Nota 4</th>
+                        </tr>
+                      </thead>
 
-                    </form>
+
+                      <tbody>
+                      <?php
+$sql="SELECT m.Id_Materia, m.Eval_Mined, m.Nombre_Materia, a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, n.Id_Nota, n.Id_Alumno, n.Nota_Obtenida, t.Id_Materia FROM tarea t, materia m, alumno a, nota n WHERE t.Id_Materia = m.Id_Materia AND n.Id_Alumno = a.NIE AND n.Id_Tarea = t.Id_Tarea AND m.Status=? AND a.Status=? AND n.Status=?";
+$values=array(1, 1, 1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
+$sql1="SELECT nota.*, tarea.* FROM nota, tarea WHERE nota.Id_Tarea = tarea.Id_Tarea AND tarea.Id_Periodo=? AND nota.Status=? ORDER BY nota.Id_Alumno";
+$values1=array(1, 1);
+$datos1=Database::getRows($sql1, $values1);
+
+foreach ($datos1 as $fila1) 
+{
+    $doc_nombre = $fila1['Id_Alumno'];
+    echo $doc_nombre ;  
+
+}
+
+$sql2="SELECT AVG(Nota_Obtenida) as nota1 from nota where Id_Alumno = ? AND Status = ?";
+$values2=array($doc_nombre, 1);
+$datos2=Database::getRows($sql2, $values2);
+
+foreach ($datos2 as $fila2) 
+{
+
+  $menu.="<tr>
+  <td>$fila1[Id_Alumno]</td>
+  <td>$fila2[nota1]</td>
+  <td>$fila1[Nombre_Tarea]</td>              
+
+</tr>";
+}
+
+/*
+foreach ($datos as $fila) 
+{
+  
+
+  $menu.="<tr>
+              <td>$fila[Nombre_Materia]</td>
+              <td>$fila[Eval_Mined]</td>
+              <td>$fila[NIE]</td>
+              <td>$fila[Apellido_Alumno], $fila[Nombre_Alumno]</td>
+              <td>$fila[Nota_Obtenida]</td>
+              
+              
+
+          </tr>";
+         
+
+} */
+
+
+print($menu);
+?>
+
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-
-
-                <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Género </h2>
-                  <ul class="nav navbar-right panel_toolbox">
-                    <li>
-                      <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                      </a>
-                    </li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        <i class="fa fa-wrench"></i>
-                      </a>
-                      <ul class="dropdown-menu" role="menu">
-                        <li>
-                          <a href="#">Settings 1</a>
-                        </li>
-                        <li>
-                          <a href="#">Settings 2</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a class="close-link">
-                        <i class="fa fa-close"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-
-                  <table id="datatable" class="table table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Género</th>
-                      </tr>
-                    </thead>
-
-
-                    <tbody>
-                    <?php
-                    $sql="SELECT Id_Genero, Nombre_Genero FROM genero WHERE Status=?";
-                    $values=array(1);
-                    $datos=Database::getRows($sql, $values);
-                    $menu="";
-                      
-                    foreach ($datos as $fila) 
-                    {
-                      $menu.="<tr>
-                                  <td>$fila[Id_Genero]</td>
-                                  <td>$fila[Nombre_Genero]</td>
-                                  <td>
-                                  <div style='text-align: center;'>
-                                  <a href='genero_editar.php?id=$fila[Id_Genero]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
-                                  <a href='eliminar_genero.php?id=$fila[Id_Genero]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
-                                  </div>
-                                </td>
-                              </tr>";
-                             
-                    }
-                    print($menu);
-                    ?>
-                    </tbody>
-                  </table>
-                  </div>
-                  </div>
-                </div>
-              </div>
-                
-
               </div>
             </div>
+
           </div>
         </div>
         <!-- /page content -->
@@ -514,54 +447,26 @@ else {
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
-   
+
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-   
-    <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-
-    <?php
-if ($inserted) {
-  print("
-  <script>
-  swal({
-    title: 'Edición',
-    text: 'El género fue editado exitosamente',
-    type: 'success',
-    
-    confirmButtonColor: '#3085d6',
-    
-    confirmButtonText: 'Ok'
-  }).then(function () {
-    window.location='genero.php'
-  });
-  
-  
-   </script>");
-} else {
-  
-}
-
-?>
-
-    <!-- bootstrap-datetimepicker -->    
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script>
-      $('#myDatepicker').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    $('#myDatepicker2').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    </script>
+    <script src="js/custo.js"></script>
   </body>
 </html>

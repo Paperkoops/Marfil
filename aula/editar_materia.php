@@ -563,20 +563,24 @@ else {
   <!-- bootstrap-daterangepicker -->
   <script src="../vendors/moment/min/moment.min.js"></script>
 
+  <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
   <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Docentes',
-    text: 'El docente fue registrado exitosamente',
+    title: 'Edición',
+    text: 'La materia fue editada exitosamente',
     type: 'success',
     
     confirmButtonColor: '#3085d6',
     
     confirmButtonText: 'Ok'
   }).then(function () {
-    window.location='docente.php'
+    window.location='materias.php'
   });
   
   
