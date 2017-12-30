@@ -2,14 +2,88 @@
 include("database.php");
 session_start();
 
-$mes = null;
-if (!empty($_GET['Mes'])) {
-	$mes = $_REQUEST['Mes'];
+
+$id = null;
+if (!empty($_GET['t']) && !empty($_GET['m']) ) {
+  $id = $_REQUEST['t'];
+  $materia = $_REQUEST['m'];
 }
 
-if (null == $mes ) {
-	header("Location: pagos.php");
+if (null == $id || null == $materia ) {
+	header("Location: tareas.php");
 }
+
+
+
+$sql="SELECT Id_Grado From materia Where Id_Materia=?";
+$values=array($materia);
+$datos=Database::getRow($sql, $values);
+$grado = $datos['Id_Grado'];
+
+
+$inserted = false;
+
+if (!empty($_POST)) {
+	// keep track validation errors
+
+ 
+	
+	// keep track post values
+  $calificacion = $_POST['calificacion'];
+ 
+  $nie = $_POST['nie'];
+  
+  $tipo = $_POST['tipo'];
+
+
+  
+  $valid = true;
+	
+  // validate input
+  /*
+	$valid = true;
+	if (empty($name)) {
+		$nameError = 'Please enter Name';
+		$valid = false;
+	}
+	
+	if (empty($email)) {
+		$emailError = 'Please enter Email Address';
+		$valid = false;
+	} 
+	else if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+		$emailError = 'Please enter a valid Email Address';
+		$valid = false;
+	}
+	
+	if (empty($mobile)) {
+		$mobileError = 'Please enter Mobile Number';
+		$valid = false;
+	}
+  */
+
+
+	// insert data
+	if ($valid) {
+
+    if ($tipo=="add") {
+      $sql = "INSERT INTO `nota`(`Id_Tarea`, `Id_Alumno`, `Nota_Obtenida`, `Status`) VALUES (?,?,?,?)";
+      $values=array($id, $nie, $calificacion, 1);
+      
+    } else {
+      $sql = "UPDATE `nota` SET `Nota_Obtenida`=? WHERE Id_Alumno=? AND Id_Tarea=?";
+      $values=array($calificacion, $nie, $id);
+      
+    }
+    
+    
+
+    Database::executeRow($sql, $values);
+    $inserted = true;
+    header("Refresh:0");
+	}
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +95,7 @@ if (null == $mes ) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pagos</title>
+    <title>Calificar </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -279,8 +353,8 @@ if (null == $mes ) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Administrar Pagos</h3>
-                <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
+                <h3>Calificar</h3>
+                
               </div>
 
 
@@ -303,7 +377,7 @@ if (null == $mes ) {
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Administrar <small>Todos</small></h2>
+                    <h2>Calificar <small>Todos</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -329,54 +403,157 @@ if (null == $mes ) {
                           <th>NIE</th>
                           <th>Nombres</th>
                           <th>Apellidos</th>
-                          <th>Solvente</th>
-                          
+                          <th>Calificacion</th>
+                          <th>Administrar</th>
                         </tr>
                       </thead>
 
 
                       <tbody>
 
+
+
                       <?php
-$sql="SELECT p.Id_Pago, a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, case p.Status when '1' then 'Pendiente' else 'Pagado' END AS Pagos FROM pago p, alumno a WHERE Mes=? AND a.Status=1 AND p.Id_Alumno=a.NIE";
-$values=array($_GET['Mes']);
+$sql="SELECT * FROM alumno WHERE Status=? AND Id_Grado=?";
+$values=array(1, $grado);
 $datos=Database::getRows($sql, $values);
 $menu="";
   
 
 foreach ($datos as $fila) 
 {
-  if ($fila['Pagos']=="Pendiente") {
-    $menu.=
-    "
-    <tr>
+  
+  $id2=$fila['NIE'];
+  $sql="SELECT * From nota Where Id_Alumno=?";
+  $values=array($id2);
+  $datos2=Database::getRow($sql, $values);
+
+  if (!empty($datos2)) {
+    $menu.="<tr>
     <td>$fila[NIE]</td>
     <td>$fila[Nombre_Alumno]</td>
     <td>$fila[Apellido_Alumno]</td>
+    <td>$datos2[Nota_Obtenida]</td>
+    <td>
+    <div style='text-align: center;'>
+    <!-- Large modal -->
+    <button type='button' class='btn btn-info btn-xs' data-toggle='modal' data-target='.bs-example-modal-lg-$fila[NIE]'><i class='fa fa-pencil'></i> Editar</button>
+
+    <div class='modal fade bs-example-modal-lg-$fila[NIE]' tabindex='-1' role='dialog' aria-hidden='true'>
+      <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>×</span>
+            </button>
+            <h4 class='modal-title' id='myModalLabel'>Calificar $fila[NIE]</h4>
+          </div>
+          <div class='modal-body'>
+            <h4>Calificacion</h4>
+            <form class='form-horizontal form-label-left input_mask' method='post'>
+
+            <input type='text' name='nie' value=$fila[NIE] style='display:none;'>
+            <input type='text' name='tipo' value=edit style='display:none;'>
+            <div class='col-md-6 col-sm-6 col-xs-12 form-group'>
+            
+            
+            <input type='number' name='calificacion' value=$datos2[Nota_Obtenida]  required='required' data-validate-minmax='10,100' class='form-control has-feedback-left col-md-7 col-xs-12'>
+            
+          </div>
+
+          
+          <div class='form-group'>
+            <div class='col-md-12 col-sm-12 col-xs-12'>
+              
+              <button type='submit' class='btn btn-success'>Aceptar</button>
+            </div>
+          </div>
+
+        </form>
+
+            </div>
+          <div class='modal-footer'>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+ </div>
+  </td>
     
-    <td><div style='text-align: center;'><a href='cambiarpago.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-remove'> </i></button></a>
-    </td>
-  </tr>";
+
+</tr>";
   } else {
-    $menu.=
-    "
-    <tr>
+    $menu.="<tr>
     <td>$fila[NIE]</td>
     <td>$fila[Nombre_Alumno]</td>
     <td>$fila[Apellido_Alumno]</td>
+    <td>NPI</td>
+    <td>
+    <div style='text-align: center;'>
+    <!-- Large modal -->
+    <button type='button' class='btn btn-success btn-xs' data-toggle='modal' data-target='.bs-example-modal-lg-$fila[NIE]'><i class='fa fa-pencil'></i> Agregar</button>
+
+    <div class='modal fade bs-example-modal-lg-$fila[NIE]' tabindex='-1' role='dialog' aria-hidden='true'>
+      <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>×</span>
+            </button>
+            <h4 class='modal-title' id='myModalLabel'>Calificar $fila[NIE]</h4>
+          </div>
+          <div class='modal-body'>
+            <h4>Calificacion</h4>
+            <form class='form-horizontal form-label-left input_mask' method='post'>
+
+            <input type='text' name='nie' value=$fila[NIE] style='display:none;'>
+            <input type='text' name='tipo' value=add style='display:none;'>
+            <div class='col-md-6 col-sm-6 col-xs-12 form-group'>
+            
+            
+            <input type='number' name='calificacion'  required='required' data-validate-minmax='10,100' class='form-control has-feedback-left col-md-7 col-xs-12'>
+            
+          </div>
+
+          
+          <div class='form-group'>
+            <div class='col-md-12 col-sm-12 col-xs-12'>
+              
+              <button type='submit' class='btn btn-success'>Aceptar</button>
+            </div>
+          </div>
+
+        </form>
+
+            </div>
+          <div class='modal-footer'>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+ </div>
+  </td>
     
-    <td><div style='text-align: center;'><a href='cambiarpago2.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-check'> </i></button></a>
-    </td>
-  </tr>";
+
+</tr>";
   }
   
-  
+
+ 
+         
+
 }
 
 
 print($menu);
 ?>
-                        
+
+
+
                         
 
                       </tbody>
@@ -387,78 +564,7 @@ print($menu);
             </div>
 
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>NIE</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Grado</th>
-                          <th>Solvente</th>
-                          
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>63</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Ashton Cox</td>
-                          <td>Junior Technical Author</td>
-                          <td>San Francisco</td>
-                          <td>66</td>
-                          <td>No</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Cedric Kelly</td>
-                          <td>Senior Javascript Developer</td>
-                          <td>Edinburgh</td>
-                          <td>22</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
 
           </div>
         </div>

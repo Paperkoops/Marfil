@@ -1,14 +1,12 @@
 <?php
 include("database.php");
 session_start();
-
-$mes = null;
-if (!empty($_GET['Mes'])) {
-	$mes = $_REQUEST['Mes'];
+if (isset($_GET['I'])) {
+  $id=$_GET['I'];
 }
-
-if (null == $mes ) {
-	header("Location: pagos.php");
+else
+{
+  header("location: calificaciones.php");
 }
 ?>
 
@@ -21,7 +19,7 @@ if (null == $mes ) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Pagos</title>
+    <title>Notas </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +68,7 @@ if (null == $mes ) {
 
                   <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="alumnos.html">Alumnos</a></li>
+                      <li><a href="alumnos.php">Alumnos</a></li>
                       <li><a href="index2.html">Docentes</a></li>
 
                     </ul>
@@ -279,8 +277,8 @@ if (null == $mes ) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Administrar Pagos</h3>
-                <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
+                <h3>Alumnos</h3>
+                
               </div>
 
 
@@ -303,7 +301,7 @@ if (null == $mes ) {
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Administrar <small>Todos</small></h2>
+                    <h2>Notas <small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -329,54 +327,54 @@ if (null == $mes ) {
                           <th>NIE</th>
                           <th>Nombres</th>
                           <th>Apellidos</th>
-                          <th>Solvente</th>
-                          
+                          <th>Fecha de Nacimiento</th>
+                          <th>Genero</th>
+                          <th>Grado</th>
+                          <th>Administrar</th>
                         </tr>
                       </thead>
 
 
                       <tbody>
 
+
+
                       <?php
-$sql="SELECT p.Id_Pago, a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, case p.Status when '1' then 'Pendiente' else 'Pagado' END AS Pagos FROM pago p, alumno a WHERE Mes=? AND a.Status=1 AND p.Id_Alumno=a.NIE";
-$values=array($_GET['Mes']);
+$sql="SELECT a.NIE, a.Nombre_Alumno, a.Apellido_Alumno, a.Fecha_Nacimiento, gen.Nombre_Genero, g.Nombre_Grado from alumno a, genero gen, grado g WHERE a.Id_Genero=gen.Id_Genero AND a.Id_Grado=g.Id_Grado AND a.Status=? AND a.Id_Grado=?";
+$values=array(1, $id);
 $datos=Database::getRows($sql, $values);
 $menu="";
   
 
 foreach ($datos as $fila) 
 {
-  if ($fila['Pagos']=="Pendiente") {
-    $menu.=
-    "
-    <tr>
-    <td>$fila[NIE]</td>
-    <td>$fila[Nombre_Alumno]</td>
-    <td>$fila[Apellido_Alumno]</td>
-    
-    <td><div style='text-align: center;'><a href='cambiarpago.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-danger' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-remove'> </i></button></a>
-    </td>
-  </tr>";
-  } else {
-    $menu.=
-    "
-    <tr>
-    <td>$fila[NIE]</td>
-    <td>$fila[Nombre_Alumno]</td>
-    <td>$fila[Apellido_Alumno]</td>
-    
-    <td><div style='text-align: center;'><a href='cambiarpago2.php?id=$fila[Id_Pago]&mes=$_GET[Mes]'><button type='button' class='btn btn-success' data-toggle='tooltip' data-placement='right' title='Cambiar'><i class='fa fa-check'> </i></button></a>
-    </td>
-  </tr>";
-  }
   
-  
+
+  $menu.="<tr>
+              <td>$fila[NIE]</td>
+              <td>$fila[Nombre_Alumno]</td>
+              <td>$fila[Apellido_Alumno]</td>
+              <td>$fila[Fecha_Nacimiento]</td>
+              <td>$fila[Nombre_Genero]</td>
+              <td>$fila[Nombre_Grado]</td>
+              <td>
+              <div style='text-align: center;'>
+              <a target='_blank' href='../fpdf/boleta.php?Nie=$fila[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver Boleta de Notas </a>
+              </div>
+            </td>
+              
+
+          </tr>";
+         
+
 }
 
 
 print($menu);
 ?>
-                        
+
+
+
                         
 
                       </tbody>
@@ -387,78 +385,7 @@ print($menu);
             </div>
 
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Imprimir <small>Todos</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-
-
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-
-                    <table id="datata" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>NIE</th>
-                          <th>Nombres</th>
-                          <th>Apellidos</th>
-                          <th>Grado</th>
-                          <th>Solvente</th>
-                          
-                        </tr>
-                      </thead>
-
-
-                      <tbody>
-                        <tr>
-                          <td>Tiger Nixon</td>
-                          <td>System Architect</td>
-                          <td>Edinburgh</td>
-                          <td>61</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Garrett Winters</td>
-                          <td>Accountant</td>
-                          <td>Tokyo</td>
-                          <td>63</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Ashton Cox</td>
-                          <td>Junior Technical Author</td>
-                          <td>San Francisco</td>
-                          <td>66</td>
-                          <td>No</td>
-                          
-
-                        </tr>
-                        <tr>
-                          <td>Cedric Kelly</td>
-                          <td>Senior Javascript Developer</td>
-                          <td>Edinburgh</td>
-                          <td>22</td>
-                          <td>Si</td>
-                          
-
-                        </tr>
-
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
+           
 
           </div>
         </div>

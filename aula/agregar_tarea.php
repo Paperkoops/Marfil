@@ -1,39 +1,10 @@
 <?php
-include("database.php");
-session_start();
+require 'database.php';
 
-  if(empty($_SESSION['logged_in']))
-  {
-    header('Location: login.php');
-    exit;
-  }
-
-  if (empty($_SESSION['email'])) {
-    session_start();
-    session_destroy();
-    header('location: login.php');
-  }
-
-  if (isset($_POST['cerrar_sesion'])) {
-    /* session_start();
-    session_unset();
-    session_destroy();
-    header('location: login.php'); */
-    require 'logout.php';
-  }
-
-  $docente = $_SESSION['docente'];
-  
-  $aVar = mysqli_connect("localhost", "root", "", "base_colegio");
-  $result = mysqli_query($aVar, "SELECT d.Id_Docente, d.Nombre_Docente, d.Tipo_Usuario FROM docente d, usuarios u WHERE d.Id_Docente = '$docente' AND u.Id_Docente=d.Id_Docente AND u.Status = 1");
-
-  //$row = mysqli_fetch_assoc($result);
-  $user = $result->fetch_assoc();
-  //print_r($user); die; 
-
-if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Tipo'])) {
+if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Mes']) && isset($_GET['Tipo'])) {
   $materia=$_GET['Materia'];
   $periodo=$_GET['Periodo'];
+  $mes=$_GET['Mes'];
   if ($_GET['Tipo']==1) {
     $ponderacion=35;
   } else {
@@ -88,8 +59,8 @@ if (!empty($_POST)) {
 
 	// insert data
 	if ($valid) {
-		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, 1);
+		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Mes_Tarea`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, $mes, 1);
     
 
     Database::executeRow($sql, $values);
@@ -155,139 +126,131 @@ if (!empty($_POST)) {
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
-            
-          <div class="profile clearfix">
-          <?php
-          $doc_nombre = $user['Nombre_Docente'];
-          ?>
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>John Doe</h2>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- /menu profile quick info -->
 
-          <div class="profile_info">
-            <h3>Bienvenido/a,</h3>
-            <h2><?php echo $doc_nombre ?> </h2>
-          </div>
-        </div>
-        <!-- /menu profile quick info -->
+            <br />
 
-        <br />
+           <!-- sidebar menu -->
+           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+              <h3>General</h3>
+              <ul class="nav side-menu">
 
-        <!-- sidebar menu -->
-        <?php
-        if ($user['Tipo_Usuario'] == 1 ) {
+                <li><a href="index.html"><i class="fa fa-home"></i> Inicio </a></li>
 
-        //print de admin
-        echo  
-        '<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-          <div class="menu_section">
-            <h3>General</h3>
-            <ul class="nav side-menu">
+                <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="alumnos.html">Alumnos</a></li>
+                    <li><a href="index2.html">Docentes</a></li>
 
-              <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
+                  </ul>
+                </li>
+                
+                <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="calificaciones.html">Calificaciones</a></li>
+                    <li><a href="tareas.html">Tareas</a></li>
+                  </ul>
+                </li>
 
-              <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="agregar_usuario.php">Usuarios</a></li>                
-                  <li><a href="alumnos.php">Alumnos</a></li>
-                  <li><a href="docente.php">Docentes</a></li>
+                <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="faltas.html">Faltas</a></li>
+                    <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
+                    <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
+                    <li><a href="observaciones.html">Observaciones</a></li>
+                  </ul>
+                </li>
 
-                </ul>
-              </li>
-              
-              <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="calificar.php">Calificaciones</a></li>
-                  <li><a href="tareas.php">Tareas</a></li>
-                </ul>
-              </li>
+                <li><a href="grados.html"><i class="fa fa-book"></i> Grados </a></li>
 
-              <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
-                </ul>
-              </li>
+                <li><a href="materias.html"><i class="fa fa-pencil"></i> Materias </a></li>
 
-              <li><a href="grados.php"><i class="fa fa-book"></i> Grados </a></li>
+                <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="horas_clase.html">Horas Clase</a></li>
+                    <li><a href="itinerario.html">Itinerario</a></li>
+                  </ul>
+                </li>
 
-              <li><a href="materias.php"><i class="fa fa-pencil"></i> Materias </a></li>
-
-              <li><a><i class="fa fa-gear"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a>Departamento<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li class="sub_menu"><a href="mantenimiento2.php">Departamento</a>
+                <li><a href="pagos.html"><i class="fa fa-money"></i> Pagos </a></li>
+                
+                <li><a><i class="fa fa-line-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="menu_section">
+              <h3>Extra</h3>
+              <ul class="nav side-menu">
+                <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="e_commerce.html">E-commerce</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="project_detail.html">Project Detail</a></li>
+                    <li><a href="contacts.html">Contacts</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                  </ul>
+                </li>
+                <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="page_403.html">403 Error</a></li>
+                    <li><a href="page_404.html">404 Error</a></li>
+                    <li><a href="page_500.html">500 Error</a></li>
+                    <li><a href="plain_page.html">Plain Page</a></li>
+                    <li><a href="login.html">Login Page</a></li>
+                    <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                  </ul>
+                </li>
+                <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                      <li><a href="#level1_1">Level One</a>
+                      <li><a>Level One<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li class="sub_menu"><a href="level2.html">Level Two</a>
+                          </li>
+                          <li><a href="#level2_1">Level Two</a>
+                          </li>
+                          <li><a href="#level2_2">Level Two</a>
+                          </li>
+                        </ul>
                       </li>
-                      <li><a href="mantenimiento2.php">Municipio</a>
+                      <li><a href="#level1_2">Level One</a>
                       </li>
-                    </ul>
-                  </li>
-                  <li><a href="mantenimiento.php">Estado Civìl</a></li>
-                  <li><a href="mantenimiento.php">Género</a></li>
-                  <li><a href="mantenimiento.php">Medios de Transporte</a></li>
-                  <li><a href="mantenimiento.php">Periodos</a></li>
-                  <li><a href="mantenimiento.php">Religión</a></li>
-                </ul>
-              </li>
+                  </ul>
+                </li>
+                <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
+              </ul>
+            </div>
 
-              <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
-                </ul>
-              </li>
-
-              <li><a href="pagos.php"><i class="fa fa-money"></i>Pagos</a> </li>
-              
-              <li><a><i class="fa fa-line-chart"></i> Reportes</a></li>
-            </ul>
           </div>
+          <!-- /sidebar menu -->
 
-        </div>';
-
-        } else {
-        //print de normal
-        echo  
-        '<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-          <div class="menu_section">
-            <h3>General</h3>
-            <ul class="nav side-menu">
-
-              <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
-              
-              <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="calificar.php">Calificaciones</a></li>
-                  <li><a href="tareas.php">Tareas</a></li>
-                </ul>
-              </li>
-
-              <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
-                </ul>
-              </li>
-
-              <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
-        </div>';
-        }
-        ?>
-        
-        <!-- /sidebar menu -->
-
-          <!-- /menu footer buttons -->
-            <div class="sidebar-footer hidden-small" method="post">
-              <a href="logout.php" data-toggle="tooltip" data-placement="top" title="Logout">
+          
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -306,7 +269,7 @@ if (!empty($_POST)) {
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
+                    <img src="images/img.jpg" alt="">John Doe
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
