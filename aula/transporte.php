@@ -90,7 +90,7 @@ if (!empty($_POST)) {
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -247,7 +247,7 @@ if (!empty($_POST)) {
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
+                    <?php echo $doc_nombre ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
