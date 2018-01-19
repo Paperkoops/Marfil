@@ -39,7 +39,9 @@ if (!empty($_POST)) {
 	// keep track post values
   $name = $_POST['name'];
  
-	$orientador = $_POST['orientador'];
+  $orientador = $_POST['orientador'];
+  
+  $tipo0 = $_POST['tipo'];
   
   $valid = true;
 	
@@ -80,10 +82,17 @@ if (!empty($_POST)) {
   $datos=Database::getRow($sql, $values);
   $orientador = $datos['Id_Docente'];
 
+  if ($tipo0=="Bachillerato") {
+    $tipo0= 2;
+  } else {
+    $tipo0= 1;
+  }
+  
+
 	// insert data
 	if ($valid) {
-		$sql = "INSERT INTO `grado` (`Nombre_Grado`, `Id_Docente`, `Status`) VALUES (?, ?, ?)";
-    $values=array($name, $orientador, 1);
+		$sql = "INSERT INTO `grado` (`Nombre_Grado`, `Id_Docente`, `Tipo`, `Status`) VALUES (?, ?, ?, ?)";
+    $values=array($name, $orientador, $tipo0, 1);
     
 
     Database::executeRow($sql, $values);
@@ -446,6 +455,17 @@ if (!empty($_POST)) {
                               print($menu);
                             ?>
                                 
+                              </select>
+                              <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-md-12 col-sm-12 col-xs-12">Tipo de Grado*</label>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <select class="form-control has-feedback-left" name="tipo">
+                              <option>Educacion Basica</option>
+                              <option>Bachillerato</option>
                               </select>
                               <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                             </div>
