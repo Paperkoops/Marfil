@@ -130,7 +130,7 @@ else {
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title">
+            <a href="index.php" class="site_title">
               <span>
                 <small>Colegio Nuevo Milenio</small>
               </span>
@@ -293,7 +293,7 @@ else {
             <ul class="nav navbar-nav navbar-right">
               <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
+                 <?php echo $doc_nombre ?>
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -310,7 +310,7 @@ else {
                     <a href="javascript:;">Help</a>
                   </li>
                   <li>
-                    <a href="login.html">
+                    <a href="logout.php">
                       <i class="fa fa-sign-out pull-right"></i> Log Out</a>
                   </li>
                 </ul>
@@ -590,14 +590,17 @@ else {
   <script src="../build/js/custom.min.js"></script>
   <!-- bootstrap-daterangepicker -->
   <script src="../vendors/moment/min/moment.min.js"></script>
+  <script src="../vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 
   <?php
 if ($inserted) {
   print("
   <script>
   swal({
-    title: 'Docentes',
-    text: 'El docente fue registrado exitosamente',
+    title: 'Edición',
+    text: 'El docente fue editado exitosamente',
     type: 'success',
     
     confirmButtonColor: '#3085d6',

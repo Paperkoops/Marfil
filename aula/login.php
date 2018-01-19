@@ -58,6 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
     <a class="hiddenanchor" id="signup"></a>
     <a class="hiddenanchor" id="signin"></a>
 
+<!--
+< /*?php 
+    $equipo = array(portero=>'Cech', defensa=>'Terry', medio=>'Lampard', delantero=>'Torres');
+ 
+   // $count = 0;
+
+    for ($count = 0; $count < 2; $count++) {
+   
+      foreach($equipo as $posicion=>$jugador)
+	    {
+        echo "El " . $posicion . " es " . $jugador . " ";
+	    }   
+      echo '<br>';
+    }
+
+  ?> -->
+
     <div class="login_wrapper">
       <div class="animate form login_form">
         <section class="login_content">

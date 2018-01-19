@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+include("database.php");
 session_start();
 
   if(empty($_SESSION['logged_in']))
@@ -30,77 +30,7 @@ session_start();
   //$row = mysqli_fetch_assoc($result);
   $user = $result->fetch_assoc();
   //print_r($user); die;
-
-
-if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Mes']) && isset($_GET['Tipo'])) {
-  $materia=$_GET['Materia'];
-  $periodo=$_GET['Periodo'];
-  $mes=$_GET['Mes'];
-  if ($_GET['Tipo']==1) {
-    $ponderacion=35;
-  } else {
-    $ponderacion=30;
-  }
-  
-}
-else
-{
-  header("location: alumnos.php");
-}
-
-if (!empty($_POST)) {
-	// keep track validation errors
-
- 
-	
-	// keep track post values
-  $name = $_POST['name'];
- 
-  $fechaentrega = $_POST['fechaentrega'];
-  
-  $descripcion = $_POST['descr'];
-
-
-  
-  $valid = true;
-	
-  // validate input
-  /*
-	$valid = true;
-	if (empty($name)) {
-		$nameError = 'Please enter Name';
-		$valid = false;
-	}
-	
-	if (empty($email)) {
-		$emailError = 'Please enter Email Address';
-		$valid = false;
-	} 
-	else if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
-		$emailError = 'Please enter a valid Email Address';
-		$valid = false;
-	}
-	
-	if (empty($mobile)) {
-		$mobileError = 'Please enter Mobile Number';
-		$valid = false;
-	}
-  */
-
-
-	// insert data
-	if ($valid) {
-		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Mes_Tarea`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, $mes, 1);
-    
-
-    Database::executeRow($sql, $values);
-    $inserted = true;
-    header("location: tareas.php");
-	}
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -110,7 +40,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Tarea</title>
+    <title>Calificaciones</title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -118,31 +48,9 @@ if (!empty($_POST)) {
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- bootstrap-wysiwyg -->
-    <link href="../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
-    <!-- Select2 -->
-    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
-    <!-- Switchery -->
-    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
-    <!-- starrr -->
-    <link href="../vendors/starrr/dist/starrr.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- bootstrap-datetimepicker -->
-    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
-
-    
   </head>
 
   <body class="nav-md">
@@ -150,29 +58,29 @@ if (!empty($_POST)) {
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
+            
             <div class="navbar nav_title" style="border: 0;">
               <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
 
-            <!-- menu profile quick info -->
+           <!-- menu profile quick info -->
             
           <div class="profile clearfix">
-          <?php
-          $doc_nombre = $user['Nombre_Docente'];
-          ?>
+            <?php
+              $doc_nombre = $user['Nombre_Docente'];
+            ?>
 
-          <div class="profile_info">
-            <h3>Bienvenido/a,</h3>
-            <h2><?php echo $doc_nombre ?> </h2>
+            <div class="profile_info">
+              <h3>Bienvenido/a,</h3>
+              <h2><?php echo $doc_nombre ?> </h2>
+            </div>
           </div>
-        </div>
         <!-- /menu profile quick info -->
+            <br />
 
-        <br />
-
-        <!-- sidebar menu -->
+            <!-- sidebar menu -->
         <?php
         if ($user['Tipo_Usuario'] == 1 ) {
 
@@ -246,7 +154,6 @@ if (!empty($_POST)) {
           </div>
 
         </div>';
-
         } else {
         //print de normal
         echo  
@@ -287,7 +194,7 @@ if (!empty($_POST)) {
         
         <!-- /sidebar menu -->
 
-          <!-- /menu footer buttons -->
+            <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small" method="post">
               <a href="logout.php" data-toggle="tooltip" data-placement="top" title="Logout">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
@@ -399,7 +306,8 @@ if (!empty($_POST)) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Agregar Tarea</h3>
+                <h3>Grados</h3>
+                
               </div>
 
               <div class="title_right">
@@ -414,158 +322,55 @@ if (!empty($_POST)) {
               </div>
             </div>
 
-            <div class="clearfix"></div>
 
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Nueva Tarea <small>Rellene la información porfavor</small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                      </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    
-                    <form class="form-horizontal form-label-left input_mask" method="post">
-                        
-                      
-                    
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <label>Nombre de la Actividad*</label>
-                          <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre de la Actividad">
-                          <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
-                        </div>
+                      <div class="clearfix"></div>
 
-                        <div class='col-md-6 col-sm-6 col-xs-12'>
-                        
-                        <div class="form-group">
-                          <label>Fecha de Entrega*</label>
-                            <div class='input-group date' id='myDatepicker'>
-                              <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                              <input required="required" type='text' class="form-control" name="fechaentrega" />
-                                
-                            </div>
-                        </div>
+                      <?php
+$sql="SELECT g.Id_Grado, g.Nombre_Grado, g.Id_Docente, d.Nombre_Docente, d.Apellido_Docente  FROM grado g, docente d WHERE g.Status=? AND g.Id_Docente=d.Id_Docente";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+$menu="";
+  
+foreach ($datos as $fila) 
+{
+  
+  $menu.="<div class='col-md-4 col-sm-4 col-xs-12 profile_details'>
+  <div class='well profile_view'>
+    <div class='col-sm-12'>
+      <!--<h4 class='brief'><i>Digital Strategist</i></h4>-->
+      <div class='left col-xs-7'>
+        <h2>$fila[Nombre_Grado]</h2>
+        <p><strong>Orientador/a: </strong></br>$fila[Nombre_Docente] $fila[Apellido_Docente] </p>
+      </br>
+        <ul class='list-unstyled'>
+         <!-- <li><i class='fa fa-users'></i> Numero de Alumnos: 39 </li>-->
+          
+        </ul>
+      </div>
+      <div class='right col-xs-5 text-center'>
+        <img src='images/img.jpg' alt='' class='img-circle img-responsive'>
+      </div>
+    </div>
+    <div class='col-xs-12 bottom text-center'>
+      
+      <div class='col-xs-12 col-sm-6 emphasis'>
+          <!--<a href='#' class='btn btn-primary btn-xs'><i class='fa fa-folder'></i> View </a>-->
+          <a href='reportee.php?g=$fila[Id_Grado]' class='btn btn-warning btn-xs'><i class='fa fa-eye'></i> Ver </a>
+          
+      </div>
+    </div>
+  </div>
+</div>";
+         
+}
+print($menu);
+?>
+
+
+                <br />      
                     </div>
-
-                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-
-                        <!--
-                        <div id="alerts"></div>
-                  <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                      </ul>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a data-edit="fontSize 5">
-                            <p style="font-size:17px">Huge</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a data-edit="fontSize 3">
-                            <p style="font-size:14px">Normal</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a data-edit="fontSize 1">
-                            <p style="font-size:11px">Small</p>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                      <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                      <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
-                      <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
-                      <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
-                      <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                      <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                      <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                      <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                      <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
-                      <div class="dropdown-menu input-append">
-                        <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
-                        <button class="btn" type="button">Add</button>
-                      </div>
-                      <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                      <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-                    </div>
-
-                    <div class="btn-group">
-                      <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                      <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                    </div>
-                  </div>
-
-                  <div id="editor-one"  class="editor-wrapper"> oh no</div> -->
-                  <label>Descripcion de la Actividad*</label>
-                  <textarea name="descr" id="descr" style="" class="form-control"></textarea>
-
-
-
-                        </div>
-
-                        
-                      
-                      
-                      <div class="form-group">
-                        
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="ln_solid"></div>
-                          <button type="button" class="btn btn-primary">Cancelar</button>
-						   <button class="btn btn-primary" type="reset">Limpiar Todo</button>
-                          <button type="submit" class="btn btn-success">Aceptar</button>
-                        </div>
-                      </div>
-
-                    </form>
                   </div>
                 </div>
-
-
-                
-
               </div>
             </div>
           </div>
@@ -583,35 +388,16 @@ if (!empty($_POST)) {
       </div>
     </div>
 
-     <!-- jQuery -->
-   <script src="../vendors/jquery/dist/jquery.min.js"></script>
-   <!-- Bootstrap -->
-   <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-   <!-- FastClick -->
-   <script src="../vendors/fastclick/lib/fastclick.js"></script>
-   <!-- NProgress -->
-   <script src="../vendors/nprogress/nprogress.js"></script>
-  
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
 
-   <!-- Custom Theme Scripts -->
-   <script src="../build/js/custom.min.js"></script>
-   <!-- bootstrap-daterangepicker -->
-   <script src="../vendors/moment/min/moment.min.js"></script>
-  
-
-    <!-- bootstrap-datetimepicker -->    
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script>
-      $('#myDatepicker').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    $('#myDatepicker2').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    </script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
   </body>
 </html>

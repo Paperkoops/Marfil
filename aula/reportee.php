@@ -1,5 +1,5 @@
 <?php
-require 'database.php';
+include("database.php");
 session_start();
 
   if(empty($_SESSION['logged_in']))
@@ -29,76 +29,18 @@ session_start();
 
   //$row = mysqli_fetch_assoc($result);
   $user = $result->fetch_assoc();
-  //print_r($user); die;
+  //print_r($user); die; 
 
-
-if (isset($_GET['Materia']) && isset($_GET['Periodo']) && isset($_GET['Mes']) && isset($_GET['Tipo'])) {
-  $materia=$_GET['Materia'];
-  $periodo=$_GET['Periodo'];
-  $mes=$_GET['Mes'];
-  if ($_GET['Tipo']==1) {
-    $ponderacion=35;
-  } else {
-    $ponderacion=30;
+  if (isset($_GET['g'])) {
+    $id=$_GET['g'];
+    $sql="SELECT * from grado Where Id_Grado=? AND Status=?";
+    $values=array($id, 1);
+    $datosgradoo=Database::getRow($sql, $values);
   }
-  
-}
-else
-{
-  header("location: alumnos.php");
-}
-
-if (!empty($_POST)) {
-	// keep track validation errors
-
- 
-	
-	// keep track post values
-  $name = $_POST['name'];
- 
-  $fechaentrega = $_POST['fechaentrega'];
-  
-  $descripcion = $_POST['descr'];
-
-
-  
-  $valid = true;
-	
-  // validate input
-  /*
-	$valid = true;
-	if (empty($name)) {
-		$nameError = 'Please enter Name';
-		$valid = false;
-	}
-	
-	if (empty($email)) {
-		$emailError = 'Please enter Email Address';
-		$valid = false;
-	} 
-	else if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {
-		$emailError = 'Please enter a valid Email Address';
-		$valid = false;
-	}
-	
-	if (empty($mobile)) {
-		$mobileError = 'Please enter Mobile Number';
-		$valid = false;
-	}
-  */
-
-
-	// insert data
-	if ($valid) {
-		$sql = "INSERT INTO `tarea`(`Nombre_Tarea`, `Descripcion_Tarea`, `Id_Materia`, `ponderacion`, `Fecha_Entrega`, `Id_Periodo`, `Mes_Tarea`, `Status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    $values=array($name, $descripcion, $materia, $ponderacion, $fechaentrega, $periodo, $mes, 1);
-    
-
-    Database::executeRow($sql, $values);
-    $inserted = true;
-    header("location: tareas.php");
-	}
-}
+  else
+  {
+    header("location: eval.php");
+  }
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +52,7 @@ if (!empty($_POST)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Agregar Tarea</title>
+    <title>Alumnos </title>
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -118,31 +60,9 @@ if (!empty($_POST)) {
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- bootstrap-wysiwyg -->
-    <link href="../vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
-    <!-- Select2 -->
-    <link href="../vendors/select2/dist/css/select2.min.css" rel="stylesheet">
-    <!-- Switchery -->
-    <link href="../vendors/switchery/dist/switchery.min.css" rel="stylesheet">
-    <!-- starrr -->
-    <link href="../vendors/starrr/dist/starrr.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- bootstrap-datetimepicker -->
-    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
-
-    
   </head>
 
   <body class="nav-md">
@@ -151,7 +71,7 @@ if (!empty($_POST)) {
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -238,7 +158,7 @@ if (!empty($_POST)) {
                   <li><a href="itinerario.html">Itinerario</a></li>
                 </ul>
               </li>
-              
+
               <li><a href="pagos.php"><i class="fa fa-money"></i>Pagos</a> </li>
               
               <li><a><i class="fa fa-line-chart"></i> Reportes</a></li>
@@ -308,7 +228,7 @@ if (!empty($_POST)) {
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <?php echo $doc_nombre ?>
+                    <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -320,7 +240,7 @@ if (!empty($_POST)) {
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -399,8 +319,12 @@ if (!empty($_POST)) {
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Agregar Tarea</h3>
+                <h3>Alumnos</h3>
+                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
+                <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
+
+
 
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -416,158 +340,247 @@ if (!empty($_POST)) {
 
             <div class="clearfix"></div>
 
+
+
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Nueva Tarea <small>Rellene la información porfavor</small></h2>
+                    <h2>Imprimir <small>Todos</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Settings 1</a>
-                          </li>
-                          <li><a href="#">Settings 2</a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
-                      </li>
+
+
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+
+                    <table id="datata" class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Nombre de la materia</th>
+                          <th>Eval</th>
+                          <th>Nie</th>
+                          <th>Nombre del alumno</th>
+                          <th>Nota 1</th>
+                          <th>Nota 2</th>
+                          <th>Nota 3</th>
+                          <th>Nota 4</th>
+                        </tr>
+                      </thead>
+
+
+                      <tbody>
+                      <?php
+$sql="SELECT * FROM materia WHERE Status=? AND Id_Grado=?  ORDER BY Nombre_Materia ";
+$values=array(1, $datosgradoo['Id_Grado']);
+$datos=Database::getRows($sql, $values);
+
+$nummat = count($datos);
+
+$totaldeltotal=0;
+$totalPuntos3=0;
+foreach ($datos as $fila) 
+{
+
+  if ($datosgradoo['Tipo']==1) {
+         
+    $sql="SELECT * FROM alumno WHERE Status=? AND Id_Grado=? ORDER BY Apellido_Alumno";
+    $values=array(1, $datosgradoo['Id_Grado']);
+    $datos=Database::getRows($sql, $values);
+    $menu="";
+    $numeroAlumno = 1;
+      
+    
+    foreach ($datos as $filaalumno) 
+    { 
+            $menu.=" <tr>
+            <td>$fila[Nombre_Materia]</td>
+            <td>$fila[Eval_Mined]</td>
+            <td>$filaalumno[NIE]</td>
+            <td>$filaalumno[Apellido_Alumno], $filaalumno[Nombre_Alumno]</td>";
+
+        $nota1 = 0;
+        $nota2 = 0;
+        $nota3 = 0;
+        $choco = 1;
+        $totalPuntos=0;
+        
+        
+            for ($i = 1; $i <= 13; $i++)
+            {
+                if ($i == 3 || $i == 6 || $i == 9 ) {
+                    $prom = ($nota1 + $nota2)/2;
+                    //$estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+                    $totalPuntos = $totalPuntos+$prom;
+                    $promediosinredondear = $prom;
+                    $prom = round($prom);
+                 
+                } else if($i == 13){
+                    $prom = ($nota1 + $nota2 + $nota3)/3;
+                   // $estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+                    $totalPuntos = $totalPuntos+$prom;
+                    $promediosinredondear = $prom;
+                    $prom = round($prom);
+
+                   
+
+                } else {
+                   // $estilo = 'font-size:4; align:C; valign:M; colspan:1;';
+                    $sql="SELECT * FROM tarea WHERE Status=? AND Mes_Tarea=? AND Id_Materia=?";
+                    $values=array(1, $choco, $fila['Id_Materia']);
+                    $datosene=Database::getRows($sql, $values);
+                    $prom = 0;
+                    foreach ($datosene as $filaene) 
+                    {
+                        $sql="SELECT * FROM Nota WHERE Status=? AND Id_Tarea=? AND Id_Alumno=?";
+                        $values=array(1, $filaene['Id_Tarea'], $filaalumno['NIE']);
+                        $datosindiv=Database::getRow($sql, $values);
+        
+        
+                        $zoe = ($datosindiv['Nota_Obtenida'] * $filaene['ponderacion'])/100;
+                        
+                            $prom =  $zoe + $prom;
+                        
+                    }
+                    $prom = $prom;
+                    $prom = round($prom, 1);
                     
-                    <form class="form-horizontal form-label-left input_mask" method="post">
-                        
-                      
+            
+                    if ($i == 1 || $i == 4 || $i == 7 || $i == 10) {
+                        $nota1 = $prom;
+                    } else if ($i == 2 || $i == 5 || $i == 6 || $i == 11) {
+                        $nota2 = $prom;
+                    } else if ($i == 13){
+                        $totalPuntos = $totalPuntos+$prom;
+                    } else if ($i == 12){
+                        $nota3 = $prom;
+                    }
+                    $choco = $choco + 1;
                     
-                      <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                          <label>Nombre de la Actividad*</label>
-                          <input type="text" class="form-control has-feedback-left" name="name" placeholder="Nombre de la Actividad">
-                          <span class="fa fa-institution form-control-feedback left" aria-hidden="true"></span>
-                        </div>
+                
+                }
+                if ($i == 3 || $i == 6 || $i == 9 || $i == 11) {
+                  $menu.="
+                <td>$prom</td>"; 
+                }
+                
+            }
 
-                        <div class='col-md-6 col-sm-6 col-xs-12'>
-                        
-                        <div class="form-group">
-                          <label>Fecha de Entrega*</label>
-                            <div class='input-group date' id='myDatepicker'>
-                              <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                             </span>
-                              <input required="required" type='text' class="form-control" name="fechaentrega" />
-                                
-                            </div>
-                        </div>
-                    </div>
+            $menu.="</tr>"; 
+            print($menu);
 
-                        <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+         }
 
-                        <!--
-                        <div id="alerts"></div>
-                  <div class="btn-toolbar editor" data-role="editor-toolbar" data-target="#editor-one">
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fa fa-font"></i><b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                      </ul>
-                    </div>
+    $numeroAlumno ++;
 
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fa fa-text-height"></i>&nbsp;<b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                        <li>
-                          <a data-edit="fontSize 5">
-                            <p style="font-size:17px">Huge</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a data-edit="fontSize 3">
-                            <p style="font-size:14px">Normal</p>
-                          </a>
-                        </li>
-                        <li>
-                          <a data-edit="fontSize 1">
-                            <p style="font-size:11px">Small</p>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+  } else if ($datosgradoo['Tipo']==2) {
 
-                    <div class="btn-group">
-                      <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fa fa-bold"></i></a>
-                      <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="fa fa-italic"></i></a>
-                      <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="fa fa-strikethrough"></i></a>
-                      <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="fa fa-underline"></i></a>
-                    </div>
+    $sql="SELECT * FROM alumno WHERE Status=? AND Id_Grado=? ORDER BY Apellido_Alumno";
+    $values=array(1, $datosgradoo['Id_Grado']);
+    $datos=Database::getRows($sql, $values);
+    $menu="";
+    $numeroAlumno = 1;
+      
+    
+    foreach ($datos as $filaalumno) 
+    { 
+       $menu.=" <tr>
+       <td>$fila[Nombre_Materia]</td>
+       <td>$fila[Eval_Mined]</td>
+       <td>$filaalumno[NIE]</td>
+       <td>$filaalumno[Apellido_Alumno], $filaalumno[Nombre_Alumno]</td>";
 
-                    <div class="btn-group">
-                      <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fa fa-list-ul"></i></a>
-                      <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fa fa-list-ol"></i></a>
-                      <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fa fa-dedent"></i></a>
-                      <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fa fa-indent"></i></a>
-                    </div>
+   $nota1 = 0;
+   $nota2 = 0;
+   $nota3 = 0;
+   $choco = 1;
+   $totalPuntos=0;
+   
+   
+       for ($i = 1; $i <= 13; $i++)
+       {
+           if ($i == 3 || $i == 6 || $i == 9 ) {
+               $prom = ($nota1 + $nota2)/2;
+               //$estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+               $totalPuntos = $totalPuntos+$prom;
+               $promediosinredondear = $prom;
+               $prom = round($prom);
+            
+           } else if($i == 13){
+               $prom = ($nota1 + $nota2 + $nota3)/3;
+              // $estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+               $totalPuntos = $totalPuntos+$prom;
+               $promediosinredondear = $prom;
+               $prom = round($prom);
 
-                    <div class="btn-group">
-                      <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fa fa-align-left"></i></a>
-                      <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fa fa-align-center"></i></a>
-                      <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fa fa-align-right"></i></a>
-                      <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fa fa-align-justify"></i></a>
-                    </div>
+              
 
-                    <div class="btn-group">
-                      <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fa fa-link"></i></a>
-                      <div class="dropdown-menu input-append">
-                        <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
-                        <button class="btn" type="button">Add</button>
-                      </div>
-                      <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fa fa-cut"></i></a>
-                    </div>
+           } else {
+              // $estilo = 'font-size:4; align:C; valign:M; colspan:1;';
+               $sql="SELECT * FROM tarea WHERE Status=? AND Mes_Tarea=? AND Id_Materia=?";
+               $values=array(1, $choco, $fila['Id_Materia']);
+               $datosene=Database::getRows($sql, $values);
+               $prom = 0;
+               foreach ($datosene as $filaene) 
+               {
+                   $sql="SELECT * FROM Nota WHERE Status=? AND Id_Tarea=? AND Id_Alumno=?";
+                   $values=array(1, $filaene['Id_Tarea'], $filaalumno['NIE']);
+                   $datosindiv=Database::getRow($sql, $values);
+   
+   
+                   $zoe = ($datosindiv['Nota_Obtenida'] * $filaene['ponderacion'])/100;
+                   
+                       $prom =  $zoe + $prom;
+                   
+               }
+               $prom = $prom;
+               $prom = round($prom, 1);
+               
+       
+               if ($i == 1 || $i == 4 || $i == 7 || $i == 10) {
+                   $nota1 = $prom;
+               } else if ($i == 2 || $i == 5 || $i == 6 || $i == 11) {
+                   $nota2 = $prom;
+               } else if ($i == 13){
+                   $totalPuntos = $totalPuntos+$prom;
+               } else if ($i == 12){
+                   $nota3 = $prom;
+               }
+               $choco = $choco + 1;
+               
+           
+           }
+           if ($i == 3 || $i == 6 || $i == 9 || $i == 13) {
+             $menu.="
+           <td>$prom</td>"; 
+           }
+           
+       }
 
-                    <div class="btn-group">
-                      <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="fa fa-picture-o"></i></a>
-                      <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-                    </div>
+       $menu.="</tr>"; 
+       print($menu);
 
-                    <div class="btn-group">
-                      <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fa fa-undo"></i></a>
-                      <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fa fa-repeat"></i></a>
-                    </div>
-                  </div>
+    }
 
-                  <div id="editor-one"  class="editor-wrapper"> oh no</div> -->
-                  <label>Descripcion de la Actividad*</label>
-                  <textarea name="descr" id="descr" style="" class="form-control"></textarea>
+$numeroAlumno ++;
 
+  }
 
+} //////vbnnnnnnnnn
 
-                        </div>
+ //$pdf->Output('I','Boletas.pdf', true); 
+                      ?>
 
-                        
-                      
-                      
-                      <div class="form-group">
-                        
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="ln_solid"></div>
-                          <button type="button" class="btn btn-primary">Cancelar</button>
-						   <button class="btn btn-primary" type="reset">Limpiar Todo</button>
-                          <button type="submit" class="btn btn-success">Aceptar</button>
-                        </div>
-                      </div>
-
-                    </form>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-
-
-                
-
               </div>
             </div>
+
           </div>
         </div>
         <!-- /page content -->
@@ -583,35 +596,34 @@ if (!empty($_POST)) {
       </div>
     </div>
 
-     <!-- jQuery -->
-   <script src="../vendors/jquery/dist/jquery.min.js"></script>
-   <!-- Bootstrap -->
-   <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-   <!-- FastClick -->
-   <script src="../vendors/fastclick/lib/fastclick.js"></script>
-   <!-- NProgress -->
-   <script src="../vendors/nprogress/nprogress.js"></script>
-  
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
 
-   <!-- Custom Theme Scripts -->
-   <script src="../build/js/custom.min.js"></script>
-   <!-- bootstrap-daterangepicker -->
-   <script src="../vendors/moment/min/moment.min.js"></script>
-  
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
 
-    <!-- bootstrap-datetimepicker -->    
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script>
-      $('#myDatepicker').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    $('#myDatepicker2').datetimepicker({
-        format: 'YYYY-MM-DD',
-        ignoreReadonly: true,
-        allowInputToggle: true
-    });
-    </script>
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+    <script src="js/custo.js"></script>
   </body>
 </html>

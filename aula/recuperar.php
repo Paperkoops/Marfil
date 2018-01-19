@@ -1,6 +1,6 @@
 <?php
 require 'database.php';
-include 'C:/xampp/htdocs/Marfil/aula/php/phpmailer/PHPMailerAutoload.php';
+include 'php/phpmailer/PHPMailerAutoload.php';
 session_start();
 
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {

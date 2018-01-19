@@ -1,6 +1,35 @@
 <?php
 include("database.php");
 session_start();
+
+  if(empty($_SESSION['logged_in']))
+  {
+    header('Location: login.php');
+    exit;
+  }
+
+  if (empty($_SESSION['email'])) {
+    session_start();
+    session_destroy();
+    header('location: login.php');
+  }
+
+  if (isset($_POST['cerrar_sesion'])) {
+    /* session_start();
+    session_unset();
+    session_destroy();
+    header('location: login.php'); */
+    require 'logout.php';
+  }
+
+  $docente = $_SESSION['docente'];
+  
+  $aVar = mysqli_connect("localhost", "root", "", "base_colegio");
+  $result = mysqli_query($aVar, "SELECT d.Id_Docente, d.Nombre_Docente, d.Tipo_Usuario FROM docente d, usuarios u WHERE d.Id_Docente = '$docente' AND u.Id_Docente=d.Id_Docente AND u.Status = 1");
+
+  //$row = mysqli_fetch_assoc($result);
+  $user = $result->fetch_assoc();
+  //print_r($user); die; 
 if (isset($_GET['Nie'])) {
   $id=$_GET['Nie'];
 }

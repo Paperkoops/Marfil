@@ -60,7 +60,7 @@ session_start();
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -217,7 +217,7 @@ session_start();
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt=""><?php echo $doc_nombre ?>
+                    <?php echo $doc_nombre ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -229,7 +229,7 @@ session_start();
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -353,7 +353,7 @@ session_start();
                   </div>
                   <div class="x_content">
 
-                    <table id="datatable" class="table table-striped table-bordered">
+                <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           <th>NIE</th>
@@ -367,17 +367,125 @@ session_start();
                       </thead>
 
 
-                      <tbody>
-
-
-
-                      <?php
-$sql="SELECT * FROM alumno WHERE Status=?";
-$values=array(1);
-$datos=Database::getRows($sql, $values);
-$menu="";
+                      <tbody> 
+<?php
+  $sql="SELECT a.*, g.Id_Grado, g.Nombre_Grado, r.Id_Genero, r.Nombre_Genero FROM alumno a, grado g, genero r WHERE a.Id_Grado = g.Id_Grado AND a.Id_Genero = r.Id_Genero AND a.Status=?";
+  $values=array(1);
+  $datos=Database::getRows($sql, $values);
+  $menu="";
+foreach ($datos as $fila) 
+{
   
 
+  $menu.="<tr>
+              <td>$fila[NIE]</td>
+              <td>$fila[Nombre_Alumno]</td>
+              <td>$fila[Apellido_Alumno]</td>
+              <td>$fila[Fecha_Nacimiento]</td>
+              <td>$fila[Nombre_Genero]</td>
+              <td>$fila[Nombre_Grado]</td>
+              <td>
+              <div style='text-align: center;'>
+              <a href='ver_alumno.php?Nie=$fila[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
+              <a href='editar_alumno.php?id=$fila[NIE]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+              <a href='eliminar_alumno.php?id=$fila[NIE]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+              
+              <a href='#' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='right' title='Re-Matricular'><i class='fa fa-history'></i></a>
+              </div>
+            </td>
+              
+
+          </tr>";
+         
+
+}
+
+
+print($menu);
+?>
+
+                      </tbody>
+                    </table> 
+
+
+<?php
+$sql="SELECT * FROM grado WHERE Status=? ORDER by Id_Grado asc";
+$values=array(1);
+$datos=Database::getRows($sql, $values);
+
+//echo "hola";
+  
+foreach($datos as $fila)
+{
+  //<th>Grado</th>
+  echo '<table id="datatable" class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>NIE</th>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Fecha de Nacimiento</th>
+      <th>Genero</th>
+      
+      <th>Administrar</th>
+    </tr>
+  </thead>
+  <tbody>';
+  $grado = $fila['Id_Grado'];
+  $grados = $fila['Nombre_Grado']; ?>
+  <h2><?php echo $grados ?> </h2>
+
+  <?php
+  
+  $sql="SELECT a.*, g.Id_Grado, g.Nombre_Grado, r.Id_Genero, r.Nombre_Genero FROM alumno a, grado g, genero r WHERE a.Id_Grado = ? AND a.Id_Grado = g.Id_Grado AND a.Id_Genero = r.Id_Genero AND a.Status=?";
+  $values=array($grado, 1);
+  $datos2=Database::getRows($sql, $values);
+  $menu="";
+    
+  foreach ($datos2 as $fila2) 
+  {
+    //<td>$fila2[Nombre_Grado]</td>
+    $menu.="
+    <tr>
+                <td>$fila2[NIE]</td>
+                <td>$fila2[Nombre_Alumno]</td>
+                <td>$fila2[Apellido_Alumno]</td>
+                <td>$fila2[Fecha_Nacimiento]</td>
+                <td>$fila2[Nombre_Genero]</td>
+                
+                <td>
+                <div style='text-align: center;'>
+                <a href='ver_alumno.php?Nie=$fila2[NIE]' class='btn btn-primary btn-xs'><i class='fa fa-eye'></i> Ver </a>
+                <a href='editar_alumno.php?id=$fila2[NIE]' class='btn btn-info btn-xs'><i class='fa fa-pencil'></i> Editar </a>
+                <a href='eliminar_alumno.php?id=$fila2[NIE]' class='btn btn-danger btn-xs'><i class='fa fa-trash-o'></i> Eliminar </a>
+                
+                <a href='#' class='btn btn-warning btn-xs' data-toggle='tooltip' data-placement='right' title='Re-Matricular'><i class='fa fa-history'></i></a>
+                </div>
+              </td>
+                
+  
+            </tr>
+            
+            
+            ";
+           
+  }
+  print($menu);
+
+  echo '
+  </tbody>
+  </table>';
+} 
+
+
+
+
+/*
+$sql="SELECT * FROM alumno WHERE Status=?";
+  $values=array(1);
+  $datos=Database::getRows($sql, $values);
+  $menu="";
+  foreach ($datos as $fila) 
 foreach ($datos as $fila) 
 {
   
@@ -403,18 +511,14 @@ foreach ($datos as $fila)
           </tr>";
          
 
-}
+} */
 
 
-print($menu);
+//print($menu);
 ?>
 
 
 
-                        
-
-                      </tbody>
-                    </table>
                   </div>
                 </div>
               </div>
