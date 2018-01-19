@@ -30,6 +30,17 @@ session_start();
   //$row = mysqli_fetch_assoc($result);
   $user = $result->fetch_assoc();
   //print_r($user); die; 
+
+  if (isset($_GET['g'])) {
+    $id=$_GET['g'];
+    $sql="SELECT * from grado Where Id_Grado=? AND Status=?";
+    $values=array($id, 1);
+    $datosgradoo=Database::getRow($sql, $values);
+  }
+  else
+  {
+    header("location: eval.php");
+  }
 ?>
 
 <!DOCTYPE html>
@@ -363,88 +374,61 @@ session_start();
 
                       <tbody>
                       <?php
- $sql="SELECT m.*, a.*  FROM materia m, alumno a WHERE a.Status=? AND m.Status=?";
- $values=array(1, 1);
- $datos=Database::getRows($sql, $values);
- $menu="";
-
- $totaldeltotal=0;
- $totalPuntos3=0;
- foreach ($datos as $fila) 
- {
-     $menu.="<tr>
-    <td>$fila[Nombre_Materia]</td>
-    <td>$fila[Eval_Mined]</td>
-    <td>$fila[NIE]</td>
-    <td>$fila[Apellido_Alumno], $fila[Nombre_Alumno]</td>";
- }
-
-$sql="SELECT * FROM alumno WHERE Status=? ORDER BY Apellido_Alumno";
-$values=array(1);
+$sql="SELECT * FROM materia WHERE Status=? AND Id_Grado=?  ORDER BY Nombre_Materia ";
+$values=array(1, $datosgradoo['Id_Grado']);
 $datos=Database::getRows($sql, $values);
 
-$numeroAlumno = 1;
-  
+$nummat = count($datos);
 
-foreach ($datos as $filaalumno) 
+$totaldeltotal=0;
+$totalPuntos3=0;
+foreach ($datos as $fila) 
 {
-////////////Se verifica si es educacion basica o bachillerato 1=basica 2=bachillerato
-   /* if ($datosgradoo['Tipo']==1) {
-        $table=new easyTable($pdf, 21, 'width:700; border-color:#000; font-size:10; border:1; paddingY:2;');
-        
-        $table->rowStyle('align:{C}; bgcolor:#FFA190;font-style:B');
-         $table->easyCell("Colegio Nuevo Milenio, Col. Las Brisas Soyapango.", 'colspan:16; font-size:8');
-         $table->easyCell("", 'img:Pics/logo1.png, w20;colspan:5; rowspan:4; font-size:9'); 
-        
-         $table->printRow();
-        
-         $table->rowStyle('align:{C}; bgcolor:#FFA190;font-style:B');
-         $table->easyCell("FORMANDO LOS VALORES PARA EL NUEVO SIGLO", 'colspan:16; font-size:7');
-         $table->printRow();
-        
-         $table->rowStyle('align:C; valign:M');
-        
-         $table->easyCell("No.", 'font-size:7; font-style:B');
-         $table->easyCell($numeroAlumno, 'font-size:7; colspan:4;');
-         $table->easyCell("Nombre:", 'font-size:7; colspan:2; font-style:B');
-    
-         $table->easyCell("$filaalumno[Apellido_Alumno], $filaalumno[Nombre_Alumno]" , 'font-size:7; colspan:9');
-         */
-        // echo $filaalumno['Apellido_Alumno'], $filaalumno['Nombre_Alumno'];
-        
+
+  if ($datosgradoo['Tipo']==1) {
          
-         $sql="SELECT * FROM materia WHERE Status=? ";
-         $values=array(1);
-         $datos=Database::getRows($sql, $values);
-        
-         $nummat = count($datos);
-         /*$patata = 'font-size:8; align:C; valign:M; rowspan:';
-         $patata.= $nummat;
-         $patata.= '; font-style:B'; */
-        
-         $totaldeltotal=0;
-         $totalPuntos3=0;
-         foreach ($datos as $fila) 
-         {
-           
-           // $table->easyCell($fila['Nombre_Materia'], 'font-size:6; align:C; valign:M; colspan:4; font-style:B');
-      //  echo $fila['Nombre_Materia'];
-           $nota1 = 0;
+    $sql="SELECT * FROM alumno WHERE Status=? AND Id_Grado=? ORDER BY Apellido_Alumno";
+    $values=array(1, $datosgradoo['Id_Grado']);
+    $datos=Database::getRows($sql, $values);
+    $menu="";
+    $numeroAlumno = 1;
+      
+    
+    foreach ($datos as $filaalumno) 
+    { 
+            $menu.=" <tr>
+            <td>$fila[Nombre_Materia]</td>
+            <td>$fila[Eval_Mined]</td>
+            <td>$filaalumno[NIE]</td>
+            <td>$filaalumno[Apellido_Alumno], $filaalumno[Nombre_Alumno]</td>";
+
+        $nota1 = 0;
         $nota2 = 0;
+        $nota3 = 0;
         $choco = 1;
         $totalPuntos=0;
         
         
             for ($i = 1; $i <= 13; $i++)
             {
-                if ($i == 3 || $i == 6 || $i == 9 || $i == 12 ) {
+                if ($i == 3 || $i == 6 || $i == 9 ) {
                     $prom = ($nota1 + $nota2)/2;
-                    //$estilo = 'font-size:6; align:C; valign:M; colspan:1; font-style:B';
+                    //$estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
                     $totalPuntos = $totalPuntos+$prom;
                     $promediosinredondear = $prom;
                     $prom = round($prom);
+                 
+                } else if($i == 13){
+                    $prom = ($nota1 + $nota2 + $nota3)/3;
+                   // $estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+                    $totalPuntos = $totalPuntos+$prom;
+                    $promediosinredondear = $prom;
+                    $prom = round($prom);
+
+                   
+
                 } else {
-                   // $estilo = 'font-size:6; align:C; valign:M; colspan:1;';
+                   // $estilo = 'font-size:4; align:C; valign:M; colspan:1;';
                     $sql="SELECT * FROM tarea WHERE Status=? AND Mes_Tarea=? AND Id_Materia=?";
                     $values=array(1, $choco, $fila['Id_Materia']);
                     $datosene=Database::getRows($sql, $values);
@@ -460,8 +444,6 @@ foreach ($datos as $filaalumno)
                         
                             $prom =  $zoe + $prom;
                         
-                        
-                
                     }
                     $prom = $prom;
                     $prom = round($prom, 1);
@@ -473,158 +455,124 @@ foreach ($datos as $filaalumno)
                         $nota2 = $prom;
                     } else if ($i == 13){
                         $totalPuntos = $totalPuntos+$prom;
+                    } else if ($i == 12){
+                        $nota3 = $prom;
                     }
                     $choco = $choco + 1;
                     
+                
+                }
+                if ($i == 3 || $i == 6 || $i == 9 || $i == 11) {
+                  $menu.="
+                <td>$prom</td>"; 
                 }
                 
-                
-                //$table->easyCell($prom, $estilo);
-                
-                $menu.="<td>$prom</td>";
-                
             }
-         //   $table->easyCell(round($totalPuntos, 1), 'font-size:6; align:C; valign:M; colspan:1; font-style:B');
-            $totaldeltotal = $totalPuntos + $totaldeltotal; 
-            $totalPuntos2 = $totalPuntos/5;
-        
-            $totalPuntos3 = $totalPuntos2 + round($totalPuntos3);
-        
-          //  $table->easyCell(round($totalPuntos2), 'font-size:6; align:C; valign:M; colspan:2; font-style:B');
-          $menu.="
-          <td>$totaldeltotal</td>
-          <td>$totalPuntos3</td>
-          </tr>";
-            
-          //  $table->printRow();
-            
+
+            $menu.="</tr>"; 
+            print($menu);
+
          }
-        
-         
-            
-      /*   $table->easyCell(round($totaldeltotal, 1), 'font-size:6; align:C; valign:M; colspan:1; font-style:B');
-         $table->easyCell($totalPuntos3, 'font-size:6; align:C; valign:M; colspan:2; font-style:B'); */
-         //$table->printRow();
-    
-        // $table->printRow();
-         print($menu);
-     
+
     $numeroAlumno ++;
+
+  } else if ($datosgradoo['Tipo']==2) {
+
+    $sql="SELECT * FROM alumno WHERE Status=? AND Id_Grado=? ORDER BY Apellido_Alumno";
+    $values=array(1, $datosgradoo['Id_Grado']);
+    $datos=Database::getRows($sql, $values);
+    $menu="";
+    $numeroAlumno = 1;
+      
+    
+    foreach ($datos as $filaalumno) 
+    { 
+       $menu.=" <tr>
+       <td>$fila[Nombre_Materia]</td>
+       <td>$fila[Eval_Mined]</td>
+       <td>$filaalumno[NIE]</td>
+       <td>$filaalumno[Apellido_Alumno], $filaalumno[Nombre_Alumno]</td>";
+
+   $nota1 = 0;
+   $nota2 = 0;
+   $nota3 = 0;
+   $choco = 1;
+   $totalPuntos=0;
+   
+   
+       for ($i = 1; $i <= 13; $i++)
+       {
+           if ($i == 3 || $i == 6 || $i == 9 ) {
+               $prom = ($nota1 + $nota2)/2;
+               //$estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+               $totalPuntos = $totalPuntos+$prom;
+               $promediosinredondear = $prom;
+               $prom = round($prom);
+            
+           } else if($i == 13){
+               $prom = ($nota1 + $nota2 + $nota3)/3;
+              // $estilo = 'font-size:4; align:C; valign:M; colspan:1; font-style:B';
+               $totalPuntos = $totalPuntos+$prom;
+               $promediosinredondear = $prom;
+               $prom = round($prom);
+
+              
+
+           } else {
+              // $estilo = 'font-size:4; align:C; valign:M; colspan:1;';
+               $sql="SELECT * FROM tarea WHERE Status=? AND Mes_Tarea=? AND Id_Materia=?";
+               $values=array(1, $choco, $fila['Id_Materia']);
+               $datosene=Database::getRows($sql, $values);
+               $prom = 0;
+               foreach ($datosene as $filaene) 
+               {
+                   $sql="SELECT * FROM Nota WHERE Status=? AND Id_Tarea=? AND Id_Alumno=?";
+                   $values=array(1, $filaene['Id_Tarea'], $filaalumno['NIE']);
+                   $datosindiv=Database::getRow($sql, $values);
+   
+   
+                   $zoe = ($datosindiv['Nota_Obtenida'] * $filaene['ponderacion'])/100;
+                   
+                       $prom =  $zoe + $prom;
+                   
+               }
+               $prom = $prom;
+               $prom = round($prom, 1);
+               
+       
+               if ($i == 1 || $i == 4 || $i == 7 || $i == 10) {
+                   $nota1 = $prom;
+               } else if ($i == 2 || $i == 5 || $i == 6 || $i == 11) {
+                   $nota2 = $prom;
+               } else if ($i == 13){
+                   $totalPuntos = $totalPuntos+$prom;
+               } else if ($i == 12){
+                   $nota3 = $prom;
+               }
+               $choco = $choco + 1;
+               
+           
+           }
+           if ($i == 3 || $i == 6 || $i == 9 || $i == 13) {
+             $menu.="
+           <td>$prom</td>"; 
+           }
+           
+       }
+
+       $menu.="</tr>"; 
+       print($menu);
 
     }
 
+$numeroAlumno ++;
 
-        /*              
-         $sql="SELECT m.*, a.*  FROM materia m, alumno a WHERE a.Status=? AND m.Status=?";
-         $values=array(1, 1);
-         $datos=Database::getRows($sql, $values);
-         $menu="";
+  }
 
-         $nummat = count($datos);
-         $patata= $nummat;
-         echo $patata;  
-         $totaldeltotal=0;
-         $totalPuntos3=0;
-         foreach ($datos as $fila) 
-         {
-             $menu.="<tr>
-            <td>$fila[Nombre_Materia]</td>
-            <td>$fila[Eval_Mined]</td>
-            <td>$fila[NIE]</td>
-            <td>$fila[Apellido_Alumno], $fila[Nombre_Alumno]</td>";
-           
-        $nota1 = 0;
-        $nota2 = 0;
-        $nota3 = 0;
-        $nota4 = 0;
-        $choco = 1;
-        $totalPuntos=0;
-        
-        
-            for ($i = 1; $i <= 13; $i++)
-            {
-                if ($i == 3 || $i == 6 || $i == 9 || $i == 12 ) {
-                    $prom = ($nota1 + $nota2)/2;
-                    $totalPuntos = $totalPuntos+$prom;
-                    $promediosinredondear = $prom;
-                    $prom = round($prom);
-                } else {
-                    $sql="SELECT * FROM tarea WHERE Status=? AND Mes_Tarea=? AND Id_Materia=?";
-                    $values=array(1, $choco, $fila['Id_Materia']);
-                    $datosene=Database::getRows($sql, $values);
-                    $prom = 0;
-                    foreach ($datosene as $filaene) 
-                    {
-                        $sql="SELECT * FROM Nota WHERE Status=? AND Id_Tarea=? AND Id_Alumno=?";
-                        $values=array(1, $filaene['Id_Tarea'], $fila['NIE']);
-                        $datosindiv=Database::getRow($sql, $values);
-        
-        
-                        $zoe = ($datosindiv['Nota_Obtenida'] * $filaene['ponderacion'])/100;
-                        
-                            $prom =  $zoe + $prom;
-                        
-                    }
-                    $prom = $prom;
-                    $prom = round($prom, 1);
-                    
-            
-                    if ($i == 1 || $i == 4 || $i == 7 || $i == 10) {
-                        $nota1 = $prom;
-                    } else if ($i == 2 || $i == 5 || $i == 6 || $i == 11) {
-                        $nota2 = $prom;
-                    } else if ($i == 13){
-                        $totalPuntos = $totalPuntos+$prom;
-                    }
-                    $choco = $choco + 1;
-                    
-                }
-                
-                
-                $menu.="
-            <td>$nota1</td>
-            <td>$nota2</td>
-            <td>$nota3</td>
-            <td>$nota4</td>
-            </tr>";
-                
-                
-            }
-            print($menu);
-          /*  $table->easyCell(round($totalPuntos, 1), 'font-size:6; align:C; valign:M; colspan:1; font-style:B');
-            $totaldeltotal = $totalPuntos + $totaldeltotal; 
-            $totalPuntos2 = $totalPuntos/5;
-        
-            $totalPuntos3 = $totalPuntos2 + round($totalPuntos3);
-        
-            $table->easyCell(round($totalPuntos2), 'font-size:6; align:C; valign:M; colspan:2; font-style:B');
-        
-            
-            $table->printRow(); 
-            
-         } 
-                     /* $sql="SELECT m.*, a.*, n.*, t.* FROM tarea t, materia m, alumno a, nota n WHERE t.Id_Materia = m.Id_Materia AND n.Id_Alumno = a.NIE AND n.Id_Tarea = t.Id_Tarea AND m.Status=? AND a.Status=? AND n.Status=? AND t.Status = ? ORDER BY m.Nombre_Materia";
-                      $values=array(1, 1, 1, 1);
-                      $datos=Database::getRows($sql, $values);
-                      $menu="";
-                        foreach ($datos as $fila) 
-                        {
-  
+} //////vbnnnnnnnnn
 
-                            $menu.="<tr>
-                                <td>$fila[Nombre_Materia]</td>
-                                <td>$fila[Eval_Mined]</td>
-                                <td>$fila[NIE]</td>
-                                <td>$fila[Apellido_Alumno], $fila[Nombre_Alumno]</td>
-                                <td>$fila[Nota_Obtenida]</td>
-                            </tr>";
-         
-                        } 
-
-
-                      print($menu); */
-                      
-                        ?>
+ //$pdf->Output('I','Boletas.pdf', true); 
+                      ?>
 
                       </tbody>
                     </table>
