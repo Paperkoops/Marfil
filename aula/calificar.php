@@ -143,7 +143,7 @@ if (!empty($_POST)) {
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -195,10 +195,10 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
@@ -226,8 +226,8 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
 
@@ -258,16 +258,16 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
             </ul>
@@ -634,7 +634,7 @@ print($menu);
     <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.php5.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
     <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>

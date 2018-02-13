@@ -136,10 +136,10 @@ session_start();
 
                   <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="faltas.html">Faltas</a></li>
-                      <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                      <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                      <li><a href="observaciones.html">Observaciones</a></li>
+                      <li><a href="faltas.php">Faltas</a></li>
+                      <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                      <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                      <li><a href="observaciones.php">Observaciones</a></li>
                     </ul>
                   </li>
 
@@ -167,8 +167,8 @@ session_start();
 
                   <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="horas_clase.html">Horas Clase</a></li>
-                      <li><a href="itinerario.html">Itinerario</a></li>
+                      <li><a href="horas_clase.php">Horas Clase</a></li>
+                      <li><a href="itinerario.php">Itinerario</a></li>
                     </ul>
                   </li>
 
@@ -199,16 +199,16 @@ session_start();
 
                   <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="faltas.html">Faltas</a></li>
-                      <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                      <li><a href="observaciones.html">Observaciones</a></li>
+                      <li><a href="faltas.php">Faltas</a></li>
+                      <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                      <li><a href="observaciones.php">Observaciones</a></li>
                     </ul>
                   </li>
 
                   <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="horas_clase.html">Horas Clase</a></li>
-                      <li><a href="itinerario.html">Itinerario</a></li>
+                      <li><a href="horas_clase.php">Horas Clase</a></li>
+                      <li><a href="itinerario.php">Itinerario</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -245,10 +245,10 @@ session_start();
 
                   <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="faltas.html">Faltas</a></li>
-                      <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                      <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                      <li><a href="observaciones.html">Observaciones</a></li>
+                      <li><a href="faltas.php">Faltas</a></li>
+                      <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                      <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                      <li><a href="observaciones.php">Observaciones</a></li>
                     </ul>
                   </li>
 
@@ -276,12 +276,12 @@ session_start();
 
                   <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="horas_clase.html">Horas Clase</a></li>
-                      <li><a href="itinerario.html">Itinerario</a></li>
+                      <li><a href="horas_clase.php">Horas Clase</a></li>
+                      <li><a href="itinerario.php">Itinerario</a></li>
                     </ul>
                   </li>
 
-                  <li><a href="pagos.html"><i class="fa fa-money"></i> Pagos </a></li>
+                  <li><a href="pagos.php"><i class="fa fa-money"></i> Pagos </a></li>
                   
                   <li><a><i class="fa fa-line-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -295,21 +295,21 @@ session_start();
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="e_commerce.html">E-commerce</a></li>
-                      <li><a href="projects.html">Projects</a></li>
-                      <li><a href="project_detail.html">Project Detail</a></li>
-                      <li><a href="contacts.html">Contacts</a></li>
-                      <li><a href="profile.html">Profile</a></li>
+                      <li><a href="e_commerce.php">E-commerce</a></li>
+                      <li><a href="projects.php">Projects</a></li>
+                      <li><a href="project_detail.php">Project Detail</a></li>
+                      <li><a href="contacts.php">Contacts</a></li>
+                      <li><a href="profile.php">Profile</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="page_403.html">403 Error</a></li>
-                      <li><a href="page_404.html">404 Error</a></li>
-                      <li><a href="page_500.html">500 Error</a></li>
-                      <li><a href="plain_page.html">Plain Page</a></li>
-                      <li><a href="login.html">Login Page</a></li>
-                      <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                      <li><a href="page_403.php">403 Error</a></li>
+                      <li><a href="page_404.php">404 Error</a></li>
+                      <li><a href="page_500.php">500 Error</a></li>
+                      <li><a href="plain_page.php">Plain Page</a></li>
+                      <li><a href="login.php">Login Page</a></li>
+                      <li><a href="pricing_tables.php">Pricing Tables</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
@@ -317,7 +317,7 @@ session_start();
                         <li><a href="#level1_1">Level One</a>
                         <li><a>Level One<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="level2.html">Level Two</a>
+                            <li class="sub_menu"><a href="level2.php">Level Two</a>
                             </li>
                             <li><a href="#level2_1">Level Two</a>
                             </li>

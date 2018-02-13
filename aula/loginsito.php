@@ -43,7 +43,7 @@ else { //existe
         $_SESSION['docente'] = $user['Id_Docente'];
 
         $_SESSION['logged_in'] = true;
-        header("location: index.html");
+        header("location: index.php");
     }
 } */
 ?>

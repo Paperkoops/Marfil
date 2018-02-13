@@ -31,7 +31,7 @@ session_start();
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -57,44 +57,44 @@ session_start();
                 <h3>General</h3>
                 <ul class="nav side-menu">
 
-                  <li><a href="index.html"><i class="fa fa-home"></i> Inicio </a></li>
+                  <li><a href="index.php"><i class="fa fa-home"></i> Inicio </a></li>
 
                   <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="alumnos.html">Alumnos</a></li>
-                      <li><a href="index2.html">Docentes</a></li>
+                      <li><a href="alumnos.php">Alumnos</a></li>
+                      <li><a href="index2.php">Docentes</a></li>
 
                     </ul>
                   </li>
                   
                   <li><a><i class="fa fa-graduation-cap"></i> Notas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="calificaciones.html">Calificaciones</a></li>
-                      <li><a href="tareas.html">Tareas</a></li>
+                      <li><a href="calificaciones.php">Calificaciones</a></li>
+                      <li><a href="tareas.php">Tareas</a></li>
                     </ul>
                   </li>
 
                   <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="faltas.html">Faltas</a></li>
-                      <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                      <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                      <li><a href="observaciones.html">Observaciones</a></li>
+                      <li><a href="faltas.php">Faltas</a></li>
+                      <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                      <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                      <li><a href="observaciones.php">Observaciones</a></li>
                     </ul>
                   </li>
 
-                  <li><a href="grados.html"><i class="fa fa-book"></i> Grados </a></li>
+                  <li><a href="grados.php"><i class="fa fa-book"></i> Grados </a></li>
 
-                  <li><a href="materias.html"><i class="fa fa-pencil"></i> Materias </a></li>
+                  <li><a href="materias.php"><i class="fa fa-pencil"></i> Materias </a></li>
 
                   <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="horas_clase.html">Horas Clase</a></li>
-                      <li><a href="itinerario.html">Itinerario</a></li>
+                      <li><a href="horas_clase.php">Horas Clase</a></li>
+                      <li><a href="itinerario.php">Itinerario</a></li>
                     </ul>
                   </li>
 
-                  <li><a href="pagos.html"><i class="fa fa-money"></i> Pagos </a></li>
+                  <li><a href="pagos.php"><i class="fa fa-money"></i> Pagos </a></li>
                   
                   <li><a><i class="fa fa-line-chart"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -108,21 +108,21 @@ session_start();
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="e_commerce.html">E-commerce</a></li>
-                      <li><a href="projects.html">Projects</a></li>
-                      <li><a href="project_detail.html">Project Detail</a></li>
-                      <li><a href="contacts.html">Contacts</a></li>
-                      <li><a href="profile.html">Profile</a></li>
+                      <li><a href="e_commerce.php">E-commerce</a></li>
+                      <li><a href="projects.php">Projects</a></li>
+                      <li><a href="project_detail.php">Project Detail</a></li>
+                      <li><a href="contacts.php">Contacts</a></li>
+                      <li><a href="profile.php">Profile</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="page_403.html">403 Error</a></li>
-                      <li><a href="page_404.html">404 Error</a></li>
-                      <li><a href="page_500.html">500 Error</a></li>
-                      <li><a href="plain_page.html">Plain Page</a></li>
-                      <li><a href="login.html">Login Page</a></li>
-                      <li><a href="pricing_tables.html">Pricing Tables</a></li>
+                      <li><a href="page_403.php">403 Error</a></li>
+                      <li><a href="page_404.php">404 Error</a></li>
+                      <li><a href="page_500.php">500 Error</a></li>
+                      <li><a href="plain_page.php">Plain Page</a></li>
+                      <li><a href="login.php">Login Page</a></li>
+                      <li><a href="pricing_tables.php">Pricing Tables</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
@@ -130,7 +130,7 @@ session_start();
                         <li><a href="#level1_1">Level One</a>
                         <li><a>Level One<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="level2.html">Level Two</a>
+                            <li class="sub_menu"><a href="level2.php">Level Two</a>
                             </li>
                             <li><a href="#level2_1">Level Two</a>
                             </li>
@@ -160,7 +160,7 @@ session_start();
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.php">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -191,7 +191,7 @@ session_start();
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="login.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -271,7 +271,7 @@ session_start();
             <div class="page-title">
               <div class="title_left">
                 <h3>Alumnos</h3>
-                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
+                <a href="matricular_alumno.php"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
 
@@ -601,7 +601,7 @@ print($menu);
     <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.php5.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
     <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>

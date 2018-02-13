@@ -60,7 +60,7 @@ session_start();
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
+              <a href="index.php" class="site_title"><span><small>Colegio Nuevo Milenio</small></span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -112,10 +112,10 @@ session_start();
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
@@ -143,8 +143,8 @@ session_start();
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
 
@@ -175,16 +175,16 @@ session_start();
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
             </ul>
@@ -229,7 +229,7 @@ session_start();
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="login.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
 
@@ -309,7 +309,7 @@ session_start();
             <div class="page-title">
               <div class="title_left">
                 <h3>Alumnos</h3>
-                <a href="matricular_alumno.html"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
+                <a href="matricular_alumno.php"><button type="button" class="btn btn-round btn-success">Matricular Nuevo Alumno <i class="fa fa-plus-circle"></i></button></a>
                 <button type="button" class="btn btn-round btn-info">Ayuda <i class="fa fa-question-circle"></i></button>
               </div>
 
@@ -663,7 +663,7 @@ foreach ($datos as $filaalumno)
     <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
     <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.php5.min.js"></script>
     <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
     <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
     <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>

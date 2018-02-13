@@ -140,10 +140,10 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="tipos_faltas.html">Tipos de Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="tipos_faltas.php">Tipos de Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
@@ -171,8 +171,8 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
 
@@ -203,16 +203,16 @@ if (!empty($_POST)) {
 
               <li><a><i class="fa fa-gavel"></i> Conducta <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="faltas.html">Faltas</a></li>
-                  <li><a href="faltas_aplicadas.html">Faltas Aplicadas</a></li>
-                  <li><a href="observaciones.html">Observaciones</a></li>
+                  <li><a href="faltas.php">Faltas</a></li>
+                  <li><a href="faltas_aplicadas.php">Faltas Aplicadas</a></li>
+                  <li><a href="observaciones.php">Observaciones</a></li>
                 </ul>
               </li>
 
               <li><a><i class="fa fa-clock-o"></i> Horarios <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                  <li><a href="horas_clase.html">Horas Clase</a></li>
-                  <li><a href="itinerario.html">Itinerario</a></li>
+                  <li><a href="horas_clase.php">Horas Clase</a></li>
+                  <li><a href="itinerario.php">Itinerario</a></li>
                 </ul>
               </li>
             </ul>
@@ -450,7 +450,7 @@ if (!empty($_POST)) {
                                 <td>Soltero</td>
                                 <td>
                                   <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
+                                   <a href="estado_civil_editar.php">
                                     <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
                                       <i class="fa fa-pencil"> </i>
                                     </button>
@@ -465,7 +465,7 @@ if (!empty($_POST)) {
                                 <td>Casado</td>
                                 <td>
                                   <div style="text-align: center;">
-                                   <a href="estado_civil_editar.html">
+                                   <a href="estado_civil_editar.php">
                                     <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="right" title="Editar">
                                       <i class="fa fa-pencil"> </i>
                                     </button>
